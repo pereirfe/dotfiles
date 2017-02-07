@@ -1,0 +1,18 @@
+"*":
+  "advanced-open-file":
+    fuzzyMatch: true
+    helmDirSwitch: true
+  core:
+    autoHideMenuBar: true
+    telemetryConsent: "limited"
+  editor:
+    fontSize: 16
+    showIndentGuide: true
+    tabLength: 4
+  "exception-reporting":
+    userId: "574b2393-0117-4d4f-4922-a652ba60535f"
+  "git-plus":
+    general:
+      _analyticsUserId: "98b00305-3527-41e1-9003-b4d4f55642c5"
+  welcome:
+    showOnStartup: false
