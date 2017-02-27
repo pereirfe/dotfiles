@@ -28,6 +28,11 @@
 ;; Basic Customization
 ;; --------------------
 
+;; Disable C-z suspend
+(global-unset-key [(control z)])
+(global-unset-key [(control x)(control z)])
+
+
 ;; Enable Material Theme 
 (load-theme 'material t)
 
