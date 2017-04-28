@@ -86,7 +86,7 @@ vi style of % jumping to matching brace."
 	            (t (self-insert-command (or arg 1)))))
 (global-set-key (kbd "C-5") 'goto-match-paren)
 
-;; Set Emacs as a server
+;; Start Server for emacs
 (server-start)
 
 

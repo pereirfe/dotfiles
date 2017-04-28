@@ -76,7 +76,7 @@ bindsym $mod+h split h
 bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
-bindsym $mod+f fullscreen 
+bindsym $mod+f fullscreen toggle
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -162,11 +162,11 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 
-set $bg-color			#2f343f
-set $inactive-bg-color		#2f343f
+set $bg-color			#000000
+set $inactive-bg-color		#000000
 set $text-color			#f3f4f5
 set $inactive-text-color	#676E7D
-set $urgent-bg-color		#E53935
+set $urgent-bg-color		#44BBFF
 
 #window colors
 client.focused			$bg-color		$bg-color		$text-color			#00FF00
@@ -184,6 +184,7 @@ bar {
 
 	colors {
 		background $bg-color
+		statusline #44BBFF
 		separator #757575
 		focused_workspace	$bg-color		$bg-color		$text-color
 		inactive_workspace	$inactive-bg-color	$inactive-bg-color	$inactive-text-color
@@ -196,12 +197,10 @@ bar {
 
 exec --no-startup-id dropbox start
 exec --no-startup-id nm-applet start
-exec --no-startup-id feh --bg-scale ~/Downloads/wall/swiss.jpg
-#exec --no-startup-id xrandr --output HDMI-1 --auto --mode 1920x1080 --left-of eDP-1
+exec --no-startup-id feh --bg-scale ~/Downloads/wall/wall.jpg
 
 #Avoids touchpad misclicks while typing
 exec syndaemon -i 0.5 -d -K
-
 
 # Pulse Audio controls
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #increase sound volume
