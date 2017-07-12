@@ -40,9 +40,6 @@
 ;; Move backup files from working directory
 (setq backup-directory-alist `(("." . "~/.saves")))
 
-;; Enable Material Theme
-(load-theme 'material t)
-
 ;; Enable linenum-mode globally
 ;;(global-linum-mode t)
 
@@ -80,6 +77,9 @@
 ;(add-hook 'python-mode-hook 'jedi:setup)
 ;(setq jedi:complete-on-dot t)
 ;(setq elpy-rpc-backend "jedi")
+
+;; Enable Material Theme
+(load-theme 'material t)
 
 ;; Setting a vim like %
 (defun goto-match-paren (arg)
@@ -129,10 +129,9 @@ vi style of % jumping to matching brace."
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
  '(menu-bar-mode nil)
- '(org-agenda-files
-   (quote
-    ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+ '(org-agenda-files (quote ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
  '(scroll-bar-mode nil)
+ '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
