@@ -10,6 +10,7 @@
 
 (defvar myPackages
   '(material-theme
+    magit
     flycheck
     ido
     smex
@@ -67,7 +68,7 @@
 (ac-config-default)
 
 ;; Enable Iedit mode
-(define-key global-map (kbd "C-`") 'iedit-mode)
+(define-key global-map (kbd "C-ç") 'iedit-mode)
 
 ;; Enable SMEX and bind it to M-x
 (smex-initialize)
@@ -112,28 +113,51 @@ vi style of % jumping to matching brace."
  'org-babel-load-languages
  '((python . t)))
 
-;; Turn semantic mode on
-(semantic-mode 1)
-;; Define a function to add semantic suggestion for c-hook
-(defun my:add-semantic-to-autocomplete()
-  (add-to-list 'ac-sources 'ac-sources-semantic)
-)
-(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-(global-semantic-idle-scheduler-mode 1)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(ansi-color-names-vector
+   (vector "#ffffff" "#f36c60" "#8bc34a" "#fff59d" "#4dd0e1" "#b39ddb" "#81d4fa" "#263238"))
  '(column-number-mode nil)
- '(custom-safe-themes (quote ("98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
+ '(custom-safe-themes
+   (quote
+    ("43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
+ '(fci-rule-color "#37474f")
+ '(hl-sexp-background-color "#1c1f26")
  '(menu-bar-mode nil)
- '(org-agenda-files (quote ("~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
  '(scroll-bar-mode nil)
  '(show-paren-mode t)
  '(tool-bar-mode nil)
- '(tooltip-mode nil))
+ '(tooltip-mode nil)
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#f36c60")
+     (40 . "#ff9800")
+     (60 . "#fff59d")
+     (80 . "#8bc34a")
+     (100 . "#81d4fa")
+     (120 . "#4dd0e1")
+     (140 . "#b39ddb")
+     (160 . "#f36c60")
+     (180 . "#ff9800")
+     (200 . "#fff59d")
+     (220 . "#8bc34a")
+     (240 . "#81d4fa")
+     (260 . "#4dd0e1")
+     (280 . "#b39ddb")
+     (300 . "#f36c60")
+     (320 . "#ff9800")
+     (340 . "#fff59d")
+     (360 . "#8bc34a"))))
+ '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
