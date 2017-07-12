@@ -112,15 +112,6 @@ vi style of % jumping to matching brace."
  'org-babel-load-languages
  '((python . t)))
 
-;; Turn semantic mode on
-(semantic-mode 1)
-;; Define a function to add semantic suggestion for c-hook
-(defun my:add-semantic-to-autocomplete()
-  (add-to-list 'ac-sources 'ac-sources-semantic)
-)
-(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-(global-semantic-idle-scheduler-mode 1)
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -129,8 +120,9 @@ vi style of % jumping to matching brace."
  '(column-number-mode nil)
  '(custom-safe-themes (quote ("98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
  '(menu-bar-mode nil)
- '(org-agenda-files (quote ("~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+ '(org-agenda-files (quote ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
  '(scroll-bar-mode nil)
+ '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
  '(tool-bar-mode nil)
  '(tooltip-mode nil))
