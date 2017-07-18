@@ -34,6 +34,9 @@
 ;;(global-unset-key [(control z)])
 ;;(global-unset-key [(control x)(control z)])
 
+;; Magit Configuration
+(global-set-key (kbd "C-x g") 'magit-status)
+
 ;; Disable C-t toggle character
 (global-unset-key [(control t)])
 
@@ -75,7 +78,7 @@
 (global-set-key (kbd "M-x") 'smex)
 
 ;; Auto-revert Mode Global
-(global-auto-revert-mode 1)
+;;(global-auto-revert-mode 1)
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
 ;(setq jedi:complete-on-dot t)
