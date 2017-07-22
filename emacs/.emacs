@@ -116,6 +116,16 @@ vi style of % jumping to matching brace."
  'org-babel-load-languages
  '((python . t)))
 
+;; Activate reformat-xml
+(require 'sgml-mode)
+
+(defun reformat-xml ()
+  (interactive)
+  (save-excursion
+    (sgml-pretty-print (point-min) (point-max))
+        (indent-region (point-min) (point-max))))
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
