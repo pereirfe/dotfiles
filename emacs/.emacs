@@ -10,6 +10,7 @@
 
 (defvar myPackages
   '(material-theme
+    ag
     magit
     flycheck
     ido
@@ -114,7 +115,9 @@ vi style of % jumping to matching brace."
 ;; Babel Load languages
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)))
+ '((python . t)
+   (shell . t)
+   ))
 
 ;; Activate reformat-xml
 (require 'sgml-mode)
@@ -125,6 +128,8 @@ vi style of % jumping to matching brace."
     (sgml-pretty-print (point-min) (point-max))
         (indent-region (point-min) (point-max))))
 
+;; Ag
+;; Require AG installation!
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -142,7 +147,15 @@ vi style of % jumping to matching brace."
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
  '(menu-bar-mode nil)
- '(org-agenda-files (quote ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+ '(safe-local-variable-values
+   (quote
+    ((eval add-hook
+	   (quote after-save-hook)
+	   (quote org-html-export-to-html)
+	   t t))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
