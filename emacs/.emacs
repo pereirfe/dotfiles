@@ -92,7 +92,7 @@ vi style of % jumping to matching brace."
     (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
             ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
 	            (t (self-insert-command (or arg 1)))))
-(global-set-key (kbd "C-S-5") 'goto-match-paren)
+(global-set-key (kbd "C-%") 'goto-match-paren)
 
 ;; Start Server for emacs
 (server-start)
@@ -132,7 +132,15 @@ vi style of % jumping to matching brace."
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
  '(menu-bar-mode nil)
- '(org-agenda-files (quote ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Pers/threads/persthread.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+ '(org-agenda-files
+   (quote
+    ("~/working/pers/projects/PP001/PP001.org" "~/working/pers/projects/projects.org" "~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+ '(safe-local-variable-values
+   (quote
+    ((eval add-hook
+	   (quote after-save-hook)
+	   (quote org-html-export-to-html)
+	   t t))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
