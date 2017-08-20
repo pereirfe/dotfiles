@@ -10,6 +10,7 @@
 
 (defvar myPackages
   '(material-theme
+    ag
     magit
     flycheck
     ido
@@ -114,7 +115,21 @@ vi style of % jumping to matching brace."
 ;; Babel Load languages
 (org-babel-do-load-languages
  'org-babel-load-languages
- '((python . t)))
+ '((python . t)
+   (shell . t)
+   ))
+
+;; Activate reformat-xml
+(require 'sgml-mode)
+
+(defun reformat-xml ()
+  (interactive)
+  (save-excursion
+    (sgml-pretty-print (point-min) (point-max))
+        (indent-region (point-min) (point-max))))
+
+;; Ag
+;; Require AG installation!
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
