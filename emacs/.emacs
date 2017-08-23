@@ -96,11 +96,12 @@ vi style of % jumping to matching brace."
 (global-set-key (kbd "C-%") 'goto-match-paren)
 
 ;; Start Server for emacs
-(server-start)
+;;(server-start)
 
 ;; Delete trailing spaces before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; CEDET
 ;; Turn on semantics
 (semantic-mode 1)
 ;; define function to add semantics to autocomplete @c-mode-common-hook
@@ -111,12 +112,16 @@ vi style of % jumping to matching brace."
 ;; Turn automatic reparsing when idle
 (global-semantic-idle-scheduler-mode 1)
 
+;; Trying to add the Project
+(global-ede-mode t)
+(ede-cpp-root-project "LTE-Sim" :file "~/lte-sim-fp/src/LTE-Sim.cpp")
+
 
 ;; Babel Load languages
 (org-babel-do-load-languages
  'org-babel-load-languages
  '((python . t)
-   (shell . t)
+   (sh . t)
    ))
 
 ;; Activate reformat-xml
@@ -136,6 +141,8 @@ vi style of % jumping to matching brace."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t)
+  '(large-file-warning-threshold nil)
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
