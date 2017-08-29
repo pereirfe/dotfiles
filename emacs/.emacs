@@ -10,6 +10,7 @@
 
 (defvar myPackages
   '(material-theme
+    w3m
     ag
     magit
     flycheck
@@ -30,6 +31,20 @@
 
 ;; Basic Customization
 ;; --------------------
+
+(setq org-agenda-custom-commands
+      '(("O" "Office block agenda"
+         ((agenda "" ((org-agenda-ndays 7)))
+                      ;; limits the agenda display to a single day
+          (tags-todo "+PRIORITY=\"A\"")
+          (tags-todo "MSC|ORG")
+          (todo "WAITING"))
+         ((org-agenda-compact-blocks t))) ;; options set here apply to the entire block
+        ;; ...other commands here
+        ))
+
+; I prefer return to activate a link
+(setq org-return-follows-link t)
 
 ;; Disable C-z suspend
 ;;(global-unset-key [(control z)])
@@ -78,6 +93,19 @@
 ;; Auto-revert Mode Global
 ;;(global-auto-revert-mode 1)
 
+;; GTD implementation
+(setq org-tag-alist '(("@LRC" . ?l)
+		      ("@HOME" . ?h)
+		      ("MOBILE" . ?l)
+		      ("Nelson" . ?n)
+		      ("Carlos" . ?c)
+		      ("TEL" . ?t)
+		      ("ERRANDS" . ?e)))
+
+ (setq org-todo-keywords
+       '((sequence "TODO" "WAITING" "NEXT" "|" "DONE" "DELEGATED")))
+
+
 ;(add-hook 'python-mode-hook 'jedi:setup)
 ;(setq jedi:complete-on-dot t)
 ;(setq elpy-rpc-backend "jedi")
@@ -94,6 +122,12 @@ vi style of % jumping to matching brace."
             ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
 	            (t (self-insert-command (or arg 1)))))
 (global-set-key (kbd "C-%") 'goto-match-paren)
+
+
+(defun open-pp-form()
+  (interactive)
+  (w3m-goto-url "https://docs.google.com/forms/d/e/1FAIpQLSdjtiVqL7d14_nXDF91x88MJm3eM9bhj07yg-_xyaP65Xb-tg/viewform"))
+(global-set-key (kbd "C-c i") 'open-pp-form)
 
 ;; Start Server for emacs
 ;;(server-start)
@@ -141,8 +175,6 @@ vi style of % jumping to matching brace."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t)
-  '(large-file-warning-threshold nil)
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
@@ -153,10 +185,12 @@ vi style of % jumping to matching brace."
     ("43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
+ '(inhibit-startup-screen t)
+ '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/working/pers/projects/PP001/PP001.org" "~/working/pers/projects/projects.org" "~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+    ("~/Dropbox/working_NOW/Master/projects/PM003/PM003.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
