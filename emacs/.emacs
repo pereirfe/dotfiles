@@ -10,6 +10,7 @@
 
 (defvar myPackages
   '(material-theme
+    w3
     ag
     magit
     flycheck
@@ -141,8 +142,6 @@ vi style of % jumping to matching brace."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(inhibit-startup-screen t)
-  '(large-file-warning-threshold nil)
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
  '(ansi-color-names-vector
@@ -153,10 +152,12 @@ vi style of % jumping to matching brace."
     ("43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
+ '(inhibit-startup-screen t)
+ '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/working/pers/projects/PP001/PP001.org" "~/working/pers/projects/projects.org" "~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
+    ("~/Dropbox/working_NOW/Master/projects/PM002/PM002.org" "~/Dropbox/working_NOW/Master/projects/PM004/PM004.org" "~/Dropbox/working_NOW/Master/threads/threads.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
