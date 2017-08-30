@@ -103,7 +103,7 @@
 		      ("ERRANDS" . ?e)))
 
  (setq org-todo-keywords
-       '((sequence "TODO" "WAITING(@w)" "NEXT" "|" "DONE" "DELEGATED(@d)")))
+       '((sequence "TODO" "WAITING" "NEXT" "SCHED" "|" "DONE" "DELEGATED(@d)")))
 
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
@@ -188,7 +188,9 @@ vi style of % jumping to matching brace."
  '(inhibit-startup-screen t)
  '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
- '(org-agenda-files (quote ("~/gtd/projects.org")))
+ '(org-agenda-files
+   (quote
+    ("~/gtd/Holidays.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
