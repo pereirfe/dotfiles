@@ -147,8 +147,13 @@ vi style of % jumping to matching brace."
 (global-semantic-idle-scheduler-mode 1)
 
 ;; Trying to add the Project
-(global-ede-mode t)
-(ede-cpp-root-project "LTE-Sim" :file "~/lte-sim-fp/src/LTE-Sim.cpp")
+;;(global-ede-mode t)
+;;(ede-cpp-root-project "LTE-Sim" :file "~/lte-sim-fp/src/LTE-Sim.cpp")
+
+;; Set default browser
+;;(setq browse-url-browser-function 'browse-url-chrome)
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome")
 
 
 ;; Babel Load languages
