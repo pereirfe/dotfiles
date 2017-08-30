@@ -96,14 +96,14 @@
 ;; GTD implementation
 (setq org-tag-alist '(("@LRC" . ?l)
 		      ("@HOME" . ?h)
-		      ("MOBILE" . ?l)
+		      ("MOBILE" . ?m)
 		      ("Nelson" . ?n)
 		      ("Carlos" . ?c)
 		      ("TEL" . ?t)
 		      ("ERRANDS" . ?e)))
 
  (setq org-todo-keywords
-       '((sequence "TODO" "WAITING" "NEXT" "|" "DONE" "DELEGATED")))
+       '((sequence "TODO" "WAITING(@w)" "NEXT" "|" "DONE" "DELEGATED(@d)")))
 
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
@@ -188,6 +188,7 @@ vi style of % jumping to matching brace."
  '(inhibit-startup-screen t)
  '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
+ '(org-agenda-files (quote ("~/gtd/projects.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
