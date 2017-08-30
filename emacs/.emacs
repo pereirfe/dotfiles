@@ -97,13 +97,14 @@
 (setq org-tag-alist '(("@LRC" . ?l)
 		      ("@HOME" . ?h)
 		      ("MOBILE" . ?m)
+		      ("AMS"    . ?a)
 		      ("Nelson" . ?n)
 		      ("Carlos" . ?c)
 		      ("TEL" . ?t)
 		      ("ERRANDS" . ?e)))
 
  (setq org-todo-keywords
-       '((sequence "TODO" "WAITING(@w)" "NEXT" "|" "DONE" "DELEGATED(@d)")))
+       '((sequence "NEXT" "WAITING(@w)" "TODO" "|" "DONE" "DELEGATED(@d)")))
 
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
