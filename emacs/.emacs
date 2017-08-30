@@ -97,6 +97,7 @@
 (setq org-tag-alist '(("@LRC" . ?l)
 		      ("@HOME" . ?h)
 		      ("MOBILE" . ?m)
+		      ("AMS"    . ?a)
 		      ("Nelson" . ?n)
 		      ("Carlos" . ?c)
 		      ("TEL" . ?t)
@@ -104,7 +105,6 @@
 
  (setq org-todo-keywords
        '((sequence "TODO" "WAITING" "NEXT" "SCHED" "|" "DONE" "DELEGATED(@d)")))
-
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
 ;(setq jedi:complete-on-dot t)

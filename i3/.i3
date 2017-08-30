@@ -12,7 +12,8 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:monospace 8
+font pango:Overpass 10
+#font pango:monospace 8
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -31,6 +32,12 @@ floating_modifier $mod
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 
+# open nautilus
+bindsym $mod+Shift+Return exec nautilus
+
+# toggle between previous/current workspaces
+bindsym $mod+Tab workspace back_and_forth
+
 # rename workspace
 #bindsym Ctrl+Shift+r exec i3-input -F 'rename workspace to "%s"' -P 'rename current workspace: '
 
@@ -38,7 +45,8 @@ bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
+#bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -show run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -97,6 +105,17 @@ bindsym $mod+a focus parent
 
 
 #set $workspace1 "1:WWW"
+# Name the workspaces
+set $space1 " 1 ⏐ focus "
+set $space2 " 2 ⏐ webs "
+set $space3 " 3 ⏐ terms "
+set $space4 " 4 "
+set $space5 " 5 ⏐ parallel"
+set $space6 " 6 "
+set $space7 " 7 "
+set $space8 " 8 ⏐ monitor"
+set $space9 " 9 "
+set $space10 " 10 "
 
 
 # switch to workspace
@@ -162,42 +181,81 @@ mode "resize" {
 bindsym $mod+r mode "resize"
 
 
-set $bg-color			#000000
-set $inactive-bg-color		#000000
-set $text-color			#f3f4f5
-set $inactive-text-color	#676E7D
-set $urgent-bg-color		#44BBFF
+# set $bg-color			#000000
+# set $inactive-bg-color		#000000
+# set $text-color			#f3f4f5
+# set $inactive-text-color	#676E7D
+# set $urgent-bg-color		#44BBFF
 
-#window colors
-client.focused			$bg-color		$bg-color		$text-color			#00FF00
-client.unfocused		$inactive-bg-color	$inactive-bg-color	$inactive-text-color		#00FF00
-client.focused_inactive		$inactive-bg-color	$inactive-bg-color	$inactive-text-color		#00FF00
-client.urgent			$urgent-bg-color	$urgent-bg-color	$text-color			#00FF00
+# Color variables
+set $color1 #38acd6
+set $color2 #52938e
+set $color3 #56b7b0
+set $darklight #074860
+set $highlight #3fc0ef
+set $background #203e4a
+set $background2 #5a8683
+
+
+
+# client.focused			$bg-color		$bg-color		$text-color			#00FF00
+# client.unfocused		$inactive-bg-color	$inactive-bg-color	$inactive-text-color		#00FF00
+# client.focused_inactive		$inactive-bg-color	$inactive-bg-color	$inactive-text-color		#00FF00
+# client.urgent			$urgent-bg-color	$urgent-bg-color	$text-color			#00FF00
 
 hide_edge_borders both
 
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
+# # Start i3bar to display a workspace bar (plus the system information i3status
+# # finds out, if available)
+# bar {
+#         status_command i3status
+
+# 	colors {
+# 		background $bg-color
+# 		statusline #44BBFF
+# 		separator #757575
+# 		focused_workspace	$bg-color		$bg-color		$text-color
+# 		inactive_workspace	$inactive-bg-color	$inactive-bg-color	$inactive-text-color
+# 		urgent_workspace	$urgent-bg-color	$urgent-bg-color	$text-color
+# 		}
+# 	tray_output primary
+
+
+# }
+
+
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
         status_command i3status
 
+        #tray_output primary
+
 	colors {
-		background $bg-color
-		statusline #44BBFF
-		separator #757575
-		focused_workspace	$bg-color		$bg-color		$text-color
-		inactive_workspace	$inactive-bg-color	$inactive-bg-color	$inactive-text-color
-		urgent_workspace	$urgent-bg-color	$urgent-bg-color	$text-color
-		}
-	tray_output primary
+        	#color class       border  back.   text
+       		focused_workspace  $color1 $background $highlight
+        	active_workspace   #555555 #555555 #ffffff
+        	inactive_workspace $color2 #000000 $color2
+        	urgent_workspace   $color1 $background2  $background
 
-
+             statusline $color2
+             separator $color2
+    	}
 }
+
+
+#colors:                            border      backgr.     text            indicator
+#client.focused                  $color3   $color3     $darklight  $color3
+client.focused                    $background $background $color2  $color3
+client.focused_inactive     	  #000000     #000000     $color2  $background
+client.unfocused                  #000000     #000000     $color2  $background
+client.urgent                     $color1     $background2 #ffffff $color1
+
+
 
 exec --no-startup-id dropbox start
 exec --no-startup-id nm-applet start
-exec --no-startup-id feh --bg-scale ~/Downloads/wall/wall.jpg
+exec_always feh --bg-scale ~/Downloads/wall/wall.jpg
 
 #Avoids touchpad misclicks while typing
 exec syndaemon -i 0.5 -d -K
@@ -207,7 +265,7 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5% #i
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #decrease sound volume
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
-# Sreen brightness controls
+# Screen brightness controls
 bindsym XF86MonBrightnessUp exec /usr/bin/increasekbdlight.sh
 bindsym XF86MonBrightnessDown exec /usr/bin/decreasekbdlight.sh
 
@@ -230,4 +288,3 @@ bindsym $mod+shift+x exec i3lock -c 000000
 
 #Suspend
 bindsym $mod+shift+s exec systemctl suspend
-
