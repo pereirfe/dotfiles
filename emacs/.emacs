@@ -32,16 +32,40 @@
 ;; Basic Customization
 ;; --------------------
 
+;; (setq org-agenda-custom-commands
+;;       '(("O" "Office block agenda"
+;;          ((agenda "" ((org-agenda-ndays 7)))
+;;                       ;; limits the agenda display to a single day
+;;           (tags-todo "+PRIORITY=\"A\"")
+;;           (tags-todo "MSC|ORG")
+;;           (todo "WAITING"))
+;;          ((org-agenda-compact-blocks t))) ;; options set here apply to the entire block
+;;         ;; ...other commands here
+;;         ))
+
 (setq org-agenda-custom-commands
-      '(("O" "Office block agenda"
-         ((agenda "" ((org-agenda-ndays 7)))
-                      ;; limits the agenda display to a single day
-          (tags-todo "+PRIORITY=\"A\"")
-          (tags-todo "MSC|ORG")
-          (todo "WAITING"))
-         ((org-agenda-compact-blocks t))) ;; options set here apply to the entire block
-        ;; ...other commands here
-        ))
+      '(("L" "@LRC"
+	 ((agenda "")
+	  (tags "+@LRC+TODO=\"NEXT\"")
+	 ))
+	("H" "@HOME"
+	 ((agenda "")
+	  (tags "+@HOME+TODO=\"NEXT\"")
+	  ))
+	("N" "Nelson"
+	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\"")
+	  ))
+	("E" "MOBILE+ERRANDS"
+	 ((tags "+MOBILE+TODO=\"NEXT\"")
+	  (tags "ERRANDS+TODO=\"NEXT\"")
+	  (org-agenda-compact-blocks t)
+	  ))
+	("W" "Waiting"
+	 ((todo "WAITING")
+	  ))
+	)
+      )
+
 
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
@@ -52,6 +76,8 @@
 
 ;; Magit Configuration
 (global-set-key (kbd "C-x g") 'magit-status)
+
+(global-set-key (kbd "C-c a") 'org-agenda)
 
 ;; Disable C-t toggle character
 (global-unset-key [(control t)])
@@ -104,7 +130,7 @@
 		      ("ERRANDS" . ?e)))
 
  (setq org-todo-keywords
-       '((sequence "TODO" "WAITING" "NEXT" "SCHED" "|" "DONE" "DELEGATED(@d)")))
+       '((sequence "TODO" "WAITING" "NEXT" "SCHED" "TICKLED" "|" "DONE" "DELEGATED(@d)")))
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
 ;(setq jedi:complete-on-dot t)
