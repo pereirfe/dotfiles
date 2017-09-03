@@ -101,6 +101,7 @@
 ;;; Stops IDO from searching for similar-named files if I use Cx Cs to create
 ;;; new file or buffer
 (setq ido-auto-merge-work-directories-length -1)
+(setq ido-enable-flex-matching t)
 
 ;; Powerline config
 (powerline-center-theme)
