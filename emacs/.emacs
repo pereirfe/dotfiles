@@ -170,14 +170,14 @@ vi style of % jumping to matching brace."
 
 ;; CEDET
 ;; Turn on semantics
-(semantic-mode 1)
+;(semantic-mode 1)
 ;; define function to add semantics to autocomplete @c-mode-common-hook
-(defun my:add-semantic-to-autocomplete()
-  (add-to-list 'ac-sources 'ac-source-semantic)
-  )
-(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+;(defun my:add-semantic-to-autocomplete()
+;  (add-to-list 'ac-sources 'ac-source-semantic)
+;  )
+;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 ;; Turn automatic reparsing when idle
-(global-semantic-idle-scheduler-mode 1)
+;(global-semantic-idle-scheduler-mode 1)
 
 ;; Trying to add the Project
 ;;(global-ede-mode t)
