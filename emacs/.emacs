@@ -101,6 +101,7 @@
 ;;; Stops IDO from searching for similar-named files if I use Cx Cs to create
 ;;; new file or buffer
 (setq ido-auto-merge-work-directories-length -1)
+(setq ido-enable-flex-matching t)
 
 ;; Powerline config
 (powerline-center-theme)
@@ -117,7 +118,7 @@
 (global-set-key (kbd "M-x") 'smex)
 
 ;; Auto-revert Mode Global
-;;(global-auto-revert-mode 1)
+(global-auto-revert-mode 1)
 
 ;; GTD implementation
 (setq org-tag-alist '(("@LRC" . ?l)
@@ -129,8 +130,12 @@
 		      ("TEL" . ?t)
 		      ("ERRANDS" . ?e)))
 
- (setq org-todo-keywords
-       '((sequence "TODO" "WAITING" "NEXT" "SCHED" "TICKLED" "|" "DONE" "DELEGATED(@d)")))
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SCHED(s)" "TICKLED(T)" "|" "DONE(d)" "DELEGATED(x)")))
+
+(setq org-default-notes-file "~/gtd/in.org")
+(global-set-key (kbd "C-c c") 'org-capture)
+
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
 ;(setq jedi:complete-on-dot t)
@@ -155,6 +160,8 @@ vi style of % jumping to matching brace."
   (w3m-goto-url "https://docs.google.com/forms/d/e/1FAIpQLSdjtiVqL7d14_nXDF91x88MJm3eM9bhj07yg-_xyaP65Xb-tg/viewform"))
 (global-set-key (kbd "C-c i") 'open-pp-form)
 
+
+(setq w3m-form-use-textarea-backup nil)
 ;; Start Server for emacs
 ;;(server-start)
 
@@ -163,14 +170,14 @@ vi style of % jumping to matching brace."
 
 ;; CEDET
 ;; Turn on semantics
-(semantic-mode 1)
+;(semantic-mode 1)
 ;; define function to add semantics to autocomplete @c-mode-common-hook
-(defun my:add-semantic-to-autocomplete()
-  (add-to-list 'ac-sources 'ac-source-semantic)
-  )
-(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+;(defun my:add-semantic-to-autocomplete()
+;  (add-to-list 'ac-sources 'ac-source-semantic)
+;  )
+;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
 ;; Turn automatic reparsing when idle
-(global-semantic-idle-scheduler-mode 1)
+;(global-semantic-idle-scheduler-mode 1)
 
 ;; Trying to add the Project
 ;;(global-ede-mode t)
@@ -221,7 +228,7 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/Holidays.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
+    ("~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
