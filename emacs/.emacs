@@ -132,7 +132,7 @@
 		      ("ERRANDS" . ?e)))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SCHED(s)" "TICKLED(T)" "|" "DONE(d)" "DELEGATED(x)")))
+      '((sequence "SCHED(s)" "TODO(t)" "NEXT(n)" "WAITING(w)" "TICKLED(T)" "|" "DONE(d)" "DELEGATED(x)")))
 
 (setq org-default-notes-file "~/gtd/in.org")
 (global-set-key (kbd "C-c c") 'org-capture)
