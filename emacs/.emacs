@@ -47,18 +47,19 @@
       '(("L" "@LRC"
 	 ((agenda "")
 	  (tags "+@LRC+TODO=\"NEXT\"")
+	  (tags "+MOBILE+TODO=\"NEXT\"")
 	 ))
 	("H" "@HOME"
 	 ((agenda "")
 	  (tags "+@HOME+TODO=\"NEXT\"")
+	  (tags "+MOBILE+TODO=\"NEXT\"")
 	  ))
 	("N" "Nelson"
 	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\"")
 	  ))
 	("E" "MOBILE+ERRANDS"
 	 ((tags "+MOBILE+TODO=\"NEXT\"")
-	  (tags "ERRANDS+TODO=\"NEXT\"")
-	  (org-agenda-compact-blocks t)
+	  (tags "+ERRANDS+TODO=\"NEXT\"")
 	  ))
 	("W" "Waiting"
 	 ((todo "WAITING")
