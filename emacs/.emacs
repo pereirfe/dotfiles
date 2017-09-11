@@ -10,6 +10,7 @@
 
 (defvar myPackages
   '(material-theme
+    expand-region
     w3m
     ag
     magit
@@ -27,6 +28,35 @@
 	  (unless (package-installed-p package)
 	    (package-install package)))
       myPackages)
+
+
+
+;;
+;; ace jump mode major function
+;;
+(add-to-list 'load-path "~/.emacs.d/ace-jump-mode/")
+(autoload
+  'ace-jump-mode
+  "ace-jump-mode"
+  "Emacs quick move minor mode"
+  t)
+;; you can select the key you prefer to
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+
+
+;;
+;; enable a more powerful jump back function from ace jump mode
+;;
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
 
 
 ;; Basic Customization
@@ -66,6 +96,9 @@
 	  ))
 	)
       )
+
+(setq org-agenda-skip-deadline-if-done t)
+(setq org-agenda-skip-scheduled-if-done t)
 
 
 ; I prefer return to activate a link
@@ -160,6 +193,12 @@ vi style of % jumping to matching brace."
   (interactive)
   (w3m-goto-url "https://docs.google.com/forms/d/e/1FAIpQLSdjtiVqL7d14_nXDF91x88MJm3eM9bhj07yg-_xyaP65Xb-tg/viewform"))
 (global-set-key (kbd "C-c i") 'open-pp-form)
+
+
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+(global-set-key (kbd "C-c s") 'imenu)
 
 
 (setq w3m-form-use-textarea-backup nil)
