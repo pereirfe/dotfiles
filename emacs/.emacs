@@ -101,6 +101,9 @@
 (setq org-agenda-skip-scheduled-if-done t)
 
 
+(setq org-deadline-warning-days 0)
+
+
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
@@ -158,7 +161,6 @@
 (setq org-tag-alist '(("@LRC" . ?l)
 		      ("@HOME" . ?h)
 		      ("MOBILE" . ?m)
-		      ("AMS"    . ?a)
 		      ("Nelson" . ?n)
 		      ("Carlos" . ?c)
 		      ("TEL" . ?t)
@@ -268,7 +270,7 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
+    ("~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
