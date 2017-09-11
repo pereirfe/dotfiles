@@ -67,6 +67,9 @@
       )
 
 
+(setq org-deadline-warning-days 0)
+
+
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
@@ -124,14 +127,13 @@
 (setq org-tag-alist '(("@LRC" . ?l)
 		      ("@HOME" . ?h)
 		      ("MOBILE" . ?m)
-		      ("AMS"    . ?a)
 		      ("Nelson" . ?n)
 		      ("Carlos" . ?c)
 		      ("TEL" . ?t)
 		      ("ERRANDS" . ?e)))
 
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "NEXT(n)" "WAITING(w)" "SCHED(s)" "TICKLED(T)" "|" "DONE(d)" "DELEGATED(x)")))
+      '((sequence "NEXT(n)" "TODO(t)" "WAITING(w)" "SCHED(s)" "TICKLED(T)" "|" "DONE(d)" "DELEGATED(x)" "CANCEL(c)")))
 
 (setq org-default-notes-file "~/gtd/in.org")
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -228,7 +230,7 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
+    ("~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
