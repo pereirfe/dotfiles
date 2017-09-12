@@ -31,6 +31,35 @@
       myPackages)
 
 
+
+;;
+;; ace jump mode major function
+;;
+(add-to-list 'load-path "~/.emacs.d/ace-jump-mode/")
+(autoload
+  'ace-jump-mode
+  "ace-jump-mode"
+  "Emacs quick move minor mode"
+  t)
+;; you can select the key you prefer to
+(define-key global-map (kbd "C-c SPC") 'ace-jump-mode)
+
+
+
+;;
+;; enable a more powerful jump back function from ace jump mode
+;;
+(autoload
+  'ace-jump-mode-pop-mark
+  "ace-jump-mode"
+  "Ace jump back:-)"
+  t)
+(eval-after-load "ace-jump-mode"
+  '(ace-jump-mode-enable-mark-sync))
+(define-key global-map (kbd "C-x SPC") 'ace-jump-mode-pop-mark)
+
+
+
 ;; Basic Customization
 ;; --------------------
 
@@ -68,6 +97,9 @@
 	  ))
 	)
       )
+
+(setq org-agenda-skip-deadline-if-done t)
+(setq org-agenda-skip-scheduled-if-done t)
 
 
 (setq org-deadline-warning-days 0)
@@ -170,6 +202,12 @@ vi style of % jumping to matching brace."
 (global-set-key (kbd "C-c i") 'open-pp-form)
 
 
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+(global-set-key (kbd "C-c s") 'imenu)
+
+
 (setq w3m-form-use-textarea-backup nil)
 ;; Start Server for emacs
 ;;(server-start)
@@ -219,6 +257,13 @@ vi style of % jumping to matching brace."
 
 ;; Ag
 ;; Require AG installation!
+
+
+(setq org-capture-templates
+      '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
+	 "* TODO %?\n  %U\n %i\n  %a")))
+
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
