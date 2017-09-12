@@ -10,6 +10,7 @@
 
 (defvar myPackages
   '(material-theme
+    avy
     expand-region
     w3m
     ag
@@ -148,6 +149,10 @@
 ;(setq jedi:complete-on-dot t)
 ;(setq elpy-rpc-backend "jedi")
 
+;; Avy - Jump like wind
+(avy-setup-default)
+(global-set-key (kbd "C-'") 'avy-goto-char-2)
+
 ;; Enable Material Theme
 (load-theme 'material t)
 
@@ -201,6 +206,9 @@ vi style of % jumping to matching brace."
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
+;; Expand Region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
 
 ;; Babel Load languages
 (org-babel-do-load-languages
