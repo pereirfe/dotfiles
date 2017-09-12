@@ -250,6 +250,13 @@ vi style of % jumping to matching brace."
 ;; Ag
 ;; Require AG installation!
 
+
+(setq org-capture-templates
+      '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
+	 "* TODO %?\n  %U\n %i\n  %a")))
+
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
