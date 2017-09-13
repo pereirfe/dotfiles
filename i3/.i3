@@ -45,8 +45,8 @@ bindsym $mod+Tab workspace back_and_forth
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
-#bindsym $mod+d exec rofi -show run
+#bindsym $mod+d exec dmenu_run
+bindsym $mod+d exec rofi -show run
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -287,4 +287,4 @@ bindsym $mod+shift+x exec i3lock -c 000000
 
 
 #Suspend
-bindsym $mod+shift+s exec systemctl suspend
+#bindsym $mod+shift+s exec systemctl suspend

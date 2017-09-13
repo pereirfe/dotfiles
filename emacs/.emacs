@@ -8,8 +8,10 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
+
 (defvar myPackages
   '(material-theme
+    smartparens
     avy
     expand-region
     w3m
@@ -71,10 +73,24 @@
 
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
-
-
 (setq org-deadline-warning-days 0)
 
+(require 'json)
+
+
+(require 'smartparens-config)
+(add-hook 'js-mode-hook #'smartparens-mode)
+(add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
+(add-hook 'cpp-mode-hook #'smartparens-mode)
+(add-hook 'python-mode-hook #'smartparens-mode)
+
+
+(define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
+(define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
+					;("C-M-e" . sp-end-of-sexp))
+
+(define-key smartparens-mode-map (kbd "C-c C-f") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-c C-b") 'sp-forward-barf-sexp)
 
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
