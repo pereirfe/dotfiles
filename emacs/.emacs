@@ -152,6 +152,7 @@
 ;; Avy - Jump like wind
 (avy-setup-default)
 (global-set-key (kbd "C-'") 'avy-goto-char-2)
+(global-set-key (kbd "C-:") 'avy-goto-word-1)
 
 ;; Enable Material Theme
 (load-theme 'material t)
@@ -256,7 +257,7 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/someday.org" "~/gtd/tasks.org")))
+    ("~/gtd/tickler.org" "~/gtd/someday.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
