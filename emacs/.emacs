@@ -83,7 +83,7 @@
 (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
 (add-hook 'cpp-mode-hook #'smartparens-mode)
 (add-hook 'python-mode-hook #'smartparens-mode)
-
+(add-hook 'latex-mode-hook #'smartparens-mode)
 
 (define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
 (define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
@@ -96,8 +96,8 @@
 (setq org-return-follows-link t)
 
 ;; Disable C-z suspend
-;;(global-unset-key [(control z)])
-;;(global-unset-key [(control x)(control z)])
+(global-unset-key [(control z)])
+(global-unset-key [(control x)(control z)])
 
 ;; Magit Configuration
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -155,7 +155,7 @@
 		      ("ERRANDS" . ?e)))
 
 (setq org-todo-keywords
-      '((sequence "SCHED(s)" "TODO(t)" "NEXT(n)" "WAITING(w)" "TICKLED(T)" "|" "DONE(d)" "DELEGATED(x)")))
+      '((sequence "SCHED(s)" "TODO(t)" "NEXT(n)" "WAITING(w)" "TICKLED(T)" "POSTPONED(p)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(x)")))
 
 (setq org-default-notes-file "~/gtd/in.org")
 (global-set-key (kbd "C-c c") 'org-capture)
