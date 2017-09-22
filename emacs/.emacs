@@ -83,10 +83,11 @@
 (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
 (add-hook 'cpp-mode-hook #'smartparens-mode)
 (add-hook 'python-mode-hook #'smartparens-mode)
+(add-hook 'latex-mode-hook #'smartparens-mode)
 
 
-(define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
-(define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
+;(define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
+;(define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
 					;("C-M-e" . sp-end-of-sexp))
 
 (define-key smartparens-mode-map (kbd "C-c C-f") 'sp-forward-slurp-sexp)
@@ -166,7 +167,7 @@
 ;(setq elpy-rpc-backend "jedi")
 
 ;; Avy - Jump like wind
-(avy-setup-default)
+;;(avy-setup-default)
 (global-set-key (kbd "C-'") 'avy-goto-char-2)
 (global-set-key (kbd "C-:") 'avy-goto-word-1)
 
@@ -273,7 +274,7 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/tickler.org" "~/gtd/someday.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
+    ("~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
