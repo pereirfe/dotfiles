@@ -11,6 +11,7 @@
 
 (defvar myPackages
   '(material-theme
+    anaconda-mode
     smartparens
     avy
     expand-region
@@ -51,11 +52,13 @@
       '(("L" "@LRC"
 	 ((agenda "")
 	  (tags "+@LRC+TODO=\"NEXT\"")
+	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
 	 ))
 	("H" "@HOME"
 	 ((agenda "")
 	  (tags "+@HOME+TODO=\"NEXT\"")
+	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
 	  ))
 	("N" "Nelson"
@@ -68,12 +71,30 @@
 	("W" "Waiting"
 	 ((todo "WAITING")
 	  ))
+
+	("P" "Printed agenda"
+         ((tags "+ERRANDS+TODO=\"NEXT\"|+MOBILE+TODO=\"NEXT\""
+
+                ((org-agenda-prefix-format "[ ] %T: ")
+                 (org-agenda-sorting-strategy '(tag-up priority-down))
+                 (org-agenda-todo-keyword-format "")
+                 (org-agenda-overriding-header "\nErrands and Mobile\n------------------\n"))))
+         ((org-agenda-with-colors nil)
+          (org-agenda-compact-blocks t)
+          (org-agenda-remove-tags t)
+          (ps-number-of-columns 2)
+           (ps-landscape-mode t))
+         ("~/gtd/ERRANDS.txt"))
 	)
       )
 
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-deadline-warning-days 0)
+
+;; Store analogic agendas when closing emacs
+(add-hook 'kill-emacs-hook 'org-store-agenda-views)
+
 
 (require 'json)
 
@@ -85,10 +106,10 @@
 (add-hook 'python-mode-hook #'smartparens-mode)
 (add-hook 'latex-mode-hook #'smartparens-mode)
 
-(define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
-(define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
-(define-key smartparens-mode-map (kbd "C-c C-f") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-c C-b") 'sp-forward-barf-sexp)
+;;(define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
+;;(define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
+(define-key smartparens-mode-map (kbd "C-c f") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-c b") 'sp-forward-barf-sexp)
 
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
@@ -112,7 +133,10 @@
 ;;(global-linum-mode t)
 
 ;; Enable Python development mode (ELPY)
-(elpy-enable)
+;;(elpy-enable)
+
+(add-hook 'python-mode-hook 'anaconda-mode)
+
 
 ;; Enable Syntax correction on the fly for python
 ;;(when (require 'flycheck nil t)
@@ -133,6 +157,9 @@
 ;; Enable Autocomplete
 (ac-config-default)
 
+;;(elpy-use-ipython)
+
+
 ;; Enable Iedit mode
 (define-key global-map (kbd "C-ç") 'iedit-mode)
 
@@ -149,6 +176,7 @@
 		      ("MOBILE" . ?m)
 		      ("Nelson" . ?n)
 		      ("Carlos" . ?c)
+		      ("Battlestation" . ?b)
 		      ("TEL" . ?t)
 		      ("ERRANDS" . ?e)))
 
@@ -272,6 +300,17 @@ vi style of % jumping to matching brace."
  '(org-agenda-files
    (quote
     ("~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
+ '(org-capture-templates
+   (quote
+    (("c" "Todo" entry
+      (file+headline org-default-notes-file "Tasks")
+      "* TODO %?
+  %U
+ %i
+  %a"))) t)
+ '(package-selected-packages
+   (quote
+    (anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
