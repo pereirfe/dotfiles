@@ -12,6 +12,7 @@
 (defvar myPackages
   '(material-theme
     anaconda-mode
+    ggtags
     smartparens
     avy
     expand-region
