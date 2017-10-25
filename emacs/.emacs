@@ -34,19 +34,10 @@
       myPackages)
 
 
-;; Basic Customization
-;; --------------------
 
-;; (setq org-agenda-custom-commands
-;;       '(("O" "Office block agenda"
-;;          ((agenda "" ((org-agenda-ndays 7)))
-;;                       ;; limits the agenda display to a single day
-;;           (tags-todo "+PRIORITY=\"A\"")
-;;           (tags-todo "MSC|ORG")
-;;           (todo "WAITING"))
-;;          ((org-agenda-compact-blocks t))) ;; options set here apply to the entire block
-;;         ;; ...other commands here
-;;         ))
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 
 (setq org-agenda-custom-commands
       '(("L" "@LRC"
