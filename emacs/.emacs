@@ -268,6 +268,9 @@ vi style of % jumping to matching brace."
       '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
 	 "* TODO %?\n  %U\n %i\n  %a")))
 
+;; Set ls -alh as default for dired
+(setq dired-listing-switches "-alh")
+
 
 
 (custom-set-variables
