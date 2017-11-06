@@ -12,6 +12,7 @@
 (defvar myPackages
   '(material-theme
     anaconda-mode
+    ggtags
     smartparens
     avy
     expand-region
@@ -34,19 +35,10 @@
       myPackages)
 
 
-;; Basic Customization
-;; --------------------
 
-;; (setq org-agenda-custom-commands
-;;       '(("O" "Office block agenda"
-;;          ((agenda "" ((org-agenda-ndays 7)))
-;;                       ;; limits the agenda display to a single day
-;;           (tags-todo "+PRIORITY=\"A\"")
-;;           (tags-todo "MSC|ORG")
-;;           (todo "WAITING"))
-;;          ((org-agenda-compact-blocks t))) ;; options set here apply to the entire block
-;;         ;; ...other commands here
-;;         ))
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 
 (setq org-agenda-custom-commands
       '(("L" "@LRC"
@@ -278,6 +270,9 @@ vi style of % jumping to matching brace."
 (setq org-capture-templates
       '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
 	 "* TODO %?\n  %U\n %i\n  %a")))
+
+;; Set ls -alh as default for dired
+(setq dired-listing-switches "-alh")
 
 
 
