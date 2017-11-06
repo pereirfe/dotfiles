@@ -84,7 +84,7 @@
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
            (ps-landscape-mode t))
-         ("~/gtd/ERRANDS.txt"))
+         ("~/gtd/Offline/ERRANDS.txt"))
 	)
       )
 
@@ -136,7 +136,7 @@
 ;;(elpy-enable)
 
 (add-hook 'python-mode-hook 'anaconda-mode)
-
+(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
 
 ;; Enable Syntax correction on the fly for python
 ;;(when (require 'flycheck nil t)
@@ -158,6 +158,8 @@
 (ac-config-default)
 
 ;;(elpy-use-ipython)
+(setq python-shell-interpreter "ipython"
+       python-shell-interpreter-args "-i")
 
 
 ;; Enable Iedit mode
