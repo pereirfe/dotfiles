@@ -42,13 +42,13 @@
 
 (setq org-agenda-custom-commands
       '(("L" "@LRC"
-	 ((agenda "")
+	 ((agenda "" ((org-agenda-ndays 1)))
 	  (tags "+@LRC+TODO=\"NEXT\"")
 	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
 	 ))
 	("H" "@HOME"
-	 ((agenda "")
+	 ((agenda "" ((org-agenda-ndays 1)))
 	  (tags "+@HOME+TODO=\"NEXT\"")
 	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
@@ -62,6 +62,10 @@
 	  ))
 	("W" "Waiting"
 	 ((todo "WAITING")
+	  ))
+
+	("w" "Week-long"
+	 ((agenda "" ((org-agenda-span 15)))
 	  ))
 
 	("P" "Printed agenda"
