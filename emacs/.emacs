@@ -97,6 +97,8 @@
 (add-hook 'cpp-mode-hook #'smartparens-mode)
 (add-hook 'python-mode-hook #'smartparens-mode)
 (add-hook 'latex-mode-hook #'smartparens-mode)
+(add-hook 'c++-mode-hook #'smartparens-mode)
+(add-hook 'awk-mode-hook #'smartparens-mode)
 
 ;;(define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
 ;;(define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
