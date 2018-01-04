@@ -40,15 +40,17 @@
 (unless (server-running-p)
   (server-start))
 
+(setq org-agenda-span 'day)
+
 (setq org-agenda-custom-commands
       '(("L" "@LRC"
-	 ((agenda "" ((org-agenda-ndays 1)))
+	 ((agenda "" ())
 	  (tags "+@LRC+TODO=\"NEXT\"")
 	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
 	 ))
 	("H" "@HOME"
-	 ((agenda "" ((org-agenda-ndays 1)))
+	 ((agenda "" ())
 	  (tags "+@HOME+TODO=\"NEXT\"")
 	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
