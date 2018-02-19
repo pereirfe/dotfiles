@@ -56,7 +56,17 @@
 	  (tags "+MOBILE+TODO=\"NEXT\"")
 	  ))
 	("N" "Nelson"
-	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\"")
+	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
+		((org-agenda-prefix-format "[ ] %-20b:")
+		 (org-agenda-sorting-strategy '(tag-up priority-down))
+		 (org-agenda-)
+		 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
+         ((org-agenda-compact-blocks t)
+          (org-agenda-remove-tags t)
+          (ps-number-of-columns 2)
+	  (ps-landscape-mode t)))
+	("C" "Carlos"
+	 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
 	  ))
 	("E" "MOBILE+ERRANDS"
 	 ((tags "+MOBILE+TODO=\"NEXT\"")
@@ -71,17 +81,37 @@
 	  ))
 
 	("P" "Printed agenda"
-         ((tags "+ERRANDS+TODO=\"NEXT\"|+MOBILE+TODO=\"NEXT\""
-
+;        ((tags "(+ERRANDS+TODO=\"NEXT\"+PLACE=\"\"|+MOBILE+TODO=\"NEXT\"+PLACE=\"\")"
+					;	 ((tags "+ERRANDS+TODO=\"NEXT\"|MOBILE+TODO=\"NEXT\""
+	 ((tags "+ERRANDS+PLACE=\"\"+TODO=\"NEXT\""
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
-                 (org-agenda-overriding-header "\nErrands and Mobile\n------------------\n"))))
-         ((org-agenda-with-colors nil)
-          (org-agenda-compact-blocks t)
+                 (org-agenda-overriding-header "\nErrands (General)\n------------------\n")))
+	 (tags "+ERRANDS+PLACE={ATK}+TODO=\"NEXT\""
+                ((org-agenda-prefix-format "[ ] %T: ")
+                 (org-agenda-sorting-strategy '(tag-up priority-down))
+                 (org-agenda-todo-keyword-format "")
+                 (org-agenda-overriding-header "\nAtacadao\n------------------\n")))
+	 (tags "+ERRANDS+PLACE={MKT}+TODO=\"NEXT\""
+                ((org-agenda-prefix-format "[ ] %T: ")
+                 (org-agenda-sorting-strategy '(tag-up priority-down))
+                 (org-agenda-todo-keyword-format "")
+                 (org-agenda-overriding-header "\nMarket\n------------------\n")))
+	 (tags "+ERRANDS+PLACE={HORT}+TODO=\"NEXT\""
+                ((org-agenda-prefix-format "[ ] %T: ")
+                 (org-agenda-sorting-strategy '(tag-up priority-down))
+                 (org-agenda-todo-keyword-format "")
+                 (org-agenda-overriding-header "\nHortifruti\n------------------\n")))
+	 (tags "+MOBILE+TODO=\"NEXT\""
+                ((org-agenda-prefix-format "[ ] %T: ")
+                 (org-agenda-sorting-strategy '(tag-up priority-down))
+                 (org-agenda-todo-keyword-format "")
+                 (org-agenda-overriding-header "\nMobile\n------------------\n"))))
+	 ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
-           (ps-landscape-mode t))
+	  (ps-landscape-mode t))
          ("~/gtd/Offline/ERRANDS.txt"))
 	)
       )
@@ -93,9 +123,7 @@
 ;; Store analogic agendas when closing emacs
 (add-hook 'kill-emacs-hook 'org-store-agenda-views)
 
-
 (require 'json)
-
 
 (require 'smartparens-config)
 (add-hook 'js-mode-hook #'smartparens-mode)
@@ -304,7 +332,7 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
+    ("~/gtd/Reference/reference.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
  '(org-capture-templates
    (quote
     (("c" "Todo" entry
