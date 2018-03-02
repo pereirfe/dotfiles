@@ -2,7 +2,8 @@
 ;; --------------------
 (require 'package)
 (add-to-list 'package-archives
-	     '("melpa" . "https://melpa.org/packages/") t)
+	     '("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t)
+;;	     '("melpa" . "https://stable.melpa.org/packages/") t)
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -17,6 +18,9 @@
     avy
     expand-region
     w3m
+    helm
+    helm-projectile
+    projectile
     ag
     magit
     flycheck
@@ -194,8 +198,10 @@
 (define-key global-map (kbd "C-ç") 'iedit-mode)
 
 ;; Enable SMEX and bind it to M-x
-(smex-initialize)
-(global-set-key (kbd "M-x") 'smex)
+;(smex-initialize)
+;(global-set-key (kbd "M-x") 'smex)
+
+
 
 ;; Auto-revert Mode Global
 (global-auto-revert-mode 1)
@@ -261,7 +267,7 @@ vi style of % jumping to matching brace."
 
 ;; CEDET
 ;; Turn on semantics
-;(semantic-mode 1)
+;; (semantic-mode 1)
 ;; define function to add semantics to autocomplete @c-mode-common-hook
 ;(defun my:add-semantic-to-autocomplete()
 ;  (add-to-list 'ac-sources 'ac-source-semantic)
@@ -289,6 +295,34 @@ vi style of % jumping to matching brace."
  '((python . t)
    (sh . t)
    ))
+
+
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(helm-mode 1)
+;; Visualize Kill ring
+;(global-set-key (kbd "M-y") 'helm-show-kill-ring)
+;; Resize to fit list
+(helm-autoresize-mode t)
+;; Show buffers and recent files
+(global-set-key (kbd "C-x b") 'helm-mini)
+;; Find Files
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+;; Imenu
+(setq helm-semantic-fuzzy-match t
+      helm-imenu-fuzzy-match    t)
+
+;;(global-set-key (kbd "M-s o") 'helm-occur)
+;;(global-set-key (kbd "C-x f") 'helm-find)
+
+
+(require 'helm-projectile)
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+;(setq projectile-switch-project-action 'projectile-dired)
+(setq projectile-remember-window-configs t )
+
 
 ;; Activate reformat-xml
 (require 'sgml-mode)
@@ -343,7 +377,7 @@ vi style of % jumping to matching brace."
   %a"))) t)
  '(package-selected-packages
    (quote
-    (anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
