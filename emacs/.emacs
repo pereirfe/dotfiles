@@ -309,8 +309,11 @@ vi style of % jumping to matching brace."
 ;; Find Files
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 ;; Imenu
-(setq helm-semantic-fuzzy-match t
-      helm-imenu-fuzzy-match    t)
+;(setq helm-semantic-fuzzy-match t
+;      helm-imenu-fuzzy-match    t)
+
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal1
+(define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
 
 ;;(global-set-key (kbd "M-s o") 'helm-occur)
 ;;(global-set-key (kbd "C-x f") 'helm-find)
@@ -322,6 +325,15 @@ vi style of % jumping to matching brace."
 (helm-projectile-on)
 ;(setq projectile-switch-project-action 'projectile-dired)
 (setq projectile-remember-window-configs t )
+
+
+(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+;      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
+      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+;      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
+      helm-ff-file-name-history-use-recentf t
+      helm-echo-input-in-header-line t)
+
 
 
 ;; Activate reformat-xml
