@@ -85,8 +85,6 @@
 	  ))
 
 	("P" "Printed agenda"
-;        ((tags "(+ERRANDS+TODO=\"NEXT\"+PLACE=\"\"|+MOBILE+TODO=\"NEXT\"+PLACE=\"\")"
-					;	 ((tags "+ERRANDS+TODO=\"NEXT\"|MOBILE+TODO=\"NEXT\""
 	 ((tags "+ERRANDS+PLACE=\"\"+TODO=\"NEXT\""
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
@@ -120,6 +118,16 @@
 	)
       )
 
+;; Effort and global properties
+(setq org-global-properties '(("Effort_ALL". "0 0:05 0:10 0:20 0:30 1:00 2:00 3:00 4:00 6:00")))
+;; Set global Column View format
+(setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM(Clock) %TAGS(Context)")
+
+;; https://orgmode.org/worg/doc.html
+(setq org-agenda-sorting-strategy
+      '((agenda priority-down effort-up)))
+
+
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
 (setq org-deadline-warning-days 0)
@@ -128,6 +136,23 @@
 (add-hook 'kill-emacs-hook 'org-store-agenda-views)
 
 (require 'json)
+
+(set-default 'truncate-lines t)
+
+
+
+;; (setq org-file-apps
+;;       '(("\\.pdf\\'" . "evince %s")
+;; 	("\\.png\\'" . "eog %s")
+;; 	("\\.org\\'" . default)
+;; 	("\\.jpeg\\'". "eog %s")))
+
+;; (setq org-file-apps
+;;       (append '(
+;; 		("\\.pdf\\'" . "evince %s")
+;; 		) org-file-apps ))
+
+
 
 (require 'smartparens-config)
 (add-hook 'js-mode-hook #'smartparens-mode)
@@ -217,7 +242,7 @@
 		      ("ERRANDS" . ?e)))
 
 (setq org-todo-keywords
-      '((sequence "SCHED(s)" "TODO(t)" "NEXT(n)" "WAITING(w)" "TICKLED(T)" "POSTPONED(p)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c)")))
+      '((sequence "SCHED(s!)" "TODO(t!)" "NEXT(n!)" "WAITING(w!)" "TICKLED(T!)" "POSTPONED(p!)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c!)")))
 
 (setq org-default-notes-file "~/gtd/in.org")
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -386,7 +411,12 @@ vi style of % jumping to matching brace."
       "* TODO %?
   %U
  %i
-  %a"))) t)
+  %a"))))
+ '(org-stuck-projects
+   (quote
+    ("+LEVEL=1/-DONE"
+     ("TODO" "NEXT" "NEXTACTION")
+     nil "")))
  '(package-selected-packages
    (quote
     (helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
