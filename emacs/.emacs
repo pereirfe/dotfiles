@@ -12,6 +12,7 @@
 
 (defvar myPackages
   '(material-theme
+    color-theme-sanityinc-tomorrow
     anaconda-mode
     ggtags
     smartparens
@@ -39,6 +40,7 @@
       myPackages)
 
 
+(setq custom-safe-themes t)
 
 (require 'server)
 (unless (server-running-p)
@@ -47,19 +49,31 @@
 (setq org-agenda-span 'day)
 
 (setq org-agenda-custom-commands
+
+      ;; S -> Samsung/LEDL
+      ;; M -> Meeting
+
       '(("L" "@LRC"
 	 ((agenda "" ())
 	  (tags "+@LRC+TODO=\"NEXT\"")
 	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
 	 ))
-	("H" "@HOME"
+ 	("H" "@HOME"
 	 ((agenda "" ())
 	  (tags "+@HOME+TODO=\"NEXT\"")
 	  (tags "+Battlestation+TODO=\"NEXT\"")
 	  (tags "+MOBILE+TODO=\"NEXT\"")
 	  ))
-	("N" "Nelson"
+	("S" "Working Samsung/SAM_LEDL"
+	 ((agenda "" ())
+	  (tags "+@HOME+SAM_LEDL+TODO=\"NEXT\"")
+	  (tags "+@LRC+SAM_LEDL+TODO=\"NEXT\"")
+	  (tags "+Battlestation+SAM_LEDL+TODO=\"NEXT\"")
+	  (tags "+MOBILE+SAM_LEDL+TODO=\"NEXT\"")
+	  (tags "+SAM_LEDL+TODO=\"NEXT\"")
+	  ))
+	("MN" "Nelson"
 	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
 		((org-agenda-prefix-format "[ ] %-20b:")
 		 (org-agenda-sorting-strategy '(tag-up priority-down))
@@ -69,7 +83,17 @@
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
 	  (ps-landscape-mode t)))
-	("C" "Carlos"
+	("MS" "Meeting SAM_LEDL"
+	 ((tags "+Meet_SAM_LEDL+TODO=\"NEXT\"|+Meet_SAM_LEDL+TODO=\"WAITING\""
+		((org-agenda-prefix-format "[ ] %-20b:")
+		 (org-agenda-sorting-strategy '(tag-up priority-down))
+		 (org-agenda-)
+		 (org-agenda-overriding-header "\nReunião SAM_LEDL\n------------------\n"))))
+         ((org-agenda-compact-blocks t)
+          (org-agenda-remove-tags t)
+          (ps-number-of-columns 2)
+	  (ps-landscape-mode t)))
+	("MC" "Carlos"
 	 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
 	  ))
 	("E" "MOBILE+ERRANDS"
@@ -120,17 +144,19 @@
 
 ;; Effort and global properties
 (setq org-global-properties '(("Effort_ALL". "0 0:05 0:10 0:20 0:30 1:00 2:00 3:00 4:00 6:00")))
+
 ;; Set global Column View format
-(setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Time){:} %6CLOCKSUM(Clock) %TAGS(Context)")
+(setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Effort){:} %6CLOCKSUM(Clock) %TAGS(Context)")
+
+(setq org-use-property-inheritance t)
 
 ;; https://orgmode.org/worg/doc.html
-(setq org-agenda-sorting-strategy
-      '((agenda priority-down effort-up)))
+(setq org-agenda-sorting-strategy '((agenda priority-down effort-up)))
 
 
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
-(setq org-deadline-warning-days 0)
+(setq org-deadline-warning-days 1)
 
 ;; Store analogic agendas when closing emacs
 (add-hook 'kill-emacs-hook 'org-store-agenda-views)
@@ -236,6 +262,8 @@
 		      ("@HOME" . ?h)
 		      ("MOBILE" . ?m)
 		      ("Nelson" . ?n)
+		      ("SAM_LEDL" . ?S)
+		      ("Meet_SAM_LEDL" . ?M)
 		      ("Carlos" . ?c)
 		      ("Battlestation" . ?b)
 		      ("TEL" . ?t)
@@ -258,7 +286,9 @@
 (global-set-key (kbd "C-:") 'avy-goto-word-1)
 
 ;; Enable Material Theme
-(load-theme 'material t)
+;;(load-theme 'material t)
+(load-theme 'sanityinc-tomorrow-night)
+
 
 ;; Setting a vim like %
 (defun goto-match-paren (arg)
@@ -395,7 +425,7 @@ vi style of % jumping to matching brace."
  '(column-number-mode nil)
  '(custom-safe-themes
    (quote
-    ("43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
+    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
  '(inhibit-startup-screen t)
@@ -411,7 +441,7 @@ vi style of % jumping to matching brace."
       "* TODO %?
   %U
  %i
-  %a"))))
+  %a"))) t)
  '(org-stuck-projects
    (quote
     ("+LEVEL=1/-DONE"
