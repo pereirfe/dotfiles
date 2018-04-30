@@ -73,6 +73,18 @@
 	  (tags "+MOBILE+SAM_LEDL+TODO=\"NEXT\"")
 	  (tags "+SAM_LEDL+TODO=\"NEXT\"")
 	  ))
+
+	("DS" "DONE Samsung/SAM_LEDL"
+	 ((tags "+SAM_LEDL+TODO=\"DONE\""
+		((org-agenda-sorting-strategy '(tsia-down))
+		 (org-agenda-))))
+         ((org-agenda-compact-blocks t)
+          (org-agenda-remove-tags t)
+          (ps-number-of-columns 2)
+	  (ps-landscape-mode t)))
+
+
+
 	("MN" "Nelson"
 	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
 		((org-agenda-prefix-format "[ ] %-20b:")
@@ -399,6 +411,8 @@ vi style of % jumping to matching brace."
   (save-excursion
     (sgml-pretty-print (point-min) (point-max))
         (indent-region (point-min) (point-max))))
+
+(setq default-tab-width 4)
 
 ;; Ag
 ;; Require AG installation!
