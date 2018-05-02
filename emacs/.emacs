@@ -41,7 +41,7 @@
 
 
 (setq custom-safe-themes t)
-
+(require 'iso-transl)
 (require 'server)
 (unless (server-running-p)
   (server-start))
@@ -275,6 +275,8 @@
 (setq org-default-notes-file "~/gtd/in.org")
 (global-set-key (kbd "C-c c") 'org-capture)
 
+(setq org-log-done 'time)
+(setq org-use-tag-inheritance t)
 
 ;(add-hook 'python-mode-hook 'jedi:setup)
 ;(setq jedi:complete-on-dot t)
@@ -425,7 +427,7 @@ vi style of % jumping to matching brace."
  '(column-number-mode nil)
  '(custom-safe-themes
    (quote
-    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
+    ("67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
  '(inhibit-startup-screen t)
@@ -441,7 +443,7 @@ vi style of % jumping to matching brace."
       "* TODO %?
   %U
  %i
-  %a"))) t)
+  %a"))))
  '(org-stuck-projects
    (quote
     ("+LEVEL=1/-DONE"
