@@ -53,105 +53,106 @@
       ;; S -> Samsung/LEDL
       ;; M -> Meeting
 
-      '(("L" "@LRC"
-	 ((agenda "" ())
-	  (tags "+@LRC+TODO=\"NEXT\"")
-	  (tags "+Battlestation+TODO=\"NEXT\"")
-	  (tags "+MOBILE+TODO=\"NEXT\"")
-	 ))
- 	("H" "@HOME"
-	 ((agenda "" ())
-	  (tags "+@HOME+TODO=\"NEXT\"")
-	  (tags "+Battlestation+TODO=\"NEXT\"")
-	  (tags "+MOBILE+TODO=\"NEXT\"")
-	  ))
-	("S" "Working Samsung/SAM_LEDL"
-	 ((agenda "" ())
-	  (tags "+@HOME+SAM_LEDL+TODO=\"NEXT\"")
-	  (tags "+@LRC+SAM_LEDL+TODO=\"NEXT\"")
-	  (tags "+Battlestation+SAM_LEDL+TODO=\"NEXT\"")
-	  (tags "+MOBILE+SAM_LEDL+TODO=\"NEXT\"")
-	  (tags "+SAM_LEDL+TODO=\"NEXT\"")
-	  ))
+	  '(("L" "@LRC"
+		 ((agenda "" ())
+		  (tags "+@LRC+TODO=\"NEXT\"")
+		  (tags "+NB+TODO=\"NEXT\"")
+		  (tags "+Battlestation+TODO=\"NEXT\"")
+		  (tags "+MOBILE+TODO=\"NEXT\"")
+		  ))
+		("H" "@HOME"
+		 ((agenda "" ())
+		  (tags "+@HOME+TODO=\"NEXT\"")
+		  (tags "+NB+TODO=\"NEXT\"")
+		  (tags "+Battlestation+TODO=\"NEXT\"")
+		  (tags "+MOBILE+TODO=\"NEXT\"")
+		  ))
+		("S" "Working Samsung/SAM_LEDL"
+		 ((agenda "" ())
+		  (tags "+@HOME+SAM_LEDL+TODO=\"NEXT\"")
+		  (tags "+@LRC+SAM_LEDL+TODO=\"NEXT\"")
+		  (tags "+NB+SAM_LEDL+TODO=\"NEXT\"")
+		  (tags "+Battlestation+SAM_LEDL+TODO=\"NEXT\"")
+		  (tags "+MOBILE+SAM_LEDL+TODO=\"NEXT\"")
+		  (tags "+SAM_LEDL+TODO=\"NEXT\"")
+		  ))
 
-	("DS" "DONE Samsung/SAM_LEDL"
-	 ((tags "+SAM_LEDL+TODO=\"DONE\""
-		((org-agenda-sorting-strategy '(tsia-down))
-		 (org-agenda-))))
+		("DS" "DONE Samsung/SAM_LEDL"
+		 ((tags "+SAM_LEDL+TODO=\"DONE\""
+				((org-agenda-sorting-strategy '(tsia-down))
+				 (org-agenda-))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
-	  (ps-landscape-mode t)))
+		  (ps-landscape-mode t)))
 
-
-
-	("MN" "Nelson"
-	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
-		((org-agenda-prefix-format "[ ] %-20b:")
-		 (org-agenda-sorting-strategy '(tag-up priority-down))
-		 (org-agenda-)
-		 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
+		("MN" "Nelson"
+		 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
+				((org-agenda-prefix-format "[ ] %-20b:")
+				 (org-agenda-sorting-strategy '(tag-up priority-down))
+				 (org-agenda-)
+				 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
-	  (ps-landscape-mode t)))
-	("MS" "Meeting SAM_LEDL"
-	 ((tags "+Meet_SAM_LEDL+TODO=\"NEXT\"|+Meet_SAM_LEDL+TODO=\"WAITING\""
-		((org-agenda-prefix-format "[ ] %-20b:")
-		 (org-agenda-sorting-strategy '(tag-up priority-down))
-		 (org-agenda-)
-		 (org-agenda-overriding-header "\nReunião SAM_LEDL\n------------------\n"))))
+		  (ps-landscape-mode t)))
+		("MS" "Meeting SAM_LEDL"
+		 ((tags "+Meet_SAM_LEDL+TODO=\"NEXT\"|+Meet_SAM_LEDL+TODO=\"WAITING\""
+				((org-agenda-prefix-format "[ ] %-20b:")
+				 (org-agenda-sorting-strategy '(tag-up priority-down))
+				 (org-agenda-)
+				 (org-agenda-overriding-header "\nReunião SAM_LEDL\n------------------\n"))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
-	  (ps-landscape-mode t)))
-	("MC" "Carlos"
-	 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
-	  ))
-	("E" "MOBILE+ERRANDS"
-	 ((tags "+MOBILE+TODO=\"NEXT\"")
-	  (tags "+ERRANDS+TODO=\"NEXT\"")
-	  ))
-	("W" "Waiting"
-	 ((todo "WAITING")
-	  ))
+		  (ps-landscape-mode t)))
+		("MC" "Carlos"
+		 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
+		  ))
+		("E" "MOBILE+ERRANDS"
+		 ((tags "+MOBILE+TODO=\"NEXT\"")
+		  (tags "+ERRANDS+TODO=\"NEXT\"")
+		  ))
+		("W" "Waiting"
+		 ((todo "WAITING")
+		  ))
 
-	("w" "Week-long"
-	 ((agenda "" ((org-agenda-span 15)))
-	  ))
+		("w" "Week-long"
+		 ((agenda "" ((org-agenda-span 15)))
+		  ))
 
-	("P" "Printed agenda"
-	 ((tags "+ERRANDS+PLACE=\"\"+TODO=\"NEXT\""
+		("P" "Printed agenda"
+		 ((tags "+ERRANDS+PLACE=\"\"+TODO=\"NEXT\""
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nErrands (General)\n------------------\n")))
-	 (tags "+ERRANDS+PLACE={ATK}+TODO=\"NEXT\""
+		  (tags "+ERRANDS+PLACE={ATK}+TODO=\"NEXT\""
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nAtacadao\n------------------\n")))
-	 (tags "+ERRANDS+PLACE={MKT}+TODO=\"NEXT\""
+		  (tags "+ERRANDS+PLACE={MKT}+TODO=\"NEXT\""
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nMarket\n------------------\n")))
-	 (tags "+ERRANDS+PLACE={HORT}+TODO=\"NEXT\""
+		  (tags "+ERRANDS+PLACE={HORT}+TODO=\"NEXT\""
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nHortifruti\n------------------\n")))
-	 (tags "+MOBILE+TODO=\"NEXT\""
+		  (tags "+MOBILE+TODO=\"NEXT\""
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nMobile\n------------------\n"))))
-	 ((org-agenda-compact-blocks t)
+		 ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
-	  (ps-landscape-mode t))
+		  (ps-landscape-mode t))
          ("~/gtd/Offline/ERRANDS.txt"))
-	)
+		)
       )
 
 ;; Effort and global properties
@@ -264,8 +265,6 @@
 ;(smex-initialize)
 ;(global-set-key (kbd "M-x") 'smex)
 
-
-
 ;; Auto-revert Mode Global
 (global-auto-revert-mode 1)
 
@@ -273,7 +272,8 @@
 (setq org-tag-alist '(("@LRC" . ?l)
 		      ("@HOME" . ?h)
 		      ("MOBILE" . ?m)
-		      ("Nelson" . ?n)
+			  ("NB" . ?n)
+		      ("Nelson" . ?N)
 		      ("SAM_LEDL" . ?S)
 		      ("Meet_SAM_LEDL" . ?M)
 		      ("Carlos" . ?c)
@@ -281,6 +281,8 @@
 		      ("TEL" . ?t)
 		      ("ERRANDS" . ?e)))
 
+
+;;https://orgmode.org/manual/Tracking-TODO-state-changes.html#Tracking-TODO-state-changes
 (setq org-todo-keywords
       '((sequence "SCHED(s!)" "TODO(t!)" "NEXT(n!)" "WAITING(w!)" "TICKLED(T!)" "POSTPONED(p!)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c!)")))
 
