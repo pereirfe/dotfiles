@@ -56,6 +56,12 @@
 	  '(("L" "@LRC"
 		 ((agenda "" ())
 		  (tags "+@LRC+TODO=\"NEXT\"")
+		  (tags "+Battlestation+TODO=\"NEXT\"")
+		  (tags "+MOBILE+TODO=\"NEXT\"")
+		  ))
+		("NL" "@LRC + Notebook"
+		 ((agenda "" ())
+		  (tags "+@LRC+TODO=\"NEXT\"")
 		  (tags "+NB+TODO=\"NEXT\"")
 		  (tags "+Battlestation+TODO=\"NEXT\"")
 		  (tags "+MOBILE+TODO=\"NEXT\"")
