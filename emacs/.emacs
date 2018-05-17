@@ -43,6 +43,7 @@
 (setq custom-safe-themes t)
 (require 'iso-transl)
 (require 'server)
+
 (unless (server-running-p)
   (server-start))
 
@@ -86,7 +87,7 @@
 		("DS" "DONE Samsung/SAM_LEDL"
 		 ((tags "+SAM_LEDL+TODO=\"DONE\""
 				((org-agenda-sorting-strategy '(tsia-down))
-				 (org-agenda-))))
+				 )))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
@@ -96,7 +97,6 @@
 		 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
 				((org-agenda-prefix-format "[ ] %-20b:")
 				 (org-agenda-sorting-strategy '(tag-up priority-down))
-				 (org-agenda-)
 				 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
@@ -106,7 +106,6 @@
 		 ((tags "+Meet_SAM_LEDL+TODO=\"NEXT\"|+Meet_SAM_LEDL+TODO=\"WAITING\""
 				((org-agenda-prefix-format "[ ] %-20b:")
 				 (org-agenda-sorting-strategy '(tag-up priority-down))
-				 (org-agenda-)
 				 (org-agenda-overriding-header "\nReunião SAM_LEDL\n------------------\n"))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
@@ -430,11 +429,10 @@ vi style of % jumping to matching brace."
 
 (setq org-capture-templates
       '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
-	 "* TODO %?\n  %U\n %i\n  %a")))
+	 "** NEXT %?\n  %U\n %i\n  %a")))
 
 ;; Set ls -alh as default for dired
 (setq dired-listing-switches "-alh")
-
 
 
 (custom-set-variables
