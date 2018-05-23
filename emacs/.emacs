@@ -5,16 +5,17 @@
 	     '("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t)
 ;;	     '("melpa" . "https://stable.melpa.org/packages/") t)
 
+
 (package-initialize)
 (when (not package-archive-contents)
   (package-refresh-contents))
-
 
 (defvar myPackages
   '(material-theme
     color-theme-sanityinc-tomorrow
     anaconda-mode
     ggtags
+	ace-window
     smartparens
     avy
     expand-region
@@ -23,6 +24,7 @@
     helm-projectile
     projectile
     ag
+    helm-ag
     magit
     flycheck
     ido
@@ -303,8 +305,12 @@
 
 ;; Avy - Jump like wind
 ;;(avy-setup-default)
-(global-set-key (kbd "C-'") 'avy-goto-char-2)
-(global-set-key (kbd "C-:") 'avy-goto-word-1)
+(global-set-key (kbd "C-c o") 'avy-goto-word-1)
+
+;; Ace window
+;; https://github.com/abo-abo/ace-window
+(global-set-key (kbd "M-o") 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 ;; Enable Material Theme
 ;;(load-theme 'material t)
@@ -486,24 +492,24 @@ vi style of % jumping to matching brace."
  '(vc-annotate-background nil)
  '(vc-annotate-color-map
    (quote
-    ((20 . "#f36c60")
-     (40 . "#ff9800")
-     (60 . "#fff59d")
-     (80 . "#8bc34a")
-     (100 . "#81d4fa")
-     (120 . "#4dd0e1")
-     (140 . "#b39ddb")
-     (160 . "#f36c60")
-     (180 . "#ff9800")
-     (200 . "#fff59d")
-     (220 . "#8bc34a")
-     (240 . "#81d4fa")
-     (260 . "#4dd0e1")
-     (280 . "#b39ddb")
-     (300 . "#f36c60")
-     (320 . "#ff9800")
-     (340 . "#fff59d")
-     (360 . "#8bc34a"))))
+	((20 . "#f36c60")
+	 (40 . "#ff9800")
+	 (60 . "#fff59d")
+	 (80 . "#8bc34a")
+	 (100 . "#81d4fa")
+	 (120 . "#4dd0e1")
+	 (140 . "#b39ddb")
+	 (160 . "#f36c60")
+	 (180 . "#ff9800")
+	 (200 . "#fff59d")
+	 (220 . "#8bc34a")
+	 (240 . "#81d4fa")
+	 (260 . "#4dd0e1")
+	 (280 . "#b39ddb")
+	 (300 . "#f36c60")
+	 (320 . "#ff9800")
+	 (340 . "#fff59d")
+	 (360 . "#8bc34a"))))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
