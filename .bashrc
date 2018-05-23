@@ -6,7 +6,7 @@
 #export EDITOR="emacs -nw"
 export ALTERNATE_EDITOR=""
 export EDITOR="emacsclient -t"
-export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI with non-daemon as alternate
+#export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI with non-daemon as alternate
 
 
 # If not running interactively, don't do anything
@@ -98,6 +98,14 @@ alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
 
+alias ec='emacsclient -t'
+alias python=python3
+
+alias xc='xclip'
+alias xo='xclip -o'
+alias ecx='ec $(xo)'
+alias cdx='cd $(xo)'
+
 # Add an "alert" alias for long running commands.  Use like so:
 #   sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
@@ -122,4 +130,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# added by Anaconda3 installer
+export PATH="/home/fpereira/anaconda3/bin:$PATH"
 
+# Add the directory of Tizen .NET Command Line Tools to user path.
+export PATH=/home/fpereira/tizen-studio/tools/ide/bin:$PATH
