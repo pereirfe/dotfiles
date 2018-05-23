@@ -185,7 +185,9 @@
 
 (set-default 'truncate-lines t)
 
-
+;; set a default font
+(when (member "IBM Plex Mono" (font-family-list))
+  (set-face-attribute 'default nil :font "IBM Plex Mono"))
 
 ;; (setq org-file-apps
 ;;       '(("\\.pdf\\'" . "evince %s")
@@ -453,7 +455,7 @@ vi style of % jumping to matching brace."
  '(column-number-mode nil)
  '(custom-safe-themes
    (quote
-    ("67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
+	("b550fc3d6f0407185ace746913449f6ed5ddc4a9f0cf3be218af4fb3127c7877" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
  '(fci-rule-color "#37474f")
  '(hl-sexp-background-color "#1c1f26")
  '(inhibit-startup-screen t)
@@ -461,29 +463,29 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/Reference/reference.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
+	("~/gtd/Reference/reference.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
  '(org-capture-templates
    (quote
-    (("c" "Todo" entry
-      (file+headline org-default-notes-file "Tasks")
-      "* TODO %?
+	(("c" "Todo" entry
+	  (file+headline org-default-notes-file "Tasks")
+	  "* TODO %?
   %U
  %i
   %a"))))
  '(org-stuck-projects
    (quote
-    ("+LEVEL=1/-DONE"
-     ("TODO" "NEXT" "NEXTACTION")
-     nil "")))
+	("+LEVEL=1/-DONE"
+	 ("TODO" "NEXT" "NEXTACTION")
+	 nil "")))
  '(package-selected-packages
    (quote
-    (helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+	(helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
-    ((eval add-hook
-	   (quote after-save-hook)
-	   (quote org-html-export-to-html)
-	   t t))))
+	((eval add-hook
+		   (quote after-save-hook)
+		   (quote org-html-export-to-html)
+		   t t))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
