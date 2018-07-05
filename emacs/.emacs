@@ -1,10 +1,11 @@
 ;; Install Packages
 ;; --------------------
 (require 'package)
-(add-to-list 'package-archives
-	     '("melpa" . "https://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t)
-;;	     '("melpa" . "https://stable.melpa.org/packages/") t)
 
+(setq package-archives
+      '(("melpa" . "https://melpa.org/packages/")
+        ("gnu" . "https://elpa.gnu.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")))
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -13,7 +14,8 @@
 (defvar myPackages
   '(material-theme
     color-theme-sanityinc-tomorrow
-    anaconda-mode
+	org-gcal
+	anaconda-mode
     ggtags
 	ace-window
     smartparens
@@ -171,7 +173,7 @@
 (setq org-use-property-inheritance t)
 
 ;; https://orgmode.org/worg/doc.html
-(setq org-agenda-sorting-strategy '((agenda priority-down effort-up)))
+(setq org-agenda-sorting-strategy '((agenda) priority-down effort-up))
 
 
 (setq org-agenda-skip-deadline-if-done t)
@@ -199,6 +201,16 @@
 ;;       (append '(
 ;; 		("\\.pdf\\'" . "evince %s")
 ;; 		) org-file-apps ))
+
+
+(require 'org-gcal)
+(setq org-gcal-client-id "921769570054-b4e6b0pulfli7v4nfr2pmo6kfbskv2em.apps.googleusercontent.com"
+      org-gcal-client-secret "V6TPBd6-BpmdwnwMk80T_tat"
+      org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/Dropbox/gtd/calendar.org")
+                            ))
+
+(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
+(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
 
 
 
@@ -263,8 +275,8 @@
 (ac-config-default)
 
 ;;(elpy-use-ipython)
-(setq python-shell-interpreter "ipython"
-       python-shell-interpreter-args "-i")
+;(setq python-shell-interpreter "ipython"
+;       python-shell-interpreter-args "-i")
 
 
 ;; Enable Iedit mode
@@ -293,10 +305,7 @@
 
 ;;https://orgmode.org/manual/Tracking-TODO-state-changes.html#Tracking-TODO-state-changes
 (setq org-todo-keywords
-      '((sequence "SCHED(s!)" "TODO(t!)" "NEXT(n!)" "WAITING(w!)" "TICKLED(T!)" "POSTPONED(p!)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c!)")))
-
-(setq org-default-notes-file "~/gtd/in.org")
-(global-set-key (kbd "C-c c") 'org-capture)
+      '((sequence "TICKLED(T!)" "SCHED(s!)" "TODO(t!)" "NEXT(n!)" "WAITING(w!)" "POSTPONED(p!)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c!)")))
 
 (setq org-log-done 'time)
 (setq org-use-tag-inheritance t)
@@ -437,9 +446,22 @@ vi style of % jumping to matching brace."
 ;; Require AG installation!
 
 
+;; (setq org-capture-templates
+;;       '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
+;; 	 "** NEXT %?\n  %U\n %i\n  %a")))
+
+
+;(setq org-default-notes-file "~/gtd/in.org")
+(global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
-	 "** NEXT %?\n  %U\n %i\n  %a")))
+      '(("a" "Appointment" entry (file  "~/Dropbox/gtd/calendar.org" )
+		 "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
+
+		("c" "IN" entry (file+headline "~/Dropbox/gtd/in.org" "IN")
+		 "* NEXT %?\n%u" :prepend t)))
+
+
+
 
 ;; Set ls -alh as default for dired
 (setq dired-listing-switches "-alh")
@@ -465,15 +487,7 @@ vi style of % jumping to matching brace."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-	("~/gtd/Reference/reference.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/projects.org" "~/gtd/tasks.org")))
- '(org-capture-templates
-   (quote
-	(("c" "Todo" entry
-	  (file+headline org-default-notes-file "Tasks")
-	  "* TODO %?
-  %U
- %i
-  %a"))))
+	("~/gtd/calendar.org" "~/gtd/projects.org" "~/gtd/Reference/reference.org" "~/gtd/tickler.org" "~/gtd/birthdays.org" "~/gtd/tasks.org")))
  '(org-stuck-projects
    (quote
 	("+LEVEL=1/-DONE"
@@ -481,7 +495,7 @@ vi style of % jumping to matching brace."
 	 nil "")))
  '(package-selected-packages
    (quote
-	(helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+	(academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
 	((eval add-hook
