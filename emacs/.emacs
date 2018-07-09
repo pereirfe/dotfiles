@@ -204,8 +204,9 @@
 
 
 (require 'org-gcal)
-(setq org-gcal-client-id "921769570054-b4e6b0pulfli7v4nfr2pmo6kfbskv2em.apps.googleusercontent.com"
-      org-gcal-client-secret "V6TPBd6-BpmdwnwMk80T_tat"
+(load-file "~/.emacs.d/config/secrets.el")
+(setq org-gcal-client-id my-gcal-client-id
+      org-gcal-client-secret my-gcal-client-secret
       org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/Dropbox/gtd/calendar.org")
                             ))
 
