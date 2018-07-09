@@ -209,15 +209,24 @@
 
 
 (require 'org-gcal)
-(load-file "~/.emacs.d/config/secrets.el")
-(setq org-gcal-client-id my-gcal-client-id
-      org-gcal-client-secret my-gcal-client-secret
-      org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/Dropbox/gtd/calendar.org")
-                            ))
+
+(defconst my-secrets-file "~/gtd/Files_Projects/.emacs_conf.d/secrets.el")
+
+(if (file-exists-p my-secrets-file)
+	(load-file my-secrets-file)
+  )
+
+(if (boundp 'my-gcal-definition)
+    (setq org-gcal-client-id my-gcal-client-id
+	  org-gcal-client-secret my-gcal-client-secret
+	  org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/Dropbox/gtd/calendar.org")
+				)
+	  )
+
+  )
 
 (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
-(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync) ))
-
+(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 
 
 (require 'smartparens-config)
