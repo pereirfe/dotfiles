@@ -43,6 +43,11 @@
 	    (package-install package)))
       myPackages)
 
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(fset 'yes-or-no-p 'y-or-n-p)
+(setq org-M-RET-may-split-line nil)
+(setq eval-expression-print-length nil)
 
 (setq custom-safe-themes t)
 (require 'iso-transl)
