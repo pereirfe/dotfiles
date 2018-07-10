@@ -56,6 +56,9 @@
 (unless (server-running-p)
   (server-start))
 
+
+(global-set-key (kbd "C-c b") 'switch-to-previous-buffer)
+
 (setq org-agenda-span 'day)
 
 (setq org-agenda-custom-commands
