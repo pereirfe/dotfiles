@@ -57,10 +57,11 @@
   (server-start))
 
 
-(global-set-key (kbd "C-c b") 'switch-to-previous-buffer)
+(global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
 
 (setq org-agenda-span 'day)
 
+(setq org-fast-tag-selection-single-key t)
 (setq org-agenda-custom-commands
 
       ;; S -> Samsung/LEDL
@@ -79,12 +80,25 @@
 		  (tags "+Battlestation+TODO=\"NEXT\"")
 		  (tags "+MOBILE+TODO=\"NEXT\"")
 		  ))
+		("DL" "Deep Work LRC"
+		 ((agenda "" ())
+		  (tags "DW+@LRC+TODO=\"NEXT\"")
+		  (tags "DW+Battlestation+TODO=\"NEXT\"")
+		  (tags "DW+MOBILE+TODO=\"NEXT\"")
+		  ))
 		("H" "@HOME"
 		 ((agenda "" ())
 		  (tags "+@HOME+TODO=\"NEXT\"")
 		  (tags "+NB+TODO=\"NEXT\"")
 		  (tags "+Battlestation+TODO=\"NEXT\"")
 		  (tags "+MOBILE+TODO=\"NEXT\"")
+		  ))
+		("DH" "Deep Work HOME"
+		 ((agenda "" ())
+		  (tags "DW+@HOME+TODO=\"NEXT\"")
+		  (tags "DW+NB+TODO=\"NEXT\"")
+		  (tags "DW+Battlestation+TODO=\"NEXT\"")
+		  (tags "DW+MOBILE+TODO=\"NEXT\"")
 		  ))
 		("S" "Working Samsung/SAM_LEDL"
 		 ((agenda "" ())
@@ -308,17 +322,19 @@
 (global-auto-revert-mode 1)
 
 ;; GTD implementation
-(setq org-tag-alist '(("@LRC" . ?l)
-		      ("@HOME" . ?h)
-		      ("MOBILE" . ?m)
-			  ("NB" . ?n)
-		      ("Nelson" . ?N)
-		      ("SAM_LEDL" . ?S)
-		      ("Meet_SAM_LEDL" . ?M)
-		      ("Carlos" . ?c)
-		      ("Battlestation" . ?b)
-		      ("TEL" . ?t)
-		      ("ERRANDS" . ?e)))
+(setq org-tag-alist '(
+					  ("@LRC" . ?l)
+					  ("@HOME" . ?h)
+					  ("DW" . ?d)
+					  ("MOBILE" . ?m)
+					  ("NB" . ?n)
+					  ("Nelson" . ?N)
+					  ("SAM_LEDL" . ?S)
+					  ("Meet_SAM_LEDL" . ?M)
+					  ("Carlos" . ?c)
+					  ("Battlestation" . ?b)
+					  ("TEL" . ?t)
+					  ("ERRANDS" . ?e)))
 
 
 ;;https://orgmode.org/manual/Tracking-TODO-state-changes.html#Tracking-TODO-state-changes
