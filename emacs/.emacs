@@ -81,13 +81,13 @@
 		  (tags "+MOBILE+TODO=\"NEXT\"")
 		  ))
 		("DL" "Deep Work LRC"
-		 ((agenda "" ())
+		 (
 		  (tags "DW+@LRC+TODO=\"NEXT\"")
 		  (tags "DW+Battlestation+TODO=\"NEXT\"")
 		  (tags "DW+MOBILE+TODO=\"NEXT\"")
 		  ))
 		("H" "@HOME"
-		 ((agenda "" ())
+		 (
 		  (tags "+@HOME+TODO=\"NEXT\"")
 		  (tags "+NB+TODO=\"NEXT\"")
 		  (tags "+Battlestation+TODO=\"NEXT\"")
