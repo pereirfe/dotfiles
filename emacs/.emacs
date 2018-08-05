@@ -43,6 +43,45 @@
 	    (package-install package)))
       myPackages)
 
+;;;;;;;;;;;;;;; DIRED
+;; Set ls -alh as default for dired
+(setq dired-listing-switches "-alh")
+
+;;;;;;;;;;;;;;; MOVEMENT
+(global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
+
+;; Avy - Jump like wind
+;;(avy-setup-default)
+(global-set-key (kbd "C-c o") 'avy-goto-word-1)
+
+;; Ace window
+;; https://github.com/abo-abo/ace-window
+(global-set-key (kbd "M-o") 'ace-window)
+(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+
+;;;;;;;;;;;;;;;; GENERAL CONFIG
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "google-chrome")
+
+;; Move backup files from working directory
+(setq backup-directory-alist `(("." . "~/.saves")))
+
+;; Auto-revert Mode Global
+(global-auto-revert-mode 1)
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
+;; Disable C-z suspend
+(global-unset-key [(control z)])
+(global-unset-key [(control x)(control z)])
+
+;; Disable C-t toggle character
+(global-unset-key [(control t)])
+
+
+;;;;;;;;;;;;;;;; APPEARANCE && STYLE
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -51,13 +90,111 @@
 
 (setq custom-safe-themes t)
 (require 'iso-transl)
-(require 'server)
 
-(unless (server-running-p)
-  (server-start))
+(load-theme 'sanityinc-tomorrow-night)
+
+(when (member "IBM Plex Mono" (font-family-list))
+  (set-face-attribute 'default nil :font "IBM Plex Mono"))
+
+;; Powerline config
+(powerline-center-theme)
+(setq powerline-default-separator 'wave)
+
+;;;;;;;;;;;;;;;; CODING
+(require 'json)
+
+(set-default 'truncate-lines t)
+
+;; Magit Configuration
+(global-set-key (kbd "C-x g") 'magit-status)
+
+(require 'smartparens-config)
+(add-hook 'js-mode-hook #'smartparens-mode)
+(add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
+(add-hook 'cpp-mode-hook #'smartparens-mode)
+(add-hook 'python-mode-hook #'smartparens-mode)
+(add-hook 'latex-mode-hook #'smartparens-mode)
+(add-hook 'c++-mode-hook #'smartparens-mode)
+(add-hook 'awk-mode-hook #'smartparens-mode)
+
+(define-key smartparens-mode-map (kbd "C-c f") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "C-c b") 'sp-forward-barf-sexp)
+
+;; Enable Autocomplete
+(ac-config-default)
+
+;; Enable Iedit mode
+(define-key global-map (kbd "C-ç") 'iedit-mode)
+
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+(global-set-key (kbd "C-c s") 'imenu)
+
+;; Delete trailing spaces before saving
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; Expand Region
+(require 'expand-region)
+(global-set-key (kbd "C-=") 'er/expand-region)
+
+;;;; (PYTHON)
+;; Anaconda Mode
+(add-hook 'python-mode-hook 'anaconda-mode)
+(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
+;; Activate reformat-xml
+(require 'sgml-mode)
+
+(defun reformat-xml ()
+  (interactive)
+  (save-excursion
+    (sgml-pretty-print (point-min) (point-max))
+        (indent-region (point-min) (point-max))))
+
+(setq default-tab-width 4)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
 
 
-(global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
+;;;;;;;;;;;;;;; HELM && PROJECTILE
+
+(require 'helm-config)
+(global-set-key (kbd "M-x") 'helm-M-x)
+(helm-mode 1)
+;; Resize to fit list
+(helm-autoresize-mode t)
+;; Show buffers and recent files
+(global-set-key (kbd "C-x b") 'helm-mini)
+;; Find Files
+(global-set-key (kbd "C-x C-f") 'helm-find-files)
+
+(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal1
+(define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
+(global-set-key (kbd "M-s o") 'helm-occur)
+(global-set-key (kbd "C-x f") 'helm-find)
+
+
+(require 'helm-projectile)
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+(setq projectile-switch-project-action 'projectile-dired)
+(setq projectile-remember-window-configs t )
+
+
+(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
+      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
+      helm-ff-file-name-history-use-recentf t
+      helm-echo-input-in-header-line t)
+
+
+
+;;;;;;;;;;;;;;; ORG && AGENDA
+
+; I prefer return to activate a link
+(setq org-return-follows-link t)
+
+(global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-agenda-span 'day)
 
@@ -205,28 +342,17 @@
 ;; Store analogic agendas when closing emacs
 (add-hook 'kill-emacs-hook 'org-store-agenda-views)
 
-(require 'json)
 
-(set-default 'truncate-lines t)
+(global-set-key (kbd "C-c c") 'org-capture)
+(setq org-capture-templates
+      '(("a" "Appointment" entry (file  "~/Dropbox/gtd/calendar.org" )
+		 "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
 
-;; set a default font
-(when (member "IBM Plex Mono" (font-family-list))
-  (set-face-attribute 'default nil :font "IBM Plex Mono"))
-
-;; (setq org-file-apps
-;;       '(("\\.pdf\\'" . "evince %s")
-;; 	("\\.png\\'" . "eog %s")
-;; 	("\\.org\\'" . default)
-;; 	("\\.jpeg\\'". "eog %s")))
-
-;; (setq org-file-apps
-;;       (append '(
-;; 		("\\.pdf\\'" . "evince %s")
-;; 		) org-file-apps ))
+		("c" "IN" entry (file+headline "~/Dropbox/gtd/in.org" "IN")
+		 "* NEXT %?\n%u" :prepend t)))
 
 
 (require 'org-gcal)
-
 (defconst my-secrets-file "~/gtd/Files_Projects/.emacs_conf.d/secrets.el")
 
 (if (file-exists-p my-secrets-file)
@@ -239,87 +365,17 @@
 	  org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/Dropbox/gtd/calendar.org")
 				)
 	  )
-
   )
 
 (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync) ))
 (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 
-
-(require 'smartparens-config)
-(add-hook 'js-mode-hook #'smartparens-mode)
-(add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
-(add-hook 'cpp-mode-hook #'smartparens-mode)
-(add-hook 'python-mode-hook #'smartparens-mode)
-(add-hook 'latex-mode-hook #'smartparens-mode)
-(add-hook 'c++-mode-hook #'smartparens-mode)
-(add-hook 'awk-mode-hook #'smartparens-mode)
-
-;;(define-key smartparens-mode-map (kbd "C-M-a") 'sp-beginning-of-sexp)
-;;(define-key smartparens-mode-map (kbd "C-M-e") 'sp-end-of-sexp)
-(define-key smartparens-mode-map (kbd "C-c f") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-c b") 'sp-forward-barf-sexp)
-
-; I prefer return to activate a link
-(setq org-return-follows-link t)
-
-;; Disable C-z suspend
-(global-unset-key [(control z)])
-(global-unset-key [(control x)(control z)])
-
-;; Magit Configuration
-(global-set-key (kbd "C-x g") 'magit-status)
-
-(global-set-key (kbd "C-c a") 'org-agenda)
-
-;; Disable C-t toggle character
-(global-unset-key [(control t)])
-
-;; Move backup files from working directory
-(setq backup-directory-alist `(("." . "~/.saves")))
-
-;; Enable linenum-mode globally
-;;(global-linum-mode t)
-
-;; Enable Python development mode (ELPY)
-;;(elpy-enable)
-
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-
-;; Enable Syntax correction on the fly for python
-;;(when (require 'flycheck nil t)
-;;  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-;;  (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-;; Enable IDO-mode
-(ido-mode t)
-;;; Stops IDO from searching for similar-named files if I use Cx Cs to create
-;;; new file or buffer
-(setq ido-auto-merge-work-directories-length -1)
-(setq ido-enable-flex-matching t)
-
-;; Powerline config
-(powerline-center-theme)
-(setq powerline-default-separator 'wave)
-
-;; Enable Autocomplete
-(ac-config-default)
-
-;;(elpy-use-ipython)
-;(setq python-shell-interpreter "ipython"
-;       python-shell-interpreter-args "-i")
-
-
-;; Enable Iedit mode
-(define-key global-map (kbd "C-ç") 'iedit-mode)
-
-;; Enable SMEX and bind it to M-x
-;(smex-initialize)
-;(global-set-key (kbd "M-x") 'smex)
-
-;; Auto-revert Mode Global
-(global-auto-revert-mode 1)
+;; Babel Load languages
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((python . t)
+   (sh . t)
+   ))
 
 ;; GTD implementation
 (setq org-tag-alist '(
@@ -344,161 +400,7 @@
 (setq org-log-done 'time)
 (setq org-use-tag-inheritance t)
 
-;(add-hook 'python-mode-hook 'jedi:setup)
-;(setq jedi:complete-on-dot t)
-;(setq elpy-rpc-backend "jedi")
 
-;; Avy - Jump like wind
-;;(avy-setup-default)
-(global-set-key (kbd "C-c o") 'avy-goto-word-1)
-
-;; Ace window
-;; https://github.com/abo-abo/ace-window
-(global-set-key (kbd "M-o") 'ace-window)
-(setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-
-;; Enable Material Theme
-;;(load-theme 'material t)
-(load-theme 'sanityinc-tomorrow-night)
-
-
-;; Setting a vim like %
-(defun goto-match-paren (arg)
-  "Go to the matching parenthesis if on parenthesis, otherwise insert %.
-vi style of % jumping to matching brace."
-  (interactive "p")
-    (cond ((looking-at "\\s\(") (forward-list 1) (backward-char 1))
-            ((looking-at "\\s\)") (forward-char 1) (backward-list 1))
-	            (t (self-insert-command (or arg 1)))))
-(global-set-key (kbd "C-%") 'goto-match-paren)
-
-
-(defun open-pp-form()
-  (interactive)
-  (w3m-goto-url "https://docs.google.com/forms/d/e/1FAIpQLSdjtiVqL7d14_nXDF91x88MJm3eM9bhj07yg-_xyaP65Xb-tg/viewform"))
-(global-set-key (kbd "C-c i") 'open-pp-form)
-
-
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-(global-set-key (kbd "C-c s") 'imenu)
-
-
-(setq w3m-form-use-textarea-backup nil)
-;; Start Server for emacs
-;;(server-start)
-
-;; Delete trailing spaces before saving
-(add-hook 'before-save-hook 'delete-trailing-whitespace)
-
-;; CEDET
-;; Turn on semantics
-;; (semantic-mode 1)
-;; define function to add semantics to autocomplete @c-mode-common-hook
-;(defun my:add-semantic-to-autocomplete()
-;  (add-to-list 'ac-sources 'ac-source-semantic)
-;  )
-;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-;; Turn automatic reparsing when idle
-;(global-semantic-idle-scheduler-mode 1)
-
-;; Trying to add the Project
-;;(global-ede-mode t)
-;;(ede-cpp-root-project "LTE-Sim" :file "~/lte-sim-fp/src/LTE-Sim.cpp")
-
-;; Set default browser
-;;(setq browse-url-browser-function 'browse-url-chrome)
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome")
-
-;; Expand Region
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
-
-;; Babel Load languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (sh . t)
-   ))
-
-
-(require 'helm-config)
-(global-set-key (kbd "M-x") 'helm-M-x)
-(helm-mode 1)
-;; Visualize Kill ring
-;(global-set-key (kbd "M-y") 'helm-show-kill-ring)
-;; Resize to fit list
-(helm-autoresize-mode t)
-;; Show buffers and recent files
-(global-set-key (kbd "C-x b") 'helm-mini)
-;; Find Files
-(global-set-key (kbd "C-x C-f") 'helm-find-files)
-;; Imenu
-;(setq helm-semantic-fuzzy-match t
-;      helm-imenu-fuzzy-match    t)
-
-(define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal1
-(define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
-
-;;(global-set-key (kbd "M-s o") 'helm-occur)
-;;(global-set-key (kbd "C-x f") 'helm-find)
-
-
-(require 'helm-projectile)
-(projectile-global-mode)
-(setq projectile-completion-system 'helm)
-(helm-projectile-on)
-;(setq projectile-switch-project-action 'projectile-dired)
-(setq projectile-remember-window-configs t )
-
-
-(setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
-;      helm-move-to-line-cycle-in-source     t ; move to end or beginning of source when reaching top or bottom of source.
-      helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
-;      helm-scroll-amount                    8 ; scroll 8 lines other window using M-<next>/M-<prior>
-      helm-ff-file-name-history-use-recentf t
-      helm-echo-input-in-header-line t)
-
-
-
-;; Activate reformat-xml
-(require 'sgml-mode)
-
-(defun reformat-xml ()
-  (interactive)
-  (save-excursion
-    (sgml-pretty-print (point-min) (point-max))
-        (indent-region (point-min) (point-max))))
-
-(setq default-tab-width 4)
-(defvaralias 'c-basic-offset 'tab-width)
-(defvaralias 'cperl-indent-level 'tab-width)
-
-;; Ag
-;; Require AG installation!
-
-
-;; (setq org-capture-templates
-;;       '(("c" "Todo" entry (file+headline  org-default-notes-file "Tasks")
-;; 	 "** NEXT %?\n  %U\n %i\n  %a")))
-
-
-;(setq org-default-notes-file "~/gtd/in.org")
-(global-set-key (kbd "C-c c") 'org-capture)
-(setq org-capture-templates
-      '(("a" "Appointment" entry (file  "~/Dropbox/gtd/calendar.org" )
-		 "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
-
-		("c" "IN" entry (file+headline "~/Dropbox/gtd/in.org" "IN")
-		 "* NEXT %?\n%u" :prepend t)))
-
-
-
-
-;; Set ls -alh as default for dired
-(setq dired-listing-switches "-alh")
 
 
 (custom-set-variables
@@ -569,3 +471,20 @@ vi style of % jumping to matching brace."
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+
+;;;;;;;;;;;;;;; DEAD CODE
+;; CEDET
+;; Turn on semantics
+;; (semantic-mode 1)
+;; define function to add semantics to autocomplete @c-mode-common-hook
+;(defun my:add-semantic-to-autocomplete()
+;  (add-to-list 'ac-sources 'ac-source-semantic)
+;  )
+;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
+;; Turn automatic reparsing when idle
+;(global-semantic-idle-scheduler-mode 1)
+
+;; Trying to add the Project
+;;(global-ede-mode t)
+;;(ede-cpp-root-project "LTE-Sim" :file "~/lte-sim-fp/src/LTE-Sim.cpp")
