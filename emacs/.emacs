@@ -197,6 +197,12 @@
 
 (setq org-agenda-span 'day)
 
+;; https://orgmode.org/worg/doc.html
+(setq org-agenda-sorting-strategy '((agenda habit-down time-up priority-down category-keep)
+									(todo priority-down effort-up)
+									(tags priority-down effort-up)
+									(search category-keep)))
+
 (setq org-fast-tag-selection-single-key t)
 (setq org-agenda-custom-commands
 
@@ -329,10 +335,6 @@
 (setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Effort){:} %6CLOCKSUM(Clock) %TAGS(Context)")
 
 (setq org-use-property-inheritance t)
-
-;; https://orgmode.org/worg/doc.html
-(setq org-agenda-sorting-strategy '((agenda) priority-down effort-up))
-
 
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
