@@ -60,6 +60,9 @@
 (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
 
 ;;;;;;;;;;;;;;;; GENERAL CONFIG
+; I prefer return to activate a link
+(setq org-return-follows-link t)
+
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
@@ -190,10 +193,6 @@
 
 
 ;;;;;;;;;;;;;;; ORG && AGENDA
-
-; I prefer return to activate a link
-(setq org-return-follows-link t)
-
 (global-set-key (kbd "C-c a") 'org-agenda)
 
 (setq org-agenda-span 'day)
