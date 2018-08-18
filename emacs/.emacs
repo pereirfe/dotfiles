@@ -66,6 +66,12 @@
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
+;; Tmux Copypast
+(setq x-select-enable-clipboard t
+	  x-select-enable-primary t)
+
+
+
 ;; Move backup files from working directory
 (setq backup-directory-alist `(("." . "~/.saves")))
 
@@ -142,8 +148,14 @@
 
 ;;;; (PYTHON)
 ;; Anaconda Mode
-(add-hook 'python-mode-hook 'anaconda-mode)
-(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+;(add-hook 'python-mode-hook 'anaconda-mode)
+;(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+
+;; Experimenting with Jedi (180805)
+(autoload 'jedi:setup "jedi" nil t)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:setup-keys t)
+(setq jedi:complete-on-dot t)
 
 ;; Activate reformat-xml
 (require 'sgml-mode)
@@ -174,6 +186,9 @@
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal1
 (define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
 (global-set-key (kbd "M-s o") 'helm-occur)
+;;
+
+
 (global-set-key (kbd "C-x f") 'helm-find)
 
 
@@ -181,7 +196,6 @@
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
-(setq projectile-switch-project-action 'projectile-dired)
 (setq projectile-remember-window-configs t )
 
 
