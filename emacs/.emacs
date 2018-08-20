@@ -63,6 +63,10 @@
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
+(setq x-select-enable-clipboard t
+	  x-select-enable-primary t)
+
+
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
 
