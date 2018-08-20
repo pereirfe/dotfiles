@@ -243,7 +243,7 @@
 		  (tags "DW+MOBILE+TODO=\"NEXT\"")
 		  ))
 		("H" "@HOME"
-		 (
+		 ((agenda "" ())
 		  (tags "+@HOME+TODO=\"NEXT\"")
 		  (tags "+NB+TODO=\"NEXT\"")
 		  (tags "+Battlestation+TODO=\"NEXT\"")
