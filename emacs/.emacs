@@ -46,6 +46,7 @@
 ;;;;;;;;;;;;;;; DIRED
 ;; Set ls -alh as default for dired
 (setq dired-listing-switches "-alh")
+(global-set-key (kbd "C-x C-d") 'dired)
 
 ;;;;;;;;;;;;;;; MOVEMENT
 (global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
