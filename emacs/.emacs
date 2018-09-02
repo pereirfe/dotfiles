@@ -130,6 +130,7 @@
 (add-hook 'latex-mode-hook #'smartparens-mode)
 (add-hook 'c++-mode-hook #'smartparens-mode)
 (add-hook 'awk-mode-hook #'smartparens-mode)
+(add-hook 'org-mode-hook #'smartparens-mode)
 
 (define-key smartparens-mode-map (kbd "C-c f") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "C-c b") 'sp-forward-barf-sexp)
