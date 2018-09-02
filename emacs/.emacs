@@ -204,6 +204,9 @@
 (helm-projectile-on)
 (setq projectile-remember-window-configs t )
 
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
       helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
