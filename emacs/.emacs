@@ -54,6 +54,37 @@
 ;;(avy-setup-default)
 (global-set-key (kbd "C-c o") 'avy-goto-word-1)
 
+;; more familiar forward and backward word
+(global-set-key (kbd "M-f") 'forward-same-syntax)
+(global-set-key (kbd "M-b") (lambda () (interactive)
+                              (forward-same-syntax -1)))
+
+;; dwim C-a: move to indentation or beginning of line if already there
+(defun beginning-of-indentation-or-line ()
+  (interactive)
+  (if (= (point) (save-excursion (back-to-indentation) (point)))
+      (beginning-of-line)
+    (back-to-indentation)))
+(global-set-key (kbd "C-a") 'beginning-of-indentation-or-line)
+
+;; saner forward and backward kill-word using thingatpt
+(defun kill-syntax (&optional arg)
+  (interactive "p")
+  (let ((opoint (point)))
+    (forward-same-syntax arg)
+    (kill-region opoint (point))))
+(defun backward-kill-syntax (&optional arg)
+  (interactive)
+  (kill-syntax -1))
+(global-set-key (kbd "M-d") 'kill-syntax)
+(global-set-key (kbd "C-<backspace>") 'backward-kill-syntax)
+
+;; kill line, same as shell
+(defun backward-kill-line (arg)
+  (interactive "p")
+  (kill-line 0))
+(global-set-key (kbd "M-k") 'backward-kill-line)
+
 ;; Ace window
 ;; https://github.com/abo-abo/ace-window
 (global-set-key (kbd "M-o") 'ace-window)
