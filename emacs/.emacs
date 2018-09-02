@@ -46,6 +46,7 @@
 ;;;;;;;;;;;;;;; DIRED
 ;; Set ls -alh as default for dired
 (setq dired-listing-switches "-alh")
+(global-set-key (kbd "C-x C-d") 'dired)
 
 ;;;;;;;;;;;;;;; MOVEMENT
 (global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
@@ -160,6 +161,7 @@
 (add-hook 'latex-mode-hook #'smartparens-mode)
 (add-hook 'c++-mode-hook #'smartparens-mode)
 (add-hook 'awk-mode-hook #'smartparens-mode)
+(add-hook 'org-mode-hook #'smartparens-mode)
 
 (define-key smartparens-mode-map (kbd "C-c f") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "C-c b") 'sp-forward-barf-sexp)
@@ -233,6 +235,9 @@
 (helm-projectile-on)
 (setq projectile-remember-window-configs t )
 
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
       helm-ff-search-library-in-sexp        t ; search for library in `require' and `declare-function' sexp.
@@ -447,11 +452,11 @@
 					  ("NB" . ?n)
 					  ("Nelson" . ?N)
 					  ("SAM_LEDL" . ?S)
-					  ("Meet_SAM_LEDL" . ?M)
-					  ("Carlos" . ?c)
+					  ("Carlos" . ?C)
 					  ("Battlestation" . ?b)
-					  ("TEL" . ?t)
-					  ("ERRANDS" . ?e)))
+					  ("ERRANDS" . ?e)
+					  )
+	  )
 
 
 ;;https://orgmode.org/manual/Tracking-TODO-state-changes.html#Tracking-TODO-state-changes
