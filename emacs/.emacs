@@ -51,6 +51,14 @@
 ;;;;;;;;;;;;;;; MOVEMENT
 (global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
 
+;; Disable C-t toggle character
+(global-unset-key [(control t)])
+
+(global-set-key (kbd "C-t o") (lambda () (interactive)
+				(message "This is not Tmux :)")))
+(global-set-key (kbd "C-t C-o") (lambda () (interactive)
+				  (message "This is not Tmux :)")))
+
 ;; Avy - Jump like wind
 ;;(avy-setup-default)
 (global-set-key (kbd "C-c o") 'avy-goto-word-1)
@@ -121,10 +129,6 @@
 ;; Disable C-z suspend
 (global-unset-key [(control z)])
 (global-unset-key [(control x)(control z)])
-
-;; Disable C-t toggle character
-(global-unset-key [(control t)])
-
 
 ;;;;;;;;;;;;;;;; APPEARANCE && STYLE
 (tool-bar-mode -1)
