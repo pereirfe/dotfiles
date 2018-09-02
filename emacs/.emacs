@@ -410,11 +410,11 @@
 					  ("NB" . ?n)
 					  ("Nelson" . ?N)
 					  ("SAM_LEDL" . ?S)
-					  ("Meet_SAM_LEDL" . ?M)
-					  ("Carlos" . ?c)
+					  ("Carlos" . ?C)
 					  ("Battlestation" . ?b)
-					  ("TEL" . ?t)
-					  ("ERRANDS" . ?e)))
+					  ("ERRANDS" . ?e)
+					  )
+	  )
 
 
 ;;https://orgmode.org/manual/Tracking-TODO-state-changes.html#Tracking-TODO-state-changes
