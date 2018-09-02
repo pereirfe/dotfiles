@@ -246,6 +246,17 @@
 
 (setq org-agenda-span 'day)
 
+(defun fp-org-open-4kft ()
+  "Open the 4kft org file"
+  (interactive)
+  (org-open-file "~/gtd/4kft.org")
+  )
+
+(global-set-key (kbd "<f12>") 'fp-org-open-4kft)
+(global-unset-key  (kbd "<f2> <f2>"))
+
+
+
 ;; https://orgmode.org/worg/doc.html
 (setq org-agenda-sorting-strategy '((agenda habit-down time-up priority-down category-keep)
 									(todo priority-down effort-up)
