@@ -398,7 +398,7 @@
       )
 
 ;; Effort and global properties
-(setq org-global-properties '(("Effort_ALL". "0 0:05 0:10 0:20 0:30 1:00 2:00 3:00 4:00 6:00")))
+(setq org-global-properties '(("Effort_ALL". "0 0:05 0:15 0:25 0:50 2:00 3:00 4:00 6:00")))
 
 ;; Set global Column View format
 (setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Effort){:} %6CLOCKSUM(Clock) %TAGS(Context)")
