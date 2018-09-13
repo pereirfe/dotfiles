@@ -51,6 +51,12 @@
 ;;;;;;;;;;;;;;; MOVEMENT
 (global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
 
+;; Default is Regex iSearching
+(global-set-key (kbd "C-s") 'isearch-forward-regexp)
+(global-set-key (kbd "C-r") 'isearch-backward-regexp)
+(global-set-key (kbd "C-M-s") 'isearch-forward)
+(global-set-key (kbd "C-M-r") 'isearch-backward)
+
 ;; Disable C-t toggle character
 (global-unset-key [(control t)])
 
@@ -64,9 +70,9 @@
 (global-set-key (kbd "C-c o") 'avy-goto-word-1)
 
 ;; more familiar forward and backward word
-(global-set-key (kbd "M-f") 'forward-same-syntax)
-(global-set-key (kbd "M-b") (lambda () (interactive)
-                              (forward-same-syntax -1)))
+;;(global-set-key (kbd "M-f") 'forward-same-syntax)
+;; (global-set-key (kbd "M-b") (lambda () (interactive) ;
+;;                               (forward-same-syntax -1)))
 
 ;; dwim C-a: move to indentation or beginning of line if already there
 (defun beginning-of-indentation-or-line ()
@@ -106,6 +112,8 @@
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
 
+(require 're-builder)
+(setq reb-re-syntax 'string)
 
 (setq browse-url-browser-function 'browse-url-generic
       browse-url-generic-program "google-chrome")
