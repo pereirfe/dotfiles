@@ -288,6 +288,12 @@
   )
 
 (global-set-key (kbd "<f12>") 'fp-org-open-4kft)
+(progn
+  (require 'org)
+  (define-key org-mode-map (kbd "<f5>") 'org-set-effort)
+  )
+
+
 (global-unset-key  (kbd "<f2> <f2>"))
 
 
