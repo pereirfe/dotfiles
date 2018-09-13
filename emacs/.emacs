@@ -16,8 +16,11 @@
     color-theme-sanityinc-tomorrow
 	org-gcal
 	anaconda-mode
+	irony
+	company-irony
     ggtags
-	ace-window
+    diminish
+    ace-window
     smartparens
     avy
     expand-region
@@ -35,6 +38,7 @@
     iedit
     auto-complete
     impatient-mode
+    exec-path-from-shell
     visible-mark
     elpy))
 
@@ -109,6 +113,8 @@
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
+(exec-path-from-shell-initialize)
+
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
 
@@ -121,7 +127,6 @@
 ;; Tmux Copypast
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
-
 
 
 ;; Move backup files from working directory
@@ -160,8 +165,10 @@
 ;;;;;;;;;;;;;;;; CODING
 (require 'json)
 
+(setq-default indent-tabs-mode nil)
 (set-default 'truncate-lines t)
-
+(add-hook 'c++-mode-hook '(lambda ()
+                            (setq c-basic-offset 2)))
 ;; Magit Configuration
 (global-set-key (kbd "C-x g") 'magit-status)
 
@@ -172,6 +179,7 @@
 (add-hook 'python-mode-hook #'smartparens-mode)
 (add-hook 'latex-mode-hook #'smartparens-mode)
 (add-hook 'c++-mode-hook #'smartparens-mode)
+(add-hook 'c-mode-hook #'smartparens-mode)
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
 
@@ -179,7 +187,7 @@
 (define-key smartparens-mode-map (kbd "C-c b") 'sp-forward-barf-sexp)
 
 ;; Enable Autocomplete
-(ac-config-default)
+;(ac-config-default)
 
 ;; Enable Iedit mode
 (define-key global-map (kbd "C-ç") 'iedit-mode)
@@ -191,22 +199,29 @@
 ;; Delete trailing spaces before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+;; Irony mode configuration
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+(eval-after-load 'company
+  '(add-to-list 'company-backends 'company-irony 'company-anaconda))
+
+
+(add-hook 'after-init-hook 'global-company-mode)
+(global-set-key (kbd "C-c C-.") 'company-complete)
+
+
 ;; Expand Region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;;;; (PYTHON)
-;; Anaconda Mode
-;(add-hook 'python-mode-hook 'anaconda-mode)
-;(add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+(elpy-enable)
+(setq python-shell-interpreter "ipython"
+       python-shell-interpreter-args "-i")
 
-;; Experimenting with Jedi (180805)
-(autoload 'jedi:setup "jedi" nil t)
-(add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:setup-keys t)
-(setq jedi:complete-on-dot t)
-
-;; Activate reformat-xml
 (require 'sgml-mode)
 
 (defun reformat-xml ()
