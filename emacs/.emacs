@@ -272,6 +272,9 @@
       helm-echo-input-in-header-line t)
 
 
+(diminish 'projectile-mode "P")
+(diminish 'helm-mode)
+(diminish 'Abbrev)
 
 ;;;;;;;;;;;;;;; ORG && AGENDA
 (global-set-key (kbd "C-c a") 'org-agenda)
