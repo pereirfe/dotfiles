@@ -183,8 +183,8 @@
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
 
-(define-key smartparens-mode-map (kbd "C-c f") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "C-c b") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
 
 ;; Enable Autocomplete
 ;(ac-config-default)
