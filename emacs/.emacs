@@ -288,6 +288,12 @@
   )
 
 (global-set-key (kbd "<f12>") 'fp-org-open-4kft)
+
+(global-set-key (kbd "<f11>") (lambda ()
+                                (interactive)
+                                (find-name-dired
+                                 "~/REFERENCE/Info_Compilation/.org_sources/" "*.org")))
+
 (progn
   (require 'org)
   (define-key org-mode-map (kbd "<f5>") 'org-set-effort)
