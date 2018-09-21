@@ -40,6 +40,7 @@
     impatient-mode
     exec-path-from-shell
     visible-mark
+    yasnippet
     elpy))
 
 (mapc #'(lambda (package)
@@ -164,6 +165,9 @@
 
 ;;;;;;;;;;;;;;;; CODING
 (require 'json)
+
+(require 'yasnippet)
+(yas-global-mode 1)
 
 (setq-default indent-tabs-mode nil)
 (set-default 'truncate-lines t)
@@ -539,7 +543,7 @@
 	 nil "")))
  '(package-selected-packages
    (quote
-    (exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
 	((eval add-hook
