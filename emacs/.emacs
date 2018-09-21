@@ -224,7 +224,9 @@
 ;;;; (PYTHON)
 (elpy-enable)
 (setq python-shell-interpreter "ipython"
-       python-shell-interpreter-args "-i")
+      python-shell-interpreter-args "--simple-prompt -i")
+
+
 
 (require 'sgml-mode)
 
