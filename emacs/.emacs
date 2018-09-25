@@ -284,8 +284,26 @@
 
 ;;;;;;;;;;;;;;; ORG && AGENDA
 (global-set-key (kbd "C-c a") 'org-agenda)
-
+(setq org-M-RET-may-split-line nil)
+(setq org-catch-invisible-edits 'show-and-error)
 (setq org-agenda-span 'day)
+
+(setq org-agenda-files
+      (quote
+       ("~/gtd/calendar.org"
+        "~/gtd/projects.org"
+        "~/gtd/Reference/reference.org"
+        "~/gtd/tickler.org"
+        "~/gtd/birthdays.org"
+        "~/gtd/tasks.org")))
+
+;; (setq org-refile-targets '(
+;;                            (nil :maxlevel . 1)
+;;                            (org-agenda-files :maxlevel . 1)
+;;                            ))
+
+(setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
+(setq org-refile-use-outline-path t)
 
 (defun fp-org-open-4kft ()
   "Open the 4kft org file"
@@ -535,9 +553,6 @@
  '(inhibit-startup-screen t)
  '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
- '(org-agenda-files
-   (quote
-	("~/gtd/calendar.org" "~/gtd/projects.org" "~/gtd/Reference/reference.org" "~/gtd/tickler.org" "~/gtd/birthdays.org" "~/gtd/tasks.org")))
  '(org-stuck-projects
    (quote
 	("+LEVEL=1/-DONE"
