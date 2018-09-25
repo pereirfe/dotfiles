@@ -187,6 +187,10 @@
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
 
+(add-hook 'LaTeX-mode-hook #'toggle-truncate-lines)
+(add-hook 'LaTex-mode-hook #'(setq word-wrap t))
+(add-hook 'LaTex-mode-hook #'smartparens-mode)
+
 (define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
 
