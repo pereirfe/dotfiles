@@ -148,7 +148,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
-(setq org-M-RET-may-split-line nil)
+
 (setq eval-expression-print-length nil)
 
 (setq custom-safe-themes t)
@@ -530,9 +530,8 @@
       '((sequence "TICKLED(T!)" "SCHED(s!)" "TODO(t!)" "NEXT(n!)" "WAITING(w!)" "POSTPONED(p!)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c!)")))
 
 (setq org-log-done 'time)
+(setq org-log-into-drawer t)
 (setq org-use-tag-inheritance t)
-
-
 
 
 (custom-set-variables
@@ -600,20 +599,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
-;;;;;;;;;;;;;;; DEAD CODE
-;; CEDET
-;; Turn on semantics
-;; (semantic-mode 1)
-;; define function to add semantics to autocomplete @c-mode-common-hook
-;(defun my:add-semantic-to-autocomplete()
-;  (add-to-list 'ac-sources 'ac-source-semantic)
-;  )
-;(add-hook 'c-mode-common-hook 'my:add-semantic-to-autocomplete)
-;; Turn automatic reparsing when idle
-;(global-semantic-idle-scheduler-mode 1)
-
-;; Trying to add the Project
-;;(global-ede-mode t)
-;;(ede-cpp-root-project "LTE-Sim" :file "~/lte-sim-fp/src/LTE-Sim.cpp")
