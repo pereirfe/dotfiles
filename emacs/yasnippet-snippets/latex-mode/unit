@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: unit
+# key: u
+# --
+\unit[$1]{$2}$0
