@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: text-uplink
+# key: ul
+# --
+\emph{uplink}$0

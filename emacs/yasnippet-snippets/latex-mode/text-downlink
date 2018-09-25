@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: text-downlink
+# key: dl
+# --
+\emph{downlink}$0

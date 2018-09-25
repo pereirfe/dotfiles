@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: acronym
+# key: ac
+# --
+\ac{$1}$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: new-acroforeign
+# key: naf
+# --
+\acro{$1}{$2\acroforeign{$3}}$0
