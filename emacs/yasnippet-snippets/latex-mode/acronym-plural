@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: acronym-plural
+# key: acp
+# --
+\acp{$1} $0
