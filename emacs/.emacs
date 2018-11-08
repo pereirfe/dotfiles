@@ -282,9 +282,7 @@
 
 (define-key helm-map (kbd "C-i") 'helm-execute-persistent-action) ; make TAB work in terminal1
 (define-key helm-map (kbd "C-z") 'helm-select-action) ; list actions using C-z
-(global-set-key (kbd "M-s o") 'helm-occur)
-;;
-
+;; (global-set-key (kbd "M-s o") 'helm-occur)
 
 (global-set-key (kbd "C-x f") 'helm-find)
 
