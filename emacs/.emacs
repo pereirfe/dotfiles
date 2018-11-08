@@ -173,6 +173,11 @@
 ;;;;;;;;;;;;;;;; CODING
 (require 'json)
 
+;; Use .agignore as ignore list for ag in this project
+;(helm-ag--root-agignore)
+(setq helm-ag-use-agignore t)
+(setq helm-ag--ignore-case t)
+
 (require 'yasnippet)
 (yas-global-mode 1)
 
