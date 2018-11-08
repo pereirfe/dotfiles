@@ -53,6 +53,13 @@
 (setq dired-listing-switches "-alh")
 (global-set-key (kbd "C-x C-d") 'dired)
 
+;;;;;;;;;;;;;;;; LATEX
+
+(setq-default TeX-master nil) ; Query for master file.
+(add-hook 'LaTeX-mode-hook #'toggle-truncate-lines)
+(add-hook 'LaTeX-mode-hook #'toggle-word-wrap)
+(add-hook 'LaTeX-mode-hook #'smartparens-mode)
+
 ;;;;;;;;;;;;;;; MOVEMENT
 (global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
 
