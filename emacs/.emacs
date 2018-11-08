@@ -121,6 +121,15 @@
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
+(defun my-org-refile-goto ()
+  (interactive)
+  (org-refile '(4))
+  )
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (local-set-key (kbd "C-c C-g") 'my-org-refile-goto)))
+
 (exec-path-from-shell-initialize)
 
 (setq x-select-enable-clipboard t
