@@ -2,4 +2,4 @@
 # name: acronym
 # key: ac
 # --
-\ac{$1}$0
+\ac{$1} $0
