@@ -495,7 +495,7 @@
 
 (setq org-agenda-skip-deadline-if-done t)
 (setq org-agenda-skip-scheduled-if-done t)
-(setq org-deadline-warning-days 1)
+(setq org-deadline-warning-days 5)
 
 ;; Store analogic agendas when closing emacs
 (add-hook 'kill-emacs-hook 'org-store-agenda-views)
