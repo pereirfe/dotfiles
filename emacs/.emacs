@@ -319,6 +319,7 @@
         "~/gtd/projects.org"
         "~/gtd/Reference/reference.org"
         "~/gtd/tickler.org"
+        "~/gtd/events.org"
         "~/gtd/birthdays.org"
         "~/gtd/tasks.org")))
 
