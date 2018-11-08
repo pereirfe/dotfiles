@@ -180,6 +180,17 @@
 
 (require 'yasnippet)
 (yas-global-mode 1)
+(global-set-key [backtab] 'yas-expand)
+
+;;keys for navigation
+(define-key yas-keymap [(tab)]       nil)
+(define-key yas-keymap (kbd "TAB")   nil)
+(define-key yas-keymap [(shift tab)] nil)
+(define-key yas-keymap [backtab]     nil)
+(define-key yas-keymap [backtab] 'yas-next-field-or-maybe-expand)
+(define-key yas-keymap [(control backtab)] 'yas-prev)
+
+
 
 (setq-default indent-tabs-mode nil)
 (set-default 'truncate-lines t)
@@ -200,8 +211,8 @@
 (add-hook 'org-mode-hook #'smartparens-mode)
 
 (add-hook 'LaTeX-mode-hook #'toggle-truncate-lines)
-(add-hook 'LaTex-mode-hook #'(setq word-wrap t))
-(add-hook 'LaTex-mode-hook #'smartparens-mode)
+(add-hook 'LaTeX-mode-hook #'toggle-word-wrap)
+(add-hook 'LaTeX-mode-hook #'smartparens-mode)
 
 (define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
