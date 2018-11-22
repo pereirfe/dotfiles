@@ -59,9 +59,13 @@
 (add-hook 'LaTeX-mode-hook #'toggle-truncate-lines)
 (add-hook 'LaTeX-mode-hook #'toggle-word-wrap)
 (add-hook 'LaTeX-mode-hook #'smartparens-mode)
+(add-hook 'LaTeX-mode-hook #'visual-line-mode)
+(add-hook 'LaTeX-mode-hook #'company-mode)
 
 ;;;;;;;;;;;;;;; MOVEMENT
 (global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
+
+;(global-set-key "\M-z" 'zap-up-to-char)
 
 ;; Default is Regex iSearching
 (global-set-key (kbd "C-s") 'isearch-forward-regexp)
@@ -89,10 +93,16 @@
 ;; dwim C-a: move to indentation or beginning of line if already there
 (defun beginning-of-indentation-or-line ()
   (interactive)
-  (if (= (point) (save-excursion (back-to-indentation) (point)))
+  (if (bound-and-true-p visual-mode)
       (beginning-of-line)
-    (back-to-indentation)))
+    (if (= (point) (save-excursion (back-to-indentation) (point)))
+        (beginning-of-line)
+      (back-to-indentation))
+    )
+  )
+
 (global-set-key (kbd "C-a") 'beginning-of-indentation-or-line)
+
 
 ;; saner forward and backward kill-word using thingatpt
 (defun kill-syntax (&optional arg)
@@ -235,6 +245,7 @@
 (add-hook 'LaTeX-mode-hook #'toggle-truncate-lines)
 (add-hook 'LaTeX-mode-hook #'toggle-word-wrap)
 (add-hook 'LaTeX-mode-hook #'smartparens-mode)
+(add-hook 'LaTeX-mode-hook (lambda () (company-mode -1)))
 
 (define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
