@@ -56,8 +56,8 @@
 ;;;;;;;;;;;;;;;; LATEX
 
 (setq-default TeX-master nil) ; Query for master file.
-(add-hook 'LaTeX-mode-hook #'toggle-truncate-lines)
-(add-hook 'LaTeX-mode-hook #'toggle-word-wrap)
+(add-hook 'LaTeX-mode-hook (lambda () (setq truncate-lines nil)))
+(add-hook 'LaTeX-mode-hook (lambda () (setq word-wrap t)))
 (add-hook 'LaTeX-mode-hook #'smartparens-mode)
 (add-hook 'LaTeX-mode-hook #'visual-line-mode)
 (add-hook 'LaTeX-mode-hook #'company-mode)
@@ -98,8 +98,8 @@
 ;; dwim C-a: move to indentation or beginning of line if already there
 (defun beginning-of-indentation-or-line ()
   (interactive)
-  (if (bound-and-true-p visual-mode)
-      (beginning-of-line)
+  (if (bound-and-true-p visual-line-mode)
+      (beginning-of-visual-line)
     (if (= (point) (save-excursion (back-to-indentation) (point)))
         (beginning-of-line)
       (back-to-indentation))
