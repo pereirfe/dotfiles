@@ -227,7 +227,10 @@
 (setq-default indent-tabs-mode nil)
 (set-default 'truncate-lines t)
 (add-hook 'c++-mode-hook '(lambda ()
-                            (setq c-basic-offset 2)))
+                            (setq c-basic-offset 4)))
+(add-hook 'c++-mode-hook '(lambda ()
+                            (setq tab-width 4)))
+
 ;; Magit Configuration
 (global-set-key (kbd "C-x g") 'magit-status)
 
@@ -618,7 +621,7 @@
 	 nil "")))
  '(package-selected-packages
    (quote
-    (yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
 	((eval add-hook
