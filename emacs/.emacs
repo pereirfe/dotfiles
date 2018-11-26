@@ -61,6 +61,11 @@
 (add-hook 'LaTeX-mode-hook #'smartparens-mode)
 (add-hook 'LaTeX-mode-hook #'visual-line-mode)
 (add-hook 'LaTeX-mode-hook #'company-mode)
+(add-hook 'LaTeX-mode-hook #'reftex-mode)
+(add-hook 'LaTeX-mode-hook (lambda () (company-mode -1)))
+
+(setq reftex-default-bibliography '("~/projects/project_hydra/src/references.bib"))
+(setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresource"))
 
 ;;;;;;;;;;;;;;; MOVEMENT
 (global-set-key (kbd "C-c C-b") 'mode-line-other-buffer)
@@ -244,11 +249,6 @@
 (add-hook 'c-mode-hook #'smartparens-mode)
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
-
-(add-hook 'LaTeX-mode-hook #'toggle-truncate-lines)
-(add-hook 'LaTeX-mode-hook #'toggle-word-wrap)
-(add-hook 'LaTeX-mode-hook #'smartparens-mode)
-(add-hook 'LaTeX-mode-hook (lambda () (company-mode -1)))
 
 (define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
