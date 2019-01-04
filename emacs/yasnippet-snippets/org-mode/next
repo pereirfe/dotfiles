@@ -1,0 +1,4 @@
+# key: nx
+# name: next
+# --
+** NEXT $1 `(org-ctrl-c-ctrl-c)` `(progn (setq message-log-max nil) (org-set-effort))`
