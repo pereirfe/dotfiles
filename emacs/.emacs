@@ -406,47 +406,28 @@
 
 	  '(("L" "@LRC"
 		 ((agenda "" ())
-		  (tags "+@LRC+TODO=\"NEXT\"")
-		  (tags "+Battlestation+TODO=\"NEXT\"")
-		  (tags "+MOBILE+TODO=\"NEXT\"")
-		  ))
-		("NL" "@LRC + Notebook"
-		 ((agenda "" ())
-		  (tags "+@LRC+TODO=\"NEXT\"")
-		  (tags "+NB+TODO=\"NEXT\"")
-		  (tags "+Battlestation+TODO=\"NEXT\"")
-		  (tags "+MOBILE+TODO=\"NEXT\"")
-		  ))
-		("DL" "Deep Work LRC"
-		 (
-		  (tags "DW+@LRC+TODO=\"NEXT\"")
-		  (tags "DW+Battlestation+TODO=\"NEXT\"")
-		  (tags "DW+MOBILE+TODO=\"NEXT\"")
+          (tags "+PRIORITY=\"A\"-ERRANDS/NEXT")
+		  (tags "+@LRC/NEXT")
+		  (tags "+Battlestation/NEXT")
+		  (tags "+MOBILE/NEXT")
 		  ))
 		("H" "@HOME"
 		 ((agenda "" ())
-		  (tags "+@HOME+TODO=\"NEXT\"")
-		  (tags "+NB+TODO=\"NEXT\"")
-		  (tags "+Battlestation+TODO=\"NEXT\"")
-		  (tags "+MOBILE+TODO=\"NEXT\"")
-		  ))
-		("DH" "Deep Work HOME"
-		 ((agenda "" ())
-		  (tags "DW+@HOME+TODO=\"NEXT\"")
-		  (tags "DW+NB+TODO=\"NEXT\"")
-		  (tags "DW+Battlestation+TODO=\"NEXT\"")
-		  (tags "DW+MOBILE+TODO=\"NEXT\"")
+          (tags "+PRIORITY=\"A\"-ERRANDS-@LRC/NEXT")
+		  (tags "+@HOME/NEXT")
+		  (tags "+NB/NEXT")
+		  (tags "+Battlestation/NEXT")
+		  (tags "+MOBILE/NEXT")
 		  ))
 		("S" "Working Samsung/SAM_LEDL"
 		 ((agenda "" ())
-		  (tags "+@HOME+SAM_LEDL+TODO=\"NEXT\"")
-		  (tags "+@LRC+SAM_LEDL+TODO=\"NEXT\"")
-		  (tags "+NB+SAM_LEDL+TODO=\"NEXT\"")
-		  (tags "+Battlestation+SAM_LEDL+TODO=\"NEXT\"")
-		  (tags "+MOBILE+SAM_LEDL+TODO=\"NEXT\"")
-		  (tags "+SAM_LEDL+TODO=\"NEXT\"")
+		  (tags "+@HOME+SAM_LEDL/NEXT")
+		  (tags "+@LRC+SAM_LEDL/NEXT")
+		  (tags "+NB+SAM_LEDL/NEXT")
+		  (tags "+Battlestation+SAM_LEDL/NEXT")
+		  (tags "+MOBILE+SAM_LEDL/NEXT")
+		  (tags "+SAM_LEDL/NEXT")
 		  ))
-
 		("DS" "DONE Samsung/SAM_LEDL"
 		 ((tags "+SAM_LEDL+TODO=\"DONE\""
 				((org-agenda-sorting-strategy '(tsia-down))
@@ -455,7 +436,6 @@
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
 		  (ps-landscape-mode t)))
-
 		("MN" "Nelson"
 		 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
 				((org-agenda-prefix-format "[ ] %-20b:")
@@ -478,8 +458,8 @@
 		 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
 		  ))
 		("E" "MOBILE+ERRANDS"
-		 ((tags "+MOBILE+TODO=\"NEXT\"")
-		  (tags "+ERRANDS+TODO=\"NEXT\"")
+		 ((tags "+MOBILE/NEXT")
+		  (tags "+ERRANDS/NEXT")
 		  ))
 		("W" "Waiting"
 		 ((todo "WAITING")
@@ -490,27 +470,27 @@
 		  ))
 
 		("P" "Printed agenda"
-		 ((tags "+ERRANDS+PLACE=\"\"+TODO=\"NEXT\""
+		 ((tags "+ERRANDS+PLACE=\"\"/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nErrands (General)\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={ATK}+TODO=\"NEXT\""
+		  (tags "+ERRANDS+PLACE={ATK}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nAtacadao\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={MKT}+TODO=\"NEXT\""
+		  (tags "+ERRANDS+PLACE={MKT}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nMarket\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={HORT}+TODO=\"NEXT\""
+		  (tags "+ERRANDS+PLACE={HORT}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nHortifruti\n------------------\n")))
-		  (tags "+MOBILE+TODO=\"NEXT\""
+		  (tags "+MOBILE/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
