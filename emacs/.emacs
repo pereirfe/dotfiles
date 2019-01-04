@@ -521,11 +521,11 @@
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(("a" "Appointment" entry (file  "~/Dropbox/gtd/calendar.org" )
+      '(("a" "Appointment" entry (file  "~/gtd/calendar.org" )
 		 "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
 
-		("c" "IN" entry (file+headline "~/Dropbox/gtd/in.org" "IN")
-		 "* NEXT %?\n%u" :prepend t)))
+		("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
+		 "* NEXT %?\n%u" :prepend nil)))
 
 
 (require 'org-gcal)
@@ -537,10 +537,10 @@
 
 (if (boundp 'my-gcal-definition)
     (setq org-gcal-client-id my-gcal-client-id
-	  org-gcal-client-secret my-gcal-client-secret
-	  org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/Dropbox/gtd/calendar.org")
-				)
-	  )
+          org-gcal-client-secret my-gcal-client-secret
+          org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/calendar.org")
+                                )
+          )
   )
 
 (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync nil t) ))
