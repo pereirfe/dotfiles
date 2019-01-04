@@ -252,6 +252,7 @@
 
 (define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
 ;; Enable Autocomplete
 ;(ac-config-default)
@@ -348,6 +349,7 @@
 (setq org-M-RET-may-split-line nil)
 (setq org-catch-invisible-edits 'show-and-error)
 (setq org-agenda-span 'day)
+(add-hook 'org-mode-hook (lambda () (company-mode -1)))
 
 (setq org-agenda-files
       (quote
