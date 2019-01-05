@@ -1,4 +1,8 @@
 # key: nx
 # name: next
 # --
-** NEXT $1 `(org-ctrl-c-ctrl-c)` `(progn (setq message-log-max nil) (org-set-effort))`
+** NEXT $1 `(org-ctrl-c-ctrl-c)` `(let ((x (org-set-effort))))`
+  :LOGBOOK:
+  - State "NEXT"       from "TICKLED"    `(let ((x (org-time-stamp '(16) t))))`
+  :END:
+  $0
