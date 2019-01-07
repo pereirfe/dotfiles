@@ -375,16 +375,17 @@
   (org-open-file "~/gtd/4kft.org")
   )
 
-(global-set-key (kbd "<f12>") 'fp-org-open-4kft)
-
+;;(global-set-key (kbd "<f6>") 'org-latex-export-to-pdf)
 (global-set-key (kbd "<f11>") (lambda ()
                                 (interactive)
                                 (find-name-dired
-                                 "~/REFERENCE/Info_Compilation/.org_sources/" "*.org")))
+                                 "~/REFERENCE/INFO/.org_sources/" "*.org")))
+(global-set-key (kbd "<f12>") 'fp-org-open-4kft)
 
 (progn
   (require 'org)
   (define-key org-mode-map (kbd "<f5>") 'org-set-effort)
+  (define-key org-mode-map (kbd "<f6>") 'org-latex-export-to-pdf)
   )
 
 
