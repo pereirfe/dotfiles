@@ -522,10 +522,7 @@
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(("a" "Appointment" entry (file  "~/gtd/calendar.org" )
-		 "* %?\n\n%^T\n\n:PROPERTIES:\n\n:END:\n\n")
-
-		("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
+      '(("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
 		 "* NEXT %?\n%u" :prepend nil)))
 
 
