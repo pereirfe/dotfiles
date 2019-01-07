@@ -410,7 +410,7 @@
 
 	  '(("L" "@LRC"
 		 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-ERRANDS/NEXT")
+          (tags "+PRIORITY=\"A\"-ERRANDS-@HOME/NEXT")
 		  (tags "+@LRC/NEXT")
 		  (tags "+Battlestation/NEXT")
 		  (tags "+MOBILE/NEXT")
