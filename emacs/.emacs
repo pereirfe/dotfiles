@@ -210,6 +210,9 @@
 ;;;;;;;;;;;;;;;; CODING / Code
 (require 'json)
 
+
+(define-key global-map (kbd "RET") 'newline-and-indent)
+
 ;; Use .agignore as ignore list for ag in this project
 ;(helm-ag--root-agignore)
 (setq helm-ag-use-agignore t)
