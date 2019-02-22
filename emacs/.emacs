@@ -438,7 +438,6 @@
 (setq org-fast-tag-selection-single-key t)
 (setq org-agenda-custom-commands
 
-      ;; S -> Samsung/LEDL
       ;; M -> Meeting
 
 	  '(("L" "@LRC"
@@ -456,37 +455,11 @@
 		  (tags "+Battlestation/NEXT")
 		  (tags "+MOBILE/NEXT")
 		  ))
-		("S" "Working Samsung/SAM_LEDL"
-		 ((agenda "" ())
-		  (tags "+@HOME+SAM_LEDL/NEXT")
-		  (tags "+@LRC+SAM_LEDL/NEXT")
-		  (tags "+NB+SAM_LEDL/NEXT")
-		  (tags "+Battlestation+SAM_LEDL/NEXT")
-		  (tags "+MOBILE+SAM_LEDL/NEXT")
-		  (tags "+SAM_LEDL/NEXT")
-		  ))
-		("DS" "DONE Samsung/SAM_LEDL"
-		 ((tags "+SAM_LEDL+TODO=\"DONE\""
-				((org-agenda-sorting-strategy '(tsia-down))
-				 )))
-         ((org-agenda-compact-blocks t)
-          (org-agenda-remove-tags t)
-          (ps-number-of-columns 2)
-		  (ps-landscape-mode t)))
 		("MN" "Nelson"
 		 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
 				((org-agenda-prefix-format "[ ] %-20b:")
 				 (org-agenda-sorting-strategy '(tag-up priority-down))
 				 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
-         ((org-agenda-compact-blocks t)
-          (org-agenda-remove-tags t)
-          (ps-number-of-columns 2)
-		  (ps-landscape-mode t)))
-		("MS" "Meeting SAM_LEDL"
-		 ((tags "+Meet_SAM_LEDL+TODO=\"NEXT\"|+Meet_SAM_LEDL+TODO=\"WAITING\""
-				((org-agenda-prefix-format "[ ] %-20b:")
-				 (org-agenda-sorting-strategy '(tag-up priority-down))
-				 (org-agenda-overriding-header "\nReunião SAM_LEDL\n------------------\n"))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
