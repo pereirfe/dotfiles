@@ -186,10 +186,10 @@
 
 (setq eval-expression-print-length nil)
 
-(setq custom-safe-themes t)
+;;(setq custom-safe-themes t)
 (require 'iso-transl)
 
-(load-theme 'sanityinc-tomorrow-night)
+(load-theme 'sanityinc-tomorrow-night t)
 
 (when (member "IBM Plex Mono" (font-family-list))
   (set-face-attribute 'default nil :font "IBM Plex Mono"))
@@ -619,14 +619,7 @@
  ;; If there is more than one, they won't work right.
  '(ansi-color-faces-vector
    [default bold shadow italic underline bold bold-italic bold])
- '(ansi-color-names-vector
-   (vector "#ffffff" "#f36c60" "#8bc34a" "#fff59d" "#4dd0e1" "#b39ddb" "#81d4fa" "#263238"))
  '(column-number-mode nil)
- '(custom-safe-themes
-   (quote
-	("b550fc3d6f0407185ace746913449f6ed5ddc4a9f0cf3be218af4fb3127c7877" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "5dc0ae2d193460de979a463b907b4b2c6d2c9c4657b2e9e66b8898d2592e3de5" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "43813ed7f4ada2420b4c68d26d88b75ef92f640bc93438812059f0275c34254b" "98cc377af705c0f2133bb6d340bf0becd08944a588804ee655809da5d8140de6" default)))
- '(fci-rule-color "#37474f")
- '(hl-sexp-background-color "#1c1f26")
  '(inhibit-startup-screen t)
  '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
@@ -650,26 +643,6 @@
  '(tool-bar-mode nil)
  '(tooltip-mode nil)
  '(vc-annotate-background nil)
- '(vc-annotate-color-map
-   (quote
-	((20 . "#f36c60")
-	 (40 . "#ff9800")
-	 (60 . "#fff59d")
-	 (80 . "#8bc34a")
-	 (100 . "#81d4fa")
-	 (120 . "#4dd0e1")
-	 (140 . "#b39ddb")
-	 (160 . "#f36c60")
-	 (180 . "#ff9800")
-	 (200 . "#fff59d")
-	 (220 . "#8bc34a")
-	 (240 . "#81d4fa")
-	 (260 . "#4dd0e1")
-	 (280 . "#b39ddb")
-	 (300 . "#f36c60")
-	 (320 . "#ff9800")
-	 (340 . "#fff59d")
-	 (360 . "#8bc34a"))))
  '(vc-annotate-very-old-color nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
