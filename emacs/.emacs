@@ -447,6 +447,12 @@
 		  (tags "+Battlestation/NEXT")
 		  (tags "+MOBILE/NEXT")
 		  ))
+        ("E" "@ESCALE"
+		 ((agenda "" ())
+          (tags "+PRIORITY=\"A\"-ERRANDS-@HOME/NEXT")
+		  (tags "+@ESCALE/NEXT")
+		  (tags "+MOBILE/NEXT")
+		  ))
 		("H" "@HOME"
 		 ((agenda "" ())
           (tags "+PRIORITY=\"A\"-ERRANDS-@LRC/NEXT")
@@ -467,7 +473,7 @@
 		("MC" "Carlos"
 		 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
 		  ))
-		("E" "MOBILE+ERRANDS"
+		("O" "MOBILE+ERRANDS"
 		 ((tags "+MOBILE/NEXT")
 		  (tags "+ERRANDS/NEXT")
 		  ))
@@ -564,14 +570,13 @@
 (setq org-tag-alist '(
 					  ("@LRC" . ?l)
 					  ("@HOME" . ?h)
-					  ("DW" . ?d)
+                      ("@ESCALE" . ?e)
 					  ("MOBILE" . ?m)
 					  ("NB" . ?n)
 					  ("Nelson" . ?N)
-					  ("SAM_LEDL" . ?S)
 					  ("Carlos" . ?C)
 					  ("Battlestation" . ?b)
-					  ("ERRANDS" . ?e)
+					  ("ERRANDS" . ?o)
 					  )
 	  )
 
