@@ -13,6 +13,10 @@
 
 (defvar myPackages
   '(material-theme
+    js2-mode  ;; Javascript with better syntax higlight
+    js2-refactor ;; Js refactoring tools
+    xref-js2   ;; Js cross-references (AST-based)
+    company-tern ;; Js Autocomplete. Require npm tern
     color-theme-sanityinc-tomorrow
 	org-gcal
 	anaconda-mode
@@ -194,7 +198,6 @@
 (powerline-center-theme)
 (setq powerline-default-separator 'wave)
 
-;;;;;;;;;;;;;;;; CODING
 
 ;;;;;;;;;;;;;;;; Integration
 ;; Allow Integration with googlechrome
@@ -209,6 +212,36 @@
 
 ;;;;;;;;;;;;;;;; CODING / Code
 (require 'json)
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
+(require 'js2-refactor)
+(require 'xref-js2)
+(add-hook 'js2-mode-hook #'js2-refactor-mode)
+(js2r-add-keybindings-with-prefix "C-c C-r")
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+
+;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
+;; unbind it.
+(define-key js-mode-map (kbd "M-.") nil)
+
+(add-hook 'js2-mode-hook (lambda ()
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+
+(require 'company)
+(require 'company-tern)
+
+(add-to-list 'company-backends 'company-tern)
+(add-hook 'js2-mode-hook (lambda ()
+                           (tern-mode)
+                           (company-mode)))
+
+;; Disable completion keybindings, as we use xref-js2 instead
+(define-key tern-mode-keymap (kbd "M-.") nil)
+(define-key tern-mode-keymap (kbd "M-,") nil)
+
+
 
 
 (define-key global-map (kbd "RET") 'newline-and-indent)
@@ -599,18 +632,18 @@
  '(menu-bar-mode nil)
  '(org-stuck-projects
    (quote
-	("+LEVEL=1/-DONE"
-	 ("TODO" "NEXT" "NEXTACTION")
-	 nil "")))
+    ("+LEVEL=1/-DONE"
+     ("TODO" "NEXT" "NEXTACTION")
+     nil "")))
  '(package-selected-packages
    (quote
-    (atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
-	((eval add-hook
-		   (quote after-save-hook)
-		   (quote org-html-export-to-html)
-		   t t))))
+    ((eval add-hook
+           (quote after-save-hook)
+           (quote org-html-export-to-html)
+           t t))))
  '(scroll-bar-mode nil)
  '(send-mail-function (quote smtpmail-send-it))
  '(show-paren-mode t)
