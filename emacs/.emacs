@@ -451,6 +451,7 @@
 		 ((agenda "" ())
           (tags "+PRIORITY=\"A\"-ERRANDS-@HOME/NEXT")
 		  (tags "+@ESCALE/NEXT")
+          (tags "+Battlestation/NEXT")
 		  (tags "+MOBILE/NEXT")
 		  ))
 		("H" "@HOME"
@@ -552,6 +553,7 @@
     (setq org-gcal-client-id my-gcal-client-id
           org-gcal-client-secret my-gcal-client-secret
           org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/calendar.org")
+                                ("fernando.pereira@escale.com.br" . "~/gtd/calendar_escale.org")
                                 )
           )
   )
