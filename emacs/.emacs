@@ -1,3 +1,7 @@
+;; This .emacs file has been blessed by saint iGNUcius himself
+;; on 31/may/2017 @CB03, Unicamp.
+;; Any descendent of this file is, therefore, saint.
+
 ;; Install Packages
 ;; --------------------
 (require 'package)
