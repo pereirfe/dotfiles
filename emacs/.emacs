@@ -591,7 +591,7 @@
 (setq org-todo-keywords
       '((sequence "TICKLED(T!)" "SCHED(s!)" "TODO(t!)" "NEXT(n!)" "WAITING(w!)" "POSTPONED(p!)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c!)")))
 
-(setq org-log-done 'time)
+;; (setq org-log-done 'time)
 (setq org-log-into-drawer t)
 (setq org-use-tag-inheritance t)
 
