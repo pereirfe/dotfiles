@@ -270,6 +270,7 @@
 
 
 (setq-default indent-tabs-mode nil)
+(setq-default bidi-display-reordering nil)
 (set-default 'truncate-lines t)
 (add-hook 'c++-mode-hook '(lambda ()
                             (setq c-basic-offset 4)))
