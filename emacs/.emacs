@@ -395,6 +395,7 @@
 (setq org-agenda-files
       (quote
        ("~/gtd/calendar.org"
+        "~/gtd/escale.org"
         "~/gtd/projects.org"
         "~/gtd/Reference/reference.org"
         "~/gtd/tickler.org"
@@ -558,7 +559,7 @@
     (setq org-gcal-client-id my-gcal-client-id
           org-gcal-client-secret my-gcal-client-secret
           org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/calendar.org")
-                                ("fernando.pereira@escale.com.br" . "~/gtd/calendar_escale.org")
+                                ("fernando.pereira@escale.com.br" . "~/gtd/escale.org")
                                 )
           )
   )
