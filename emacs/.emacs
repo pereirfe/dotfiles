@@ -2,6 +2,13 @@
 ;; on 31/may/2017 @CB03, Unicamp.
 ;; Any descendent of this file is, therefore, saint.
 
+;; Use Package
+;; -----------
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  (add-to-list 'load-path "<path where use-package is installed>")
+  (require 'use-package))
+
 ;; Install Packages
 ;; --------------------
 (require 'package)
@@ -17,10 +24,14 @@
 
 (defvar myPackages
   '(material-theme
+    use-package
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
     xref-js2   ;; Js cross-references (AST-based)
-    company-tern ;; Js Autocomplete. Require npm tern
+    ;;company-tern ;; Js Autocomplete. Require npm tern
+    lsp-mode
+    company-lsp
+    lsp-ui
     color-theme-sanityinc-tomorrow
 	org-gcal
 	anaconda-mode
@@ -225,6 +236,8 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
 
+(setq js2-strict-missing-semi-warning nil)
+
 (require 'js2-refactor)
 (require 'xref-js2)
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
@@ -237,6 +250,8 @@
 
 (add-hook 'js2-mode-hook (lambda ()
   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+(add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
+
 
 (require 'company)
 (require 'company-tern)
@@ -327,6 +342,14 @@
 (global-set-key (kbd "C-c C-.") 'company-complete)
 
 
+;; LSP
+;; https://github.com/emacs-lsp/lsp-mode
+(require 'lsp-mode)
+(add-hook 'prog-mode-hook #'lsp)
+
+(require 'company-lsp)
+(push 'company-lsp company-backends)
+
 ;; Expand Region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -373,10 +396,9 @@
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
-(setq projectile-remember-window-configs t )
+(setq projectile-remember-window-configs t)
 
 (projectile-mode +1)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
 
 (setq helm-split-window-in-side-p           t ; open helm buffer inside current window, not occupy whole other window
@@ -620,7 +642,7 @@
      nil "")))
  '(package-selected-packages
    (quote
-    (ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
     ((eval add-hook
