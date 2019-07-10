@@ -208,13 +208,13 @@
 
 ;;;;;;;;;;;;;;;; Integration
 ;; Allow Integration with googlechrome
-(require 'atomic-chrome)
-(atomic-chrome-start-server)
-(setq atomic-chrome-buffer-open-style 'frame)
-(setq atomic-chrome-default-major-mode 'LaTeX-mode)
-;; (setq atomic-chrome-url-major-mode-alist
-;;       '(("overleaf\\.com" . 'LaTeX-mode)
-;;         ("github\\.com" . 'python-mode)))
+;; (require 'atomic-chrome)
+;; (atomic-chrome-start-server)
+;; (setq atomic-chrome-buffer-open-style 'frame)
+;; (setq atomic-chrome-default-major-mode 'LaTeX-mode)
+;; ;; (setq atomic-chrome-url-major-mode-alist
+;; ;;       '(("overleaf\\.com" . 'LaTeX-mode)
+;; ;;         ("github\\.com" . 'python-mode)))
 
 
 ;;;;;;;;;;;;;;;; CODING / Code
