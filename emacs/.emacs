@@ -91,6 +91,8 @@
 
 ;; Disable C-t toggle character
 (global-unset-key [(control t)])
+;; Disable toggle input methon
+(global-unset-key (kbd "C-\\"))
 
 (global-set-key (kbd "C-t o") (lambda () (interactive)
 				(message "This is not Tmux :)")))
