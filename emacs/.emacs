@@ -231,6 +231,8 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
 
+(setq js2-strict-missing-semi-warning nil)
+
 (require 'js2-refactor)
 (require 'xref-js2)
 (add-hook 'js2-mode-hook #'js2-refactor-mode)
@@ -243,6 +245,8 @@
 
 (add-hook 'js2-mode-hook (lambda ()
   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+(add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
+
 
 (require 'company)
 (require 'company-tern)
