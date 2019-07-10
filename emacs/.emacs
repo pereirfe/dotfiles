@@ -333,8 +333,7 @@
 (elpy-enable)
 (setq python-shell-interpreter "ipython"
       python-shell-interpreter-args "-i")
-
-
+(setq elpy-rpc-python-command "python3")
 
 (require 'sgml-mode)
 
