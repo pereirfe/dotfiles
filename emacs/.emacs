@@ -61,6 +61,9 @@
 (setq dired-listing-switches "-alh")
 (global-set-key (kbd "C-x C-d") 'dired)
 
+(require 'tramp)
+(setq tramp-default-method "ssh")
+
 ;;;;;;;;;;;;;;;; LATEX
 
 (setq-default TeX-master nil) ; Query for master file.
