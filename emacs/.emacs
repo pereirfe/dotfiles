@@ -28,7 +28,10 @@
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
     xref-js2   ;; Js cross-references (AST-based)
-    company-tern ;; Js Autocomplete. Require npm tern
+    ;;company-tern ;; Js Autocomplete. Require npm tern
+    lsp-mode
+    company-lsp
+    lsp-ui
     color-theme-sanityinc-tomorrow
 	org-gcal
 	anaconda-mode
@@ -329,6 +332,14 @@
 (add-hook 'after-init-hook 'global-company-mode)
 (global-set-key (kbd "C-c C-.") 'company-complete)
 
+
+;; LSP
+;; https://github.com/emacs-lsp/lsp-mode
+(require 'lsp-mode)
+(add-hook 'prog-mode-hook #'lsp)
+
+(require 'company-lsp)
+(push 'company-lsp company-backends)
 
 ;; Expand Region
 (require 'expand-region)
