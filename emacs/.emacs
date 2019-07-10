@@ -2,6 +2,13 @@
 ;; on 31/may/2017 @CB03, Unicamp.
 ;; Any descendent of this file is, therefore, saint.
 
+;; Use Package
+;; -----------
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  (add-to-list 'load-path "<path where use-package is installed>")
+  (require 'use-package))
+
 ;; Install Packages
 ;; --------------------
 (require 'package)
@@ -17,6 +24,7 @@
 
 (defvar myPackages
   '(material-theme
+    use-package
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
     xref-js2   ;; Js cross-references (AST-based)
