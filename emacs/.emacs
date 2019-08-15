@@ -343,14 +343,24 @@
 
 
 ;; LSP
-;; https://github.com/emacs-lsp/lsp-mode
+;;https://github.com/emacs-lsp/lsp-mode
 (require 'lsp-mode)
-(add-hook 'prog-mode-hook #'lsp)
+(add-hook 'js2-mode-hook #'lsp)
 
 (require 'company-lsp)
 (push 'company-lsp company-backends)
 
-;; Expand Region
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+(setq company-transformers nil
+      company-lsp-async t
+      company-lsp-cache-candidates nil)
+
+(add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)))
+(add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
+
+;; expand Region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
