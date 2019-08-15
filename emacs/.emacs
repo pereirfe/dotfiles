@@ -431,9 +431,9 @@
 (setq org-agenda-files
       (quote
        ("~/gtd/.calendar.org"
-        "~/gtd/.escale.org"
+        "~/gtd/.escale_calendar.org"
         "~/gtd/projects.org"
-        "~/gtd/Reference/reference.org"
+        "~/gtd/escale_projects.org"
         "~/gtd/tickler.org"
         "~/gtd/events.org"
         "~/gtd/birthdays.org"
@@ -466,10 +466,7 @@
   (define-key org-mode-map (kbd "<f6>") 'org-latex-export-to-pdf)
   )
 
-
 (global-unset-key  (kbd "<f2> <f2>"))
-
-
 
 ;; https://orgmode.org/worg/doc.html
 (setq org-agenda-sorting-strategy '((agenda habit-down time-up priority-down category-keep)
@@ -484,21 +481,21 @@
 
 	  '(("L" "@LRC"
 		 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-ERRANDS-@HOME/NEXT")
+          (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
 		  (tags "+@LRC/NEXT")
 		  (tags "+Battlestation/NEXT")
 		  (tags "+MOBILE/NEXT")
 		  ))
         ("E" "@ESCALE"
 		 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-ERRANDS-@HOME/NEXT")
+          (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
 		  (tags "+@ESCALE/NEXT")
           (tags "+Battlestation/NEXT")
 		  (tags "+MOBILE/NEXT")
 		  ))
 		("H" "@HOME"
 		 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-ERRANDS-@LRC/NEXT")
+          (tags "+PRIORITY=\"A\"-OUTSIDE-@LRC/NEXT")
 		  (tags "+@HOME/NEXT")
 		  (tags "+NB/NEXT")
 		  (tags "+Battlestation/NEXT")
@@ -516,9 +513,9 @@
 		("MC" "Carlos"
 		 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
 		  ))
-		("O" "MOBILE+ERRANDS"
+		("O" "MOBILE+OUTSIDE"
 		 ((tags "+MOBILE/NEXT")
-		  (tags "+ERRANDS/NEXT")
+		  (tags "+OUTSIDE/NEXT")
 		  ))
 		("W" "Waiting"
 		 ((todo "WAITING")
@@ -529,22 +526,22 @@
 		  ))
 
 		("P" "Printed agenda"
-		 ((tags "+ERRANDS+PLACE=\"\"/NEXT"
+		 ((tags "+OUTSIDE+PLACE=\"\"/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nErrands (General)\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={ATK}/NEXT"
+		  (tags "+OUTSIDE+PLACE={ATK}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nAtacadao\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={MKT}/NEXT"
+		  (tags "+OUTSIDE+PLACE={MKT}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nMarket\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={HORT}/NEXT"
+		  (tags "+OUTSIDE+PLACE={HORT}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
@@ -558,7 +555,7 @@
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
 		  (ps-landscape-mode t))
-         ("~/gtd/Offline/ERRANDS.txt"))
+         ("~/gtd/Offline/OUTSIDE.txt"))
 		)
       )
 
@@ -575,8 +572,7 @@
 (setq org-deadline-warning-days 5)
 
 ;; Store analogic agendas when closing emacs
-(add-hook 'kill-emacs-hook 'org-store-agenda-views)
-
+;; (add-hook 'kill-emacs-hook 'org-store-agenda-views)
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
@@ -595,7 +591,7 @@
     (setq org-gcal-client-id my-gcal-client-id
           org-gcal-client-secret my-gcal-client-secret
           org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.calendar.org")
-                                ("fernando.pereira@escale.com.br" . "~/gtd/.escale.org")
+                                ("fernando.pereira@escale.com.br" . "~/gtd/.escale_calendar.org")
                                 )
           )
   )
@@ -620,7 +616,7 @@
 					  ("Nelson" . ?N)
 					  ("Carlos" . ?C)
 					  ("Battlestation" . ?b)
-					  ("ERRANDS" . ?o)
+					  ("OUTSIDE" . ?o)
 					  )
 	  )
 
