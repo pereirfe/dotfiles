@@ -285,6 +285,8 @@ bindsym XF86AudioPrev exec playerctl previous
 #i3 lock on black
 bindsym $mod+shift+x exec i3lock -c 000000
 
-
 #Suspend
 #bindsym $mod+shift+s exec systemctl suspend
+
+# xmodmap
+exec_always --no-startup-id "xmodmap /home/fp/.Xmodmap"
