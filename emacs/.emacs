@@ -246,6 +246,9 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
 
+(add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
+
+
 (setq js2-strict-missing-semi-warning nil)
 
 (require 'js2-refactor)
