@@ -430,10 +430,10 @@
 
 (setq org-agenda-files
       (quote
-       ("~/gtd/.calendar.org"
-        "~/gtd/.escale_calendar.org"
+       ("~/gtd/.cal.org"
+        "~/gtd/.esc_cal.org"
         "~/gtd/projects.org"
-        "~/gtd/escale_projects.org"
+        "~/gtd/escale.org"
         "~/gtd/tickler.org"
         "~/gtd/events.org"
         "~/gtd/birthdays.org"
@@ -487,11 +487,13 @@
 		  (tags "+MOBILE/NEXT")
 		  ))
         ("E" "@ESCALE"
-		 ((agenda "" ())
+		 ((agenda "" ((org-agenda-time-grid nil)
+                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'regexp "@HOME"))
+                      ))
           (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
-		  (tags "+@ESCALE/NEXT")
-          (tags "+Battlestation/NEXT")
-		  (tags "+MOBILE/NEXT")
+		  (tags "-PRIORITY=\"A\"+@ESCALE/NEXT")
+          (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
+		  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
 		  ))
 		("H" "@HOME"
 		 ((agenda "" ())
@@ -590,8 +592,8 @@
 (if (boundp 'my-gcal-definition)
     (setq org-gcal-client-id my-gcal-client-id
           org-gcal-client-secret my-gcal-client-secret
-          org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.calendar.org")
-                                ("fernando.pereira@escale.com.br" . "~/gtd/.escale_calendar.org")
+          org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.cal.org")
+                                ("fernando.pereira@escale.com.br" . "~/gtd/.esc_cal.org")
                                 )
           )
   )
