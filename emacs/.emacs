@@ -160,6 +160,16 @@
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
+;(require 'ob-shell)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   (dot . t)
+   (octave . t)
+   (sqlite . t)
+   ))
+
 (defun my-org-refile-goto ()
   (interactive)
   (org-refile '(4))
@@ -650,10 +660,12 @@
      nil "")))
  '(package-selected-packages
    (quote
-    (yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
-    ((eval add-hook
+    ((TeX-master . "../hydra.tex")
+     (TeX-master . t)
+     (eval add-hook
            (quote after-save-hook)
            (quote org-html-export-to-html)
            t t))))
