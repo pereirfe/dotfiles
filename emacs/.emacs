@@ -321,7 +321,7 @@
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
 
-(define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "<f9>") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
 (define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
