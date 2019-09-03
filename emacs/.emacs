@@ -2,13 +2,6 @@
 ;; on 31/may/2017 @CB03, Unicamp.
 ;; Any descendent of this file is, therefore, saint.
 
-;; Use Package
-;; -----------
-(eval-when-compile
-  ;; Following line is not needed if use-package.el is in ~/.emacs.d
-  (add-to-list 'load-path "<path where use-package is installed>")
-  (require 'use-package))
-
 ;; Install Packages
 ;; --------------------
 (require 'package)
@@ -22,6 +15,8 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
+
+;; If some package is missing from melpa, try M-x package-refresh-contents
 (defvar myPackages
   '(material-theme
     use-package
@@ -66,6 +61,13 @@
 	  (unless (package-installed-p package)
 	    (package-install package)))
       myPackages)
+
+;; Use Package
+;; -----------
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  (add-to-list 'load-path "<path where use-package is installed>")
+  (require 'use-package))
 
 ;;;;;;;;;;;;;;; DIRED
 ;; Set ls -alh as default for dired
