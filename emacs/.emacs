@@ -243,6 +243,13 @@
 
 
 ;;;;;;;;;;;;;;;; CODING / Code
+
+;;;; SHELL
+(add-hook 'eshell-mode-hook (lambda () (setq truncate-lines nil)))
+(add-hook 'eshell-mode-hook (lambda () (setq word-wrap t)))
+(add-hook 'eshell-mode-hook #'smartparens-mode)
+(add-hook 'eshell-mode-hook #'visual-line-mode)
+
 (require 'json)
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
