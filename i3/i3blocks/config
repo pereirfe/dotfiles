@@ -1,0 +1,78 @@
+separator_block_width=14
+
+SCRIPT_DIR=/home/fpereira/.config/i3blocks/i3blocks-contrib
+
+[toggl]
+command=toggl now | awk -f $SCRIPT_DIR/toggl_status_script.awk
+interval=60
+
+# [volume]
+# command=$SCRIPT_DIR/volume/volume
+# LABEL=VOL
+# interval=once
+# signal=10
+# #STEP=5%
+# #MIXER=[determined automatically]
+# #SCONTROL=[determined automatically]
+
+[load]
+label=
+command=/usr/libexec/i3blocks/load_average
+interval=10
+color=#6c71c4
+
+[wifi]
+command=$SCRIPT_DIR/wifi/wifi
+label=wifi:
+INTERFACE=wlp5s0
+interval=60
+
+# [public-ip]
+# command=wget -qO - icanhazip.com
+# interval=once
+
+[cpu_usage]
+command=$SCRIPT_DIR/cpu_usage/cpu_usage
+interval=10
+LABEL=CPU:
+min_width=CPU:100%
+#T_WARN=50
+#T_CRIT=80
+DECIMALS=0
+
+[battery]
+command=$SCRIPT_DIR/battery/battery
+interval=30
+LABEL=BAT
+#LABEL=⚡
+#BAT_NUMBER=0
+#color=#50C878
+
+[weather]
+command=curl -Ss 'https://wttr.in?0&T&Q' | cut -c 16- | head -2 | xargs echo
+interval=3600
+color=#A4C2F4
+
+[iface]
+command=$SCRIPT_DIR/iface/iface
+LABEL=w:
+IFACE=wlp5s0
+#ADDRESS_FAMILY=inet6?
+color=#50C878
+interval=10
+
+[iface]
+command=$SCRIPT_DIR/iface/iface
+LABEL=eth:
+IFACE=eth0
+#ADDRESS_FAMILY=inet6?
+color=#50C878
+interval=10
+
+[time]
+label=
+command=date '+%a %y-%m-%d %l:%M:%S %p'
+interval=5
+color=#50C878
+
+#never forget the last line
