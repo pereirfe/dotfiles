@@ -206,42 +206,26 @@ set $background2 #5a8683
 hide_edge_borders both
 
 
-# # Start i3bar to display a workspace bar (plus the system information i3status
-# # finds out, if available)
+# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 # bar {
-#         status_command i3status
+#    status_command i3status
+
+
 
 # 	colors {
-# 		background $bg-color
-# 		statusline #44BBFF
-# 		separator #757575
-# 		focused_workspace	$bg-color		$bg-color		$text-color
-# 		inactive_workspace	$inactive-bg-color	$inactive-bg-color	$inactive-text-color
-# 		urgent_workspace	$urgent-bg-color	$urgent-bg-color	$text-color
-# 		}
-# 	tray_output primary
+#         	#color class       border  back.   text
+#        		focused_workspace  $color1 $background $highlight
+#         	active_workspace   #555555 #555555 #ffffff
+#         	inactive_workspace $color2 #000000 $color2
+#         	urgent_workspace   $color1 $background2  $background
 
-
+#              statusline $color2
+#              separator $color2
+#     	}
 # }
-
-
-# Start i3bar to display a workspace bar (plus the system information i3status finds out, if available)
 bar {
-        status_command i3status
-
-        #tray_output primary
-
-	colors {
-        	#color class       border  back.   text
-       		focused_workspace  $color1 $background $highlight
-        	active_workspace   #555555 #555555 #ffffff
-        	inactive_workspace $color2 #000000 $color2
-        	urgent_workspace   $color1 $background2  $background
-
-             statusline $color2
-             separator $color2
-    	}
-}
+    status_command i3blocks
+    }
 
 
 #colors:                            border      backgr.     text            indicator
