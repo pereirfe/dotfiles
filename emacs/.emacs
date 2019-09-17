@@ -2,13 +2,6 @@
 ;; on 31/may/2017 @CB03, Unicamp.
 ;; Any descendent of this file is, therefore, saint.
 
-;; Use Package
-;; -----------
-(eval-when-compile
-  ;; Following line is not needed if use-package.el is in ~/.emacs.d
-  (add-to-list 'load-path "<path where use-package is installed>")
-  (require 'use-package))
-
 ;; Install Packages
 ;; --------------------
 (require 'package)
@@ -22,6 +15,8 @@
 (when (not package-archive-contents)
   (package-refresh-contents))
 
+
+;; If some package is missing from melpa, try M-x package-refresh-contents
 (defvar myPackages
   '(material-theme
     use-package
@@ -66,6 +61,13 @@
 	  (unless (package-installed-p package)
 	    (package-install package)))
       myPackages)
+
+;; Use Package
+;; -----------
+(eval-when-compile
+  ;; Following line is not needed if use-package.el is in ~/.emacs.d
+  (add-to-list 'load-path "<path where use-package is installed>")
+  (require 'use-package))
 
 ;;;;;;;;;;;;;;; DIRED
 ;; Set ls -alh as default for dired
@@ -214,6 +216,16 @@ Version 2018-11-12"
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
+;(require 'ob-shell)
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '(
+   (python . t)
+   (dot . t)
+   (octave . t)
+   (sqlite . t)
+   ))
+
 (defun my-org-refile-goto ()
   (interactive)
   (org-refile '(4))
@@ -290,6 +302,9 @@ Version 2018-11-12"
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
 
+(add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
+
+
 (setq js2-strict-missing-semi-warning nil)
 
 (require 'js2-refactor)
@@ -365,7 +380,7 @@ Version 2018-11-12"
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
 
-(define-key smartparens-mode-map (kbd "<f8>") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "<f9>") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
 (define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
 
@@ -397,14 +412,24 @@ Version 2018-11-12"
 
 
 ;; LSP
-;; https://github.com/emacs-lsp/lsp-mode
+;;https://github.com/emacs-lsp/lsp-mode
 (require 'lsp-mode)
-(add-hook 'prog-mode-hook #'lsp)
+(add-hook 'js2-mode-hook #'lsp)
 
 (require 'company-lsp)
 (push 'company-lsp company-backends)
 
-;; Expand Region
+(require 'lsp-ui)
+(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+(setq company-transformers nil
+      company-lsp-async t
+      company-lsp-cache-candidates nil)
+
+(add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)))
+(add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
+
+;; expand Region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
@@ -474,10 +499,10 @@ Version 2018-11-12"
 
 (setq org-agenda-files
       (quote
-       ("~/gtd/.calendar.org"
-        "~/gtd/.escale.org"
+       ("~/gtd/.cal.org"
+        "~/gtd/.esc_cal.org"
         "~/gtd/projects.org"
-        "~/gtd/Reference/reference.org"
+        "~/gtd/escale.org"
         "~/gtd/tickler.org"
         "~/gtd/events.org"
         "~/gtd/birthdays.org"
@@ -510,10 +535,7 @@ Version 2018-11-12"
   (define-key org-mode-map (kbd "<f6>") 'org-latex-export-to-pdf)
   )
 
-
 (global-unset-key  (kbd "<f2> <f2>"))
-
-
 
 ;; https://orgmode.org/worg/doc.html
 (setq org-agenda-sorting-strategy '((agenda habit-down time-up priority-down category-keep)
@@ -528,21 +550,23 @@ Version 2018-11-12"
 
 	  '(("L" "@LRC"
 		 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-ERRANDS-@HOME/NEXT")
+          (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
 		  (tags "+@LRC/NEXT")
 		  (tags "+Battlestation/NEXT")
 		  (tags "+MOBILE/NEXT")
 		  ))
         ("E" "@ESCALE"
-		 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-ERRANDS-@HOME/NEXT")
-		  (tags "+@ESCALE/NEXT")
-          (tags "+Battlestation/NEXT")
-		  (tags "+MOBILE/NEXT")
+		 ((agenda "" ((org-agenda-time-grid nil)
+                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'regexp "@HOME"))
+                      ))
+          (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
+		  (tags "-PRIORITY=\"A\"+@ESCALE/NEXT")
+          (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
+		  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
 		  ))
 		("H" "@HOME"
 		 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-ERRANDS-@LRC/NEXT")
+          (tags "+PRIORITY=\"A\"-OUTSIDE-@LRC/NEXT")
 		  (tags "+@HOME/NEXT")
 		  (tags "+NB/NEXT")
 		  (tags "+Battlestation/NEXT")
@@ -560,9 +584,9 @@ Version 2018-11-12"
 		("MC" "Carlos"
 		 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
 		  ))
-		("O" "MOBILE+ERRANDS"
+		("O" "MOBILE+OUTSIDE"
 		 ((tags "+MOBILE/NEXT")
-		  (tags "+ERRANDS/NEXT")
+		  (tags "+OUTSIDE/NEXT")
 		  ))
 		("W" "Waiting"
 		 ((todo "WAITING")
@@ -573,22 +597,22 @@ Version 2018-11-12"
 		  ))
 
 		("P" "Printed agenda"
-		 ((tags "+ERRANDS+PLACE=\"\"/NEXT"
+		 ((tags "+OUTSIDE+PLACE=\"\"/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nErrands (General)\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={ATK}/NEXT"
+		  (tags "+OUTSIDE+PLACE={ATK}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nAtacadao\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={MKT}/NEXT"
+		  (tags "+OUTSIDE+PLACE={MKT}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nMarket\n------------------\n")))
-		  (tags "+ERRANDS+PLACE={HORT}/NEXT"
+		  (tags "+OUTSIDE+PLACE={HORT}/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
@@ -602,7 +626,7 @@ Version 2018-11-12"
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
 		  (ps-landscape-mode t))
-         ("~/gtd/Offline/ERRANDS.txt"))
+         ("~/gtd/Offline/OUTSIDE.txt"))
 		)
       )
 
@@ -619,8 +643,7 @@ Version 2018-11-12"
 (setq org-deadline-warning-days 5)
 
 ;; Store analogic agendas when closing emacs
-(add-hook 'kill-emacs-hook 'org-store-agenda-views)
-
+;; (add-hook 'kill-emacs-hook 'org-store-agenda-views)
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
@@ -638,8 +661,8 @@ Version 2018-11-12"
 (if (boundp 'my-gcal-definition)
     (setq org-gcal-client-id my-gcal-client-id
           org-gcal-client-secret my-gcal-client-secret
-          org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.calendar.org")
-                                ("fernando.pereira@escale.com.br" . "~/gtd/.escale.org")
+          org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.cal.org")
+                                ("fernando.pereira@escale.com.br" . "~/gtd/.esc_cal.org")
                                 )
           )
   )
@@ -664,7 +687,7 @@ Version 2018-11-12"
 					  ("Nelson" . ?N)
 					  ("Carlos" . ?C)
 					  ("Battlestation" . ?b)
-					  ("ERRANDS" . ?o)
+					  ("OUTSIDE" . ?o)
 					  )
 	  )
 
@@ -696,10 +719,12 @@ Version 2018-11-12"
      nil "")))
  '(package-selected-packages
    (quote
-    (yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
-    ((eval add-hook
+    ((TeX-master . "../hydra.tex")
+     (TeX-master . t)
+     (eval add-hook
            (quote after-save-hook)
            (quote org-html-export-to-html)
            t t))))

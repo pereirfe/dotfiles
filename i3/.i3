@@ -236,10 +236,10 @@ client.unfocused                  #000000     #000000     $color2  $background
 client.urgent                     $color1     $background2 #ffffff $color1
 
 
-
 exec --no-startup-id dropbox start
 exec --no-startup-id nm-applet start
-exec_always feh --bg-scale ~/Downloads/wall/wall.jpg
+exec --no-startup-id /home/fp/.config/i3/screen_update.sh
+exec_always feh --bg-scale ~/.config/wall/wall.jpg
 
 #Avoids touchpad misclicks while typing
 exec syndaemon -i 0.5 -d -K
@@ -257,7 +257,7 @@ bindsym XF86MonBrightnessDown exec /usr/bin/decreasekbdlight.sh
 bindsym $mod+t exec toggletouchpad # toggle touchpad
 
 # Screen update
-bindsym $mod+m exec --no-startup-id /home/fpereira/.config/i3/screen_update.sh
+bindsym $mod+m exec --no-startup-id /home/fp/.config/i3/screen_update.sh
 
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play
@@ -269,6 +269,8 @@ bindsym XF86AudioPrev exec playerctl previous
 #i3 lock on black
 bindsym $mod+shift+x exec i3lock -c 000000
 
-
 #Suspend
 #bindsym $mod+shift+s exec systemctl suspend
+
+# xmodmap
+exec_always --no-startup-id "xmodmap /home/fp/.Xmodmap"
