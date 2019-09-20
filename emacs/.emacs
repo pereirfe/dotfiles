@@ -23,15 +23,15 @@
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
     xref-js2   ;; Js cross-references (AST-based)
-    ;;company-tern ;; Js Autocomplete. Require npm tern
+    company-tern ;; Js Autocomplete. Require npm tern
     lsp-mode
     company-lsp
     lsp-ui
     color-theme-sanityinc-tomorrow
-	org-gcal
-	anaconda-mode
-	irony
-	company-irony
+    org-gcal
+    anaconda-mode
+    irony
+    company-irony
     ggtags
     diminish
     ace-window
@@ -216,15 +216,23 @@ Version 2018-11-12"
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 
-;(require 'ob-shell)
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '(
-   (python . t)
-   (dot . t)
-   (octave . t)
-   (sqlite . t)
-   ))
+;; (require 'ob-shell)
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '(
+;;    (python . t)
+;;    (dot . t)
+;;    (octave . t)
+;;    (sqlite . t)
+;;    ))
+;; ;; Babel Load languages
+;; (org-babel-do-load-languages
+;;  'org-babel-load-languages
+;;  '((python . t)
+;;    (sh . t)
+;;    ))
+
+
 
 (defun my-org-refile-goto ()
   (interactive)
@@ -677,12 +685,6 @@ Version 2018-11-12"
 (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync nil t) ))
 ;;(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 
-;; Babel Load languages
-(org-babel-do-load-languages
- 'org-babel-load-languages
- '((python . t)
-   (sh . t)
-   ))
 
 ;; GTD implementation
 (setq org-tag-alist '(
