@@ -6,7 +6,7 @@
 #export EDITOR="emacs -nw"
 export ALTERNATE_EDITOR=""
 export EDITOR="emacsclient -t"
-#export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI with non-daemon as alternate
+export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI with non-daemon as alternate
 
 
 # If not running interactively, don't do anything
