@@ -250,8 +250,8 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5% #d
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute sound
 
 # Screen brightness controls
-bindsym XF86MonBrightnessUp exec /usr/bin/increasekbdlight.sh
-bindsym XF86MonBrightnessDown exec /usr/bin/decreasekbdlight.sh
+bindsym XF86MonBrightnessUp exec /home/fp/.config/i3/increasekbdlight.sh
+bindsym XF86MonBrightnessDown exec /home/fp/.config/i3/decreasekbdlight.sh
 
 # Touchpad controls
 bindsym $mod+t exec toggletouchpad # toggle touchpad
