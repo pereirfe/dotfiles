@@ -1,6 +1,6 @@
 separator_block_width=14
 
-SCRIPT_DIR=/home/fpereira/.config/i3blocks/i3blocks-contrib
+SCRIPT_DIR=/home/fp/.config/i3blocks/i3blocks-contrib
 
 [toggl]
 command=toggl now | awk -f $SCRIPT_DIR/toggl_status_script.awk
@@ -16,8 +16,8 @@ interval=60
 # #SCONTROL=[determined automatically]
 
 [load]
-label=
-command=/usr/libexec/i3blocks/load_average
+label=
+command=$SCRIPT_DIR/load_average/load_average
 interval=10
 color=#6c71c4
 
