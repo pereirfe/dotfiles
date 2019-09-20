@@ -16,8 +16,8 @@ interval=60
 # #SCONTROL=[determined automatically]
 
 [load]
-label=
-command=/usr/libexec/i3blocks/load_average
+label=
+command=$SCRIPT_DIR/load_average/load_average
 interval=10
 color=#6c71c4
 
