@@ -671,8 +671,32 @@ Version 2018-11-12"
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
-		 "* NEXT %?\n%u" :prepend nil)))
+      '(
+        ("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
+         "* NEXT %?\n%U" :prepend nil)
+
+        ("e" "Escale")
+        ("et" "Escale Task" entry (file+headline "~/gtd/escale.org" "TASKS")
+         "* NEXT %^{Effort}p %? %^g \n%u\n" :prepend 1 :empty-lines 1)
+        ("ep" "Escale Project" entry (file "~/gtd/escale.org")
+         "* %?%\n" :prepend nil :empty-lines 1)
+        ("er" "Escale Reference Snippet" entry (file+headline "~/REFERENCE/INFO/.org_sources/escale.org" "Quick Snippet Reference")
+         "* %?")
+
+        ("g" "General")
+        ("gt" "General Task" entry (file+headline "~/gtd/tasks.org" "TASKS")
+         "* NEXT %^{Effort}p %? %^g\n%u\n" :prepend 1 :empty-lines 1)
+        ("gp" "General Project" entry (file "~/gtd/projects.org")
+         "* %?%\n" :prepend nil :empty-lines 1)
+
+        ("r" "Reference")
+        ("re" "Reference Emacs" entry (file+headline "~/REFERENCE/INFO/.org_sources/emacs.org" "Quick Reference")
+         "* %?")
+        ("rf" "Reference Frontend" entry (file+headline "~/REFERENCE/INFO/.org_sources/react.org" "Quick Reference")
+         "* %?"
+         )
+        )
+      )
 
 
 (require 'org-gcal)
