@@ -215,7 +215,7 @@ Version 2018-11-12"
 ;;;;;;;;;;;;;;;; GENERAL CONFIG
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
-
+(setq org-confirm-babel-evaluate nil)
 ;; (require 'ob-shell)
 ;; (org-babel-do-load-languages
 ;;  'org-babel-load-languages
