@@ -243,8 +243,17 @@ Version 2018-11-12"
           (lambda ()
             (local-set-key (kbd "C-c C-g") 'my-org-refile-goto)))
 
-(exec-path-from-shell-initialize)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-refile-targets '((nil :maxlevel . 1)
+                           (("~/gtd/someday.org"
+                             "~/gtd/projects.org"
+                             "~/gtd/soon.org"
+                             "~/gtd/escale.org"
+                             "~/gtd/tasks.org") :maxlevel . 1)))
+(setq org-refile-use-outline-path 'file)                  ; Show full paths for refiling
+(setq org-outline-path-complete-in-steps nil)
 
+(exec-path-from-shell-initialize)
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
 
@@ -646,7 +655,7 @@ Version 2018-11-12"
       )
 
 ;; Effort and global properties
-(setq org-global-properties '(("Effort_ALL". "0 0:05 0:15 0:25 0:50 2:00 3:00 4:00 6:00")))
+(setq org-global-properties '(("Effort_ALL". "0 0:05 0:15 0:25 0:50 1:30 3:00 4:00 6:00")))
 
 ;; Set global Column View format
 (setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Effort){:} %6CLOCKSUM(Clock) %TAGS(Context)")
