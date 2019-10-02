@@ -238,7 +238,7 @@ client.urgent                     $color1     $background2 #ffffff $color1
 
 exec --no-startup-id dropbox start
 exec --no-startup-id nm-applet start
-exec --no-startup-id /home/fp/.config/i3/screen_update.sh
+exec --no-startup-id /home/fp/.config/i3/monitor_config.sh
 exec_always feh --bg-scale ~/.config/wall/wall.jpg
 
 #Avoids touchpad misclicks while typing
@@ -252,12 +252,14 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle # mute s
 # Screen brightness controls
 bindsym XF86MonBrightnessUp exec /home/fp/.config/i3/increasekbdlight.sh
 bindsym XF86MonBrightnessDown exec /home/fp/.config/i3/decreasekbdlight.sh
+# bindsym XF86MonBrightnessUp exec i3-sensible-terminal
+
 
 # Touchpad controls
 bindsym $mod+t exec toggletouchpad # toggle touchpad
 
 # Screen update
-bindsym $mod+m exec --no-startup-id /home/fp/.config/i3/screen_update.sh
+bindsym $mod+m exec --no-startup-id /home/fp/.config/i3/monitor_config.sh
 
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play
@@ -268,6 +270,9 @@ bindsym XF86AudioPrev exec playerctl previous
 
 #i3 lock on black
 bindsym $mod+shift+x exec i3lock -c 000000
+
+#emacs
+bindsym $mod+shift+p exec emacs
 
 #Suspend
 #bindsym $mod+shift+s exec systemctl suspend
