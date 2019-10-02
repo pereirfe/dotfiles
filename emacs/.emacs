@@ -22,6 +22,7 @@
     use-package
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
+    rjsx-mode
     xref-js2   ;; Js cross-references (AST-based)
     company-tern ;; Js Autocomplete. Require npm tern
     lsp-mode
@@ -312,30 +313,25 @@ Version 2018-11-12"
 (add-hook 'eshell-mode-hook #'smartparens-mode)
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 
+;;;; Javascript
 (require 'json)
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
 (add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
 
 
 (setq js2-strict-missing-semi-warning nil)
 
-(require 'js2-refactor)
-(require 'xref-js2)
-(add-hook 'js2-mode-hook #'js2-refactor-mode)
-(js2r-add-keybindings-with-prefix "C-c C-r")
-(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
 ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
 ;; unbind it.
 (define-key js-mode-map (kbd "M-.") nil)
 
 (add-hook 'js2-mode-hook (lambda ()
-  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+                           (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
-
 
 (require 'company)
 (require 'company-tern)
@@ -348,8 +344,6 @@ Version 2018-11-12"
 ;; Disable completion keybindings, as we use xref-js2 instead
 (define-key tern-mode-keymap (kbd "M-.") nil)
 (define-key tern-mode-keymap (kbd "M-,") nil)
-
-
 
 
 (define-key global-map (kbd "RET") 'newline-and-indent)
@@ -386,6 +380,7 @@ Version 2018-11-12"
 
 (require 'smartparens-config)
 (add-hook 'js-mode-hook #'smartparens-mode)
+(add-hook 'css-mode-hook #'smartparens-mode)
 (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
 (add-hook 'cpp-mode-hook #'smartparens-mode)
 (add-hook 'python-mode-hook #'smartparens-mode)
@@ -511,6 +506,9 @@ Version 2018-11-12"
 (setq org-catch-invisible-edits 'show-and-error)
 (setq org-agenda-span 'day)
 (add-hook 'org-mode-hook (lambda () (company-mode -1)))
+
+(setq org-src-preserve-indentation nil
+      org-edit-src-content-indentation 0)
 
 (setq org-agenda-files
       (quote
