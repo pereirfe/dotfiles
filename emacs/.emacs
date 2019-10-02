@@ -215,7 +215,7 @@ Version 2018-11-12"
 ;;;;;;;;;;;;;;;; GENERAL CONFIG
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
-
+(setq org-confirm-babel-evaluate nil)
 ;; (require 'ob-shell)
 ;; (org-babel-do-load-languages
 ;;  'org-babel-load-languages
@@ -243,8 +243,17 @@ Version 2018-11-12"
           (lambda ()
             (local-set-key (kbd "C-c C-g") 'my-org-refile-goto)))
 
-(exec-path-from-shell-initialize)
+(setq org-refile-allow-creating-parent-nodes 'confirm)
+(setq org-refile-targets '((nil :maxlevel . 1)
+                           (("~/gtd/someday.org"
+                             "~/gtd/projects.org"
+                             "~/gtd/soon.org"
+                             "~/gtd/escale.org"
+                             "~/gtd/tasks.org") :maxlevel . 1)))
+(setq org-refile-use-outline-path 'file)                  ; Show full paths for refiling
+(setq org-outline-path-complete-in-steps nil)
 
+(exec-path-from-shell-initialize)
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
 
@@ -646,7 +655,7 @@ Version 2018-11-12"
       )
 
 ;; Effort and global properties
-(setq org-global-properties '(("Effort_ALL". "0 0:05 0:15 0:25 0:50 2:00 3:00 4:00 6:00")))
+(setq org-global-properties '(("Effort_ALL". "0 0:05 0:15 0:25 0:50 1:30 3:00 4:00 6:00")))
 
 ;; Set global Column View format
 (setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Effort){:} %6CLOCKSUM(Clock) %TAGS(Context)")
@@ -662,8 +671,32 @@ Version 2018-11-12"
 
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
-		 "* NEXT %?\n%u" :prepend nil)))
+      '(
+        ("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
+         "* NEXT %?\n%U" :prepend nil)
+
+        ("e" "Escale")
+        ("et" "Escale Task" entry (file+headline "~/gtd/escale.org" "TASKS")
+         "* NEXT %^{Effort}p %? %^g \n%u\n" :prepend 1 :empty-lines 1)
+        ("ep" "Escale Project" entry (file "~/gtd/escale.org")
+         "* %?%\n" :prepend nil :empty-lines 1)
+        ("er" "Escale Reference Snippet" entry (file+headline "~/REFERENCE/INFO/.org_sources/escale.org" "Quick Snippet Reference")
+         "* %?")
+
+        ("g" "General")
+        ("gt" "General Task" entry (file+headline "~/gtd/tasks.org" "TASKS")
+         "* NEXT %^{Effort}p %? %^g\n%u\n" :prepend 1 :empty-lines 1)
+        ("gp" "General Project" entry (file "~/gtd/projects.org")
+         "* %?%\n" :prepend nil :empty-lines 1)
+
+        ("r" "Reference")
+        ("re" "Reference Emacs" entry (file+headline "~/REFERENCE/INFO/.org_sources/emacs.org" "Quick Reference")
+         "* %?")
+        ("rf" "Reference Frontend" entry (file+headline "~/REFERENCE/INFO/.org_sources/react.org" "Quick Reference")
+         "* %?"
+         )
+        )
+      )
 
 
 (require 'org-gcal)
