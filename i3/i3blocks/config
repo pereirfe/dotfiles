@@ -40,6 +40,15 @@ min_width=CPU:100%
 #T_CRIT=80
 DECIMALS=0
 
+[temperature]
+command=$SCRIPT_DIR/temperature/temperature
+label=TEMP
+interval=10
+#T_WARN=70
+#T_CRIT=90
+#SENSOR_CHIP=""
+
+
 [battery]
 command=$SCRIPT_DIR/battery/battery
 interval=30
