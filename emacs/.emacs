@@ -675,11 +675,13 @@ Version 2018-11-12"
 
         ("e" "Escale")
         ("et" "Escale Task" entry (file+headline "~/gtd/escale.org" "TASKS")
-         "* NEXT %^{Effort}p %? %^g \n%u\n" :prepend 1 :empty-lines 1)
+         "* NEXT %? %^{Effort}p %^g \n%u\n" :prepend 1 :empty-lines 1)
         ("ep" "Escale Project" entry (file "~/gtd/escale.org")
          "* %?%\n" :prepend nil :empty-lines 1)
         ("er" "Escale Reference Snippet" entry (file+headline "~/REFERENCE/INFO/.org_sources/escale.org" "Quick Snippet Reference")
          "* %?")
+        ("ej" "Escale Scrum Journal" entry (file+olp+datetree "~/REFERENCE/INFO/.org_sources/scrum.org" "Scrum Team Journaling")
+         "* %u %?")
 
         ("g" "General")
         ("gt" "General Task" entry (file+headline "~/gtd/tasks.org" "TASKS")
@@ -693,6 +695,12 @@ Version 2018-11-12"
         ("rf" "Reference Frontend" entry (file+headline "~/REFERENCE/INFO/.org_sources/react.org" "Quick Reference")
          "* %?"
          )
+
+        ("i" "Items")
+        ("im" "Item: Movies" entry (file+headline "~/gtd/someday.org" "Watch Movies")
+         "* %u %?" :prepend t)
+        ("ib" "Item: Books" entry (file+headline "~/gtd/someday.org" "Read Books")
+         "* %u %?" :prepend t)
         )
       )
 
@@ -719,17 +727,17 @@ Version 2018-11-12"
 
 ;; GTD implementation
 (setq org-tag-alist '(
-					  ("@LRC" . ?l)
-					  ("@HOME" . ?h)
+		      ("@LRC" . ?l)
+		      ("@HOME" . ?h)
                       ("@ESCALE" . ?e)
-					  ("MOBILE" . ?m)
-					  ("NB" . ?n)
-					  ("Nelson" . ?N)
-					  ("Carlos" . ?C)
-					  ("Battlestation" . ?b)
-					  ("OUTSIDE" . ?o)
-					  )
-	  )
+		      ("MOBILE" . ?m)
+		      ("NB" . ?n)
+		      ("Nelson" . ?N)
+		      ("Carlos" . ?C)
+		      ("Battlestation" . ?b)
+		      ("OUTSIDE" . ?o)
+		      )
+      )
 
 
 ;;https://orgmode.org/manual/Tracking-TODO-state-changes.html#Tracking-TODO-state-changes
