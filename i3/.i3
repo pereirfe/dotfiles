@@ -272,7 +272,8 @@ bindsym XF86AudioPrev exec playerctl previous
 bindsym $mod+shift+x exec i3lock -c 000000
 
 #emacs
-bindsym $mod+shift+p exec emacs
+bindsym $mod+p exec emacs
+bindsym $mod+shift+p exec emacsclient --c
 
 #Suspend
 #bindsym $mod+shift+s exec systemctl suspend
