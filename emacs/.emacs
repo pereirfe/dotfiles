@@ -55,6 +55,7 @@
     impatient-mode
     exec-path-from-shell
     visible-mark
+    restclient
     yasnippet
     elpy))
 
@@ -354,9 +355,9 @@ Version 2018-11-12"
 (define-key tern-mode-keymap (kbd "M-.") nil)
 (define-key tern-mode-keymap (kbd "M-,") nil)
 
+(add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
 
 (define-key global-map (kbd "RET") 'newline-and-indent)
-
 ;; Use .agignore as ignore list for ag in this project
 ;(helm-ag--root-agignore)
 (setq helm-ag-use-agignore t)
