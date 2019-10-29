@@ -1,3 +1,0 @@
-'atom-workspace atom-text-editor:not([mini])':
-    'ctrl-down': 'custom:move-10-lines-down'
-    'ctrl-up'  : 'custom:move-10-lines-up'
