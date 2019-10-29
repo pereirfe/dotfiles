@@ -400,9 +400,50 @@ Version 2018-11-12"
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
 
-(define-key smartparens-mode-map (kbd "<f9>") 'sp-forward-slurp-sexp)
-(define-key smartparens-mode-map (kbd "<f7>") 'sp-forward-barf-sexp)
+(define-key smartparens-mode-map (kbd "M-]") 'sp-forward-slurp-sexp)
+(define-key smartparens-mode-map (kbd "M-[") 'sp-forward-barf-sexp)
 (define-key smartparens-mode-map (kbd "C-M-w") 'sp-copy-sexp)
+(define-key smartparens-mode-map (kbd "C-M-k") 'sp-kill-sexp)
+(define-key smartparens-mode-map (kbd "C-M-f") 'sp-forward-sexp)
+(define-key smartparens-mode-map (kbd "C-M-b") 'sp-backward-sexp)
+(define-key smartparens-mode-map (kbd "C-M-n") 'sp-next-sexp)
+(define-key smartparens-mode-map (kbd "C-M-b") 'sp-previous-sexp)
+(define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
+
+(defmacro def-pairs (pairs)
+  "Define functions for pairing. PAIRS is an alist of (NAME . STRING)
+conses, where NAME is the function name that will be created and
+STRING is a single-character string that marks the opening character.
+
+  (def-pairs ((paren . \"(\")
+              (bracket . \"[\"))
+
+defines the functions WRAP-WITH-PAREN and WRAP-WITH-BRACKET,
+respectively."
+  `(progn
+     ,@(cl-loop for (key . val) in pairs
+             collect
+             `(defun ,(read (concat
+                             "wrap-with-"
+                             (prin1-to-string key)
+                             "s"))
+                  (&optional arg)
+                (interactive "p")
+                (sp-wrap-with-pair ,val)))))
+
+(def-pairs ((paren . "(")
+            (bracket . "[")
+            (brace . "{")
+            (single-quote . "'")
+            (double-quote . "\"")
+            (back-quote . "`")))
+
+(define-key smartparens-mode-map (kbd "C-c (") 'wrap-with-parens)
+(define-key smartparens-mode-map (kbd "C-c [") 'wrap-with-brackets)
+(define-key smartparens-mode-map (kbd "C-c {") 'wrap-with-braces)
+(define-key smartparens-mode-map (kbd "C-c '") 'wrap-with-single-quotes)
+(define-key smartparens-mode-map (kbd "C-c \"") 'wrap-with-double-quotes)
+(define-key smartparens-mode-map (kbd "C-c `") 'wrap-with-back-quotes)
 
 ;; Enable Autocomplete
 ;(ac-config-default)
