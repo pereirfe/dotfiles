@@ -130,8 +130,6 @@ Version 2018-11-12"
              (replace-match (elt $pair 1))))
          $charMap)))))
 
-
-
 ;;;;;;;;;;;;;;;; LATEX
 
 (setq-default TeX-master nil) ; Query for master file.
@@ -258,6 +256,9 @@ Version 2018-11-12"
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
 
+(setq org-stuck-projects '("+LEVEL=1" ("NEXT") nil "org-gcal:"))
+
+
 (require 're-builder)
 (setq reb-re-syntax 'string)
 
@@ -287,6 +288,7 @@ Version 2018-11-12"
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
+(set-face-attribute 'default nil :height 160)
 
 (setq eval-expression-print-length nil)
 
@@ -431,6 +433,7 @@ Version 2018-11-12"
 (add-hook 'c-mode-hook #'smartparens-mode)
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
+(add-hook 'restclient-mode-hook #'smartparens-mode)
 
 (define-key smartparens-mode-map (kbd "M-]") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "M-[") 'sp-forward-barf-sexp)
@@ -473,7 +476,7 @@ respectively."
 (define-key smartparens-mode-map (kbd "C-c (") 'wrap-with-parens)
 (define-key smartparens-mode-map (kbd "C-c [") 'wrap-with-brackets)
 (define-key smartparens-mode-map (kbd "C-c {") 'wrap-with-braces)
-(define-key smartparens-mode-map (kbd "C-c '") 'wrap-with-single-quotes)
+;; (define-key smartparens-mode-map (kbd "C-c '") 'wrap-with-single-quotes)
 (define-key smartparens-mode-map (kbd "C-c \"") 'wrap-with-double-quotes)
 (define-key smartparens-mode-map (kbd "C-c `") 'wrap-with-back-quotes)
 
@@ -518,13 +521,13 @@ respectively."
 
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)))
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
-
 ;; expand Region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;;;; (PYTHON)
 (elpy-enable)
+(pyvenv-workon "python3emacs")
 
 (require 'sgml-mode)
 
