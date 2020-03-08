@@ -337,6 +337,8 @@ Version 2018-11-12"
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
 (add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
 
+;; use eslint_d insetad of eslint for faster linting
+(setq flycheck-javascript-eslint-executable "eslint_d")
 
 (setq js2-strict-missing-semi-warning nil)
 
@@ -349,21 +351,46 @@ Version 2018-11-12"
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
 
+;; Try to highlight most ECMA built-ins
+(setq js2-highlight-level 3)
+;; have a shorter idle time delay
+(setq js2-idle-timer-delay 0.1)
+
+;; turn off all warnings in js2-mode
+(setq js2-mode-show-parse-errors t
+      js2-mode-show-strict-warnings nil
+      js2-strict-missing-semi-warning nil
+      js2-strict-trailing-comma-warning nil)
+
 (require 'company)
 (require 'company-tern)
 
+;; Better imenu
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
+
 (add-to-list 'company-backends 'company-tern)
+;; (add-hook 'js2-mode-hook (lambda ()
+;;                            (tern-mode)
+;;                            (company-mode)))
+
+(add-hook 'js2-mode-hook #'js2-refactor-mode)
+(js2r-add-keybindings-with-prefix "C-c C-r")
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
 (add-hook 'js2-mode-hook (lambda ()
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
 ;; Disable completion keybindings, as we use xref-js2 instead
 (define-key tern-mode-keymap (kbd "M-.") nil)
 (define-key tern-mode-keymap (kbd "M-,") nil)
+(define-key tern-mode-keymap (kbd "C-c C-r") nil)
+(define-key js-mode-map (kbd "M-.") nil)
 
 (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
-
 (define-key global-map (kbd "RET") 'newline-and-indent)
 ;; Use .agignore as ignore list for ag in this project
+
 ;(helm-ag--root-agignore)
 (setq helm-ag-use-agignore t)
 (setq helm-ag--ignore-case t)
@@ -483,7 +510,7 @@ respectively."
 (push 'company-lsp company-backends)
 
 (require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(add-hook 'lsp-mode-hook #'lsp-ui-mode)
 
 (setq company-transformers nil
       company-lsp-async t
