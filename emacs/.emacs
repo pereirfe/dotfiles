@@ -316,6 +316,13 @@ Version 2018-11-12"
 
 ;;;;;;;;;;;;;;;; CODING / Code
 
+;;;;;; Yaml
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . conf-mode))
+
+;;;;;; Dockerfile
+(add-to-list 'auto-mode-alist '("\\Dockerfile\\'" . conf-mode))
+
 ;;;; SHELL
 (add-hook 'eshell-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'eshell-mode-hook (lambda () (setq word-wrap t)))
