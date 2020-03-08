@@ -50,7 +50,6 @@
     ido
     smex
     powerline
-    iedit
     auto-complete
     impatient-mode
     exec-path-from-shell
@@ -347,9 +346,8 @@ Version 2018-11-12"
 (require 'company-tern)
 
 (add-to-list 'company-backends 'company-tern)
+
 (add-hook 'js2-mode-hook (lambda ()
-                           (tern-mode)
-                           (company-mode)))
 
 ;; Disable completion keybindings, as we use xref-js2 instead
 (define-key tern-mode-keymap (kbd "M-.") nil)
@@ -448,9 +446,6 @@ respectively."
 ;; Enable Autocomplete
 ;(ac-config-default)
 
-;; Enable Iedit mode
-(define-key global-map (kbd "C-ç") 'iedit-mode)
-
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 (global-set-key (kbd "C-c s") 'imenu)
@@ -475,7 +470,7 @@ respectively."
 ;; LSP
 ;;https://github.com/emacs-lsp/lsp-mode
 (require 'lsp-mode)
-(add-hook 'js2-mode-hook #'lsp)
+;;(add-hook 'js2-mode-hook #'lsp)
 
 (require 'company-lsp)
 (push 'company-lsp company-backends)
@@ -496,9 +491,6 @@ respectively."
 
 ;;;; (PYTHON)
 (elpy-enable)
-(setq python-shell-interpreter "ipython"
-      python-shell-interpreter-args "-i")
-(setq elpy-rpc-python-command "python3")
 
 (require 'sgml-mode)
 
@@ -817,7 +809,7 @@ respectively."
      nil "")))
  '(package-selected-packages
    (quote
-    (babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (forge jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
     ((TeX-master . "../hydra.tex")
