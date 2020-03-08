@@ -612,35 +612,34 @@ respectively."
 
       ;; M -> Meeting
 
-	  '(("L" "@LRC"
-		 ((agenda "" ())
+      '(("L" "@LRC"
+	 ((agenda "" ())
           (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
-		  (tags "+@LRC/NEXT")
-		  (tags "+Battlestation/NEXT")
-		  (tags "+MOBILE/NEXT")
-		  ))
+	  (tags "+@LRC/NEXT")
+	  (tags "+Battlestation/NEXT")
+	  (tags "+MOBILE/NEXT")
+	  ))
         ("E" "@ESCALE"
-		 ((agenda "" ((org-agenda-time-grid nil)
-                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'regexp "@HOME"))
+	 ((agenda "" ((org-agenda-time-grid nil)
                       ))
           (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
-		  (tags "-PRIORITY=\"A\"+@ESCALE/NEXT")
+	  (tags "-PRIORITY=\"A\"+@ESCALE/NEXT")
           (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
-		  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
-		  ))
-		("H" "@HOME"
-		 ((agenda "" ())
+	  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
+	  ))
+	("H" "@HOME"
+	 ((agenda "" ())
           (tags "+PRIORITY=\"A\"-OUTSIDE-@LRC/NEXT")
-		  (tags "+@HOME/NEXT")
-		  (tags "+NB/NEXT")
-		  (tags "+Battlestation/NEXT")
-		  (tags "+MOBILE/NEXT")
-		  ))
-		("MN" "Nelson"
-		 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
-				((org-agenda-prefix-format "[ ] %-20b:")
-				 (org-agenda-sorting-strategy '(tag-up priority-down))
-				 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
+	  (tags "-PRIORITY=\"A\"+@HOME/NEXT")
+	  (tags "-PRIORITY=\"A\"+NB/NEXT")
+	  (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
+	  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
+	  ))
+	("MN" "Nelson"
+	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
+		((org-agenda-prefix-format "[ ] %-20b:")
+		 (org-agenda-sorting-strategy '(tag-up priority-down))
+		 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
@@ -743,28 +742,34 @@ respectively."
          "* %u %?" :prepend t)
         ("ib" "Item: Books" entry (file+headline "~/gtd/someday.org" "Read Books")
          "* %u %?" :prepend t)
+        ("ir" "Item: Read" entry (file+headline "~/gtd/someday.org" "Short reads")
+         "* %u %?" :prepend t)
+        ("is" "Item: Stuff to Buy" entry (file+headline "~/gtd/someday.org" "Stuff to Buy")
+         "* %u %?" :prepend t)
         )
+
       )
 
 
-(require 'org-gcal)
-(defconst my-secrets-file "~/gtd/Files_Projects/.emacs_conf.d/secrets.el")
+;; 2020-01-19: Deactivate Org-gcal
+;; (require 'org-gcal)
+;; (defconst my-secrets-file "~/gtd/Files_Projects/.emacs_conf.d/secrets.el")
 
-(if (file-exists-p my-secrets-file)
-	(load-file my-secrets-file)
-  )
+;; (if (file-exists-p my-secrets-file)
+;; 	(load-file my-secrets-file)
+;;   )
 
-(if (boundp 'my-gcal-definition)
-    (setq org-gcal-client-id my-gcal-client-id
-          org-gcal-client-secret my-gcal-client-secret
-          org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.cal.org")
-                                ("fernando.pereira@escale.com.br" . "~/gtd/.esc_cal.org")
-                                )
-          )
-  )
+;; (if (boundp 'my-gcal-definition)
+;;     (setq org-gcal-client-id my-gcal-client-id
+;;           org-gcal-client-secret my-gcal-client-secret
+;;           org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.cal.org")
+;;                                 ("fernando.pereira@escale.com.br" . "~/gtd/.esc_cal.org")
+;;                                 )
+;;           )
+;;   )
 
-(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync nil t) ))
-;;(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
+;; (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync nil t) ))
+;; ;;(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 
 
 ;; GTD implementation
@@ -802,6 +807,9 @@ respectively."
  '(inhibit-startup-screen t)
  '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
+ '(org-agenda-files
+   (quote
+    ("~/gtd/projects.org" "~/gtd/escale.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/tasks.org")))
  '(org-stuck-projects
    (quote
     ("+LEVEL=1/-DONE"
