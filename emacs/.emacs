@@ -22,6 +22,7 @@
     use-package
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
+    json-mode
     rjsx-mode
     xref-js2   ;; Js cross-references (AST-based)
     company-tern ;; Js Autocomplete. Require npm tern
@@ -50,7 +51,6 @@
     ido
     smex
     powerline
-    iedit
     auto-complete
     impatient-mode
     exec-path-from-shell
@@ -131,8 +131,6 @@ Version 2018-11-12"
              (replace-match (elt $pair 1))))
          $charMap)))))
 
-
-
 ;;;;;;;;;;;;;;;; LATEX
 
 (setq-default TeX-master nil) ; Query for master file.
@@ -190,6 +188,8 @@ Version 2018-11-12"
 
 (global-set-key (kbd "C-a") 'beginning-of-indentation-or-line)
 
+;; Activate highlight indentation
+(add-hook 'prog-mode-hook #'highlight-indentation-mode)
 
 ;; saner forward and backward kill-word using thingatpt
 (defun kill-syntax (&optional arg)
@@ -259,6 +259,9 @@ Version 2018-11-12"
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
 
+(setq org-stuck-projects '("+LEVEL=1" ("NEXT") nil "org-gcal:"))
+
+
 (require 're-builder)
 (setq reb-re-syntax 'string)
 
@@ -288,6 +291,7 @@ Version 2018-11-12"
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
+(set-face-attribute 'default nil :height 140)
 
 (setq eval-expression-print-length nil)
 
@@ -317,6 +321,13 @@ Version 2018-11-12"
 
 ;;;;;;;;;;;;;;;; CODING / Code
 
+;;;;;; Yaml
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . conf-mode))
+
+;;;;;; Dockerfile
+(add-to-list 'auto-mode-alist '("\\Dockerfile\\'" . conf-mode))
+
 ;;;; SHELL
 (add-hook 'eshell-mode-hook (lambda () (setq truncate-lines nil)))
 (add-hook 'eshell-mode-hook (lambda () (setq word-wrap t)))
@@ -331,6 +342,27 @@ Version 2018-11-12"
 (add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
 (add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
 
+;; use eslint_d insetad of eslint for faster linting
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)  ;; Are you sure?
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
+(setq flycheck-javascript-eslint-executable "eslint_d")
 
 (setq js2-strict-missing-semi-warning nil)
 
@@ -343,22 +375,46 @@ Version 2018-11-12"
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
 
+;; Try to highlight most ECMA built-ins
+(setq js2-highlight-level 3)
+;; have a shorter idle time delay
+(setq js2-idle-timer-delay 0.1)
+
+;; turn off all warnings in js2-mode
+(setq js2-mode-show-parse-errors t
+      js2-mode-show-strict-warnings nil
+      js2-strict-missing-semi-warning nil
+      js2-strict-trailing-comma-warning nil)
+
 (require 'company)
 (require 'company-tern)
 
+;; Better imenu
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
+
 (add-to-list 'company-backends 'company-tern)
+;; (add-hook 'js2-mode-hook (lambda ()
+;;                            (tern-mode)
+;;                            (company-mode)))
+
+(add-hook 'js2-mode-hook #'js2-refactor-mode)
+(js2r-add-keybindings-with-prefix "C-c C-r")
+(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+
 (add-hook 'js2-mode-hook (lambda ()
-                           (tern-mode)
-                           (company-mode)))
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
 ;; Disable completion keybindings, as we use xref-js2 instead
 (define-key tern-mode-keymap (kbd "M-.") nil)
 (define-key tern-mode-keymap (kbd "M-,") nil)
+(define-key tern-mode-keymap (kbd "C-c C-r") nil)
+(define-key js-mode-map (kbd "M-.") nil)
 
 (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
-
 (define-key global-map (kbd "RET") 'newline-and-indent)
 ;; Use .agignore as ignore list for ag in this project
+
 ;(helm-ag--root-agignore)
 (setq helm-ag-use-agignore t)
 (setq helm-ag--ignore-case t)
@@ -399,6 +455,7 @@ Version 2018-11-12"
 (add-hook 'c-mode-hook #'smartparens-mode)
 (add-hook 'awk-mode-hook #'smartparens-mode)
 (add-hook 'org-mode-hook #'smartparens-mode)
+(add-hook 'restclient-mode-hook #'smartparens-mode)
 
 (define-key smartparens-mode-map (kbd "M-]") 'sp-forward-slurp-sexp)
 (define-key smartparens-mode-map (kbd "M-[") 'sp-forward-barf-sexp)
@@ -441,15 +498,12 @@ respectively."
 (define-key smartparens-mode-map (kbd "C-c (") 'wrap-with-parens)
 (define-key smartparens-mode-map (kbd "C-c [") 'wrap-with-brackets)
 (define-key smartparens-mode-map (kbd "C-c {") 'wrap-with-braces)
-(define-key smartparens-mode-map (kbd "C-c '") 'wrap-with-single-quotes)
+;; (define-key smartparens-mode-map (kbd "C-c '") 'wrap-with-single-quotes)
 (define-key smartparens-mode-map (kbd "C-c \"") 'wrap-with-double-quotes)
 (define-key smartparens-mode-map (kbd "C-c `") 'wrap-with-back-quotes)
 
 ;; Enable Autocomplete
 ;(ac-config-default)
-
-;; Enable Iedit mode
-(define-key global-map (kbd "C-ç") 'iedit-mode)
 
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
@@ -475,13 +529,13 @@ respectively."
 ;; LSP
 ;;https://github.com/emacs-lsp/lsp-mode
 (require 'lsp-mode)
-(add-hook 'js2-mode-hook #'lsp)
+;;(add-hook 'js2-mode-hook #'lsp)
 
 (require 'company-lsp)
 (push 'company-lsp company-backends)
 
 (require 'lsp-ui)
-(add-hook 'lsp-mode-hook 'lsp-ui-mode)
+(add-hook 'lsp-mode-hook #'lsp-ui-mode)
 
 (setq company-transformers nil
       company-lsp-async t
@@ -489,16 +543,13 @@ respectively."
 
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)))
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
-
 ;; expand Region
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
 
 ;;;; (PYTHON)
 (elpy-enable)
-(setq python-shell-interpreter "ipython"
-      python-shell-interpreter-args "-i")
-(setq elpy-rpc-python-command "python3")
+(pyvenv-workon "python3emacs")
 
 (require 'sgml-mode)
 
@@ -612,35 +663,34 @@ respectively."
 
       ;; M -> Meeting
 
-	  '(("L" "@LRC"
-		 ((agenda "" ())
+      '(("L" "@LRC"
+	 ((agenda "" ())
           (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
-		  (tags "+@LRC/NEXT")
-		  (tags "+Battlestation/NEXT")
-		  (tags "+MOBILE/NEXT")
-		  ))
+	  (tags "+@LRC/NEXT")
+	  (tags "+Battlestation/NEXT")
+	  (tags "+MOBILE/NEXT")
+	  ))
         ("E" "@ESCALE"
-		 ((agenda "" ((org-agenda-time-grid nil)
-                      (org-agenda-skip-function '(org-agenda-skip-entry-if 'regexp "@HOME"))
+	 ((agenda "" ((org-agenda-time-grid nil)
                       ))
           (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
-		  (tags "-PRIORITY=\"A\"+@ESCALE/NEXT")
+	  (tags "-PRIORITY=\"A\"+@ESCALE/NEXT")
           (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
-		  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
-		  ))
-		("H" "@HOME"
-		 ((agenda "" ())
+	  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
+	  ))
+	("H" "@HOME"
+	 ((agenda "" ())
           (tags "+PRIORITY=\"A\"-OUTSIDE-@LRC/NEXT")
-		  (tags "+@HOME/NEXT")
-		  (tags "+NB/NEXT")
-		  (tags "+Battlestation/NEXT")
-		  (tags "+MOBILE/NEXT")
-		  ))
-		("MN" "Nelson"
-		 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
-				((org-agenda-prefix-format "[ ] %-20b:")
-				 (org-agenda-sorting-strategy '(tag-up priority-down))
-				 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
+	  (tags "-PRIORITY=\"A\"+@HOME/NEXT")
+	  (tags "-PRIORITY=\"A\"+NB/NEXT")
+	  (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
+	  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
+	  ))
+	("MN" "Nelson"
+	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
+		((org-agenda-prefix-format "[ ] %-20b:")
+		 (org-agenda-sorting-strategy '(tag-up priority-down))
+		 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
          ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
@@ -743,28 +793,34 @@ respectively."
          "* %u %?" :prepend t)
         ("ib" "Item: Books" entry (file+headline "~/gtd/someday.org" "Read Books")
          "* %u %?" :prepend t)
+        ("ir" "Item: Read" entry (file+headline "~/gtd/someday.org" "Short reads")
+         "* %u %?" :prepend t)
+        ("is" "Item: Stuff to Buy" entry (file+headline "~/gtd/someday.org" "Stuff to Buy")
+         "* %u %?" :prepend t)
         )
+
       )
 
 
-(require 'org-gcal)
-(defconst my-secrets-file "~/gtd/Files_Projects/.emacs_conf.d/secrets.el")
+;; 2020-01-19: Deactivate Org-gcal
+;; (require 'org-gcal)
+;; (defconst my-secrets-file "~/gtd/Files_Projects/.emacs_conf.d/secrets.el")
 
-(if (file-exists-p my-secrets-file)
-	(load-file my-secrets-file)
-  )
+;; (if (file-exists-p my-secrets-file)
+;; 	(load-file my-secrets-file)
+;;   )
 
-(if (boundp 'my-gcal-definition)
-    (setq org-gcal-client-id my-gcal-client-id
-          org-gcal-client-secret my-gcal-client-secret
-          org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.cal.org")
-                                ("fernando.pereira@escale.com.br" . "~/gtd/.esc_cal.org")
-                                )
-          )
-  )
+;; (if (boundp 'my-gcal-definition)
+;;     (setq org-gcal-client-id my-gcal-client-id
+;;           org-gcal-client-secret my-gcal-client-secret
+;;           org-gcal-file-alist '(("fernandhenriqp@gmail.com" .  "~/gtd/.cal.org")
+;;                                 ("fernando.pereira@escale.com.br" . "~/gtd/.esc_cal.org")
+;;                                 )
+;;           )
+;;   )
 
-(add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync nil t) ))
-;;(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
+;; (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync nil t) ))
+;; ;;(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 
 
 ;; GTD implementation
@@ -802,6 +858,9 @@ respectively."
  '(inhibit-startup-screen t)
  '(large-file-warning-threshold nil)
  '(menu-bar-mode nil)
+ '(org-agenda-files
+   (quote
+    ("~/gtd/projects.org" "~/gtd/escale.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/tasks.org")))
  '(org-stuck-projects
    (quote
     ("+LEVEL=1/-DONE"
@@ -809,7 +868,7 @@ respectively."
      nil "")))
  '(package-selected-packages
    (quote
-    (babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode iedit ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (forge jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(safe-local-variable-values
    (quote
     ((TeX-master . "../hydra.tex")
