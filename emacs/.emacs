@@ -22,6 +22,7 @@
     use-package
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
+    json-mode
     rjsx-mode
     xref-js2   ;; Js cross-references (AST-based)
     company-tern ;; Js Autocomplete. Require npm tern
@@ -187,6 +188,8 @@ Version 2018-11-12"
 
 (global-set-key (kbd "C-a") 'beginning-of-indentation-or-line)
 
+;; Activate highlight indentation
+(add-hook 'prog-mode-hook #'highlight-indentation-mode)
 
 ;; saner forward and backward kill-word using thingatpt
 (defun kill-syntax (&optional arg)
@@ -288,7 +291,7 @@ Version 2018-11-12"
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
-(set-face-attribute 'default nil :height 160)
+(set-face-attribute 'default nil :height 140)
 
 (setq eval-expression-print-length nil)
 
@@ -340,6 +343,25 @@ Version 2018-11-12"
 (add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
 
 ;; use eslint_d insetad of eslint for faster linting
+(require 'flycheck)
+(add-hook 'after-init-hook #'global-flycheck-mode)  ;; Are you sure?
+
+;; disable jshint since we prefer eslint checking
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(javascript-jshint)))
+
+;; use eslint with web-mode for jsx files
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+
+;; customize flycheck temp file prefix
+(setq-default flycheck-temp-prefix ".flycheck")
+
+;; disable json-jsonlist checking for json files
+(setq-default flycheck-disabled-checkers
+  (append flycheck-disabled-checkers
+    '(json-jsonlist)))
+
 (setq flycheck-javascript-eslint-executable "eslint_d")
 
 (setq js2-strict-missing-semi-warning nil)
