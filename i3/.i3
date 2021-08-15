@@ -8,7 +8,15 @@
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
 
+#set $mod Mod3 -- REMAPS to capslock
 set $mod Mod4
+
+## SPECIAL DEBUG CASE - Use super when xmodmad doesnt load
+#bindsym Mod4+Return exec i3-sensible-terminal
+
+# Screen update
+bindsym Mod4+m exec --no-startup-id /home/fp/.config/i3/monitor_config.sh
+bindsym Mod4+Shift+m exec --no-startup-id /home/fp/.config/i3/enable_edp.sh
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -103,49 +111,29 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
-
-#set $workspace1 "1:WWW"
-# Name the workspaces
-set $space1 " 1 ⏐ focus "
-set $space2 " 2 ⏐ webs "
-set $space3 " 3 ⏐ terms "
-set $space4 " 4 "
-set $space5 " 5 ⏐ parallel"
-set $space6 " 6 "
-set $space7 " 7 "
-set $space8 " 8 ⏐ monitor"
-set $space9 " 9 "
-set $space10 " 10 "
-
-
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
-bindsym $mod+4 workspace 4
-bindsym $mod+5 workspace 5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
-bindsym $mod+Shift+4 move container to workspace 4
-bindsym $mod+Shift+5 move container to workspace 5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
-
-#xprop + click on app -> search for the class
-#assign [class="vlc"] $workspace1
-
-
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -258,9 +246,6 @@ bindsym XF86MonBrightnessDown exec /home/fp/.config/i3/decreasekbdlight.sh
 # Touchpad controls
 bindsym $mod+t exec toggletouchpad # toggle touchpad
 
-# Screen update
-bindsym $mod+m exec --no-startup-id /home/fp/.config/i3/monitor_config.sh
-
 # Media player controls
 bindsym XF86AudioPlay exec playerctl play
 bindsym XF86AudioPause exec playerctl pause
@@ -280,3 +265,5 @@ bindsym $mod+shift+p exec emacsclient --c
 
 # xmodmap
 exec_always --no-startup-id "xmodmap /home/fp/.Xmodmap"
+
+bindsym $mod+n exec i3-input -F 'rename workspace to "%s"' -P 'New name for this workspace: '
