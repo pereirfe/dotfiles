@@ -20,17 +20,18 @@
 (defvar myPackages
   '(material-theme
     use-package
+    nodejs-repl
+    org-journal
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
     json-mode
     rjsx-mode
     xref-js2   ;; Js cross-references (AST-based)
-    company-tern ;; Js Autocomplete. Require npm tern
+    ;;company-tern ;; Js Autocomplete. Require npm tern
     lsp-mode
     company-lsp
     lsp-ui
     color-theme-sanityinc-tomorrow
-    org-gcal
     anaconda-mode
     irony
     company-irony
@@ -49,14 +50,19 @@
     magit
     flycheck
     ido
-    smex
     powerline
     auto-complete
     impatient-mode
     exec-path-from-shell
     visible-mark
     restclient
+    ob-restclient
     yasnippet
+    org-roam
+    ob-async
+    org-download
+    dumb-jump
+    tide
     elpy))
 
 (mapc #'(lambda (package)
@@ -71,6 +77,10 @@
   (add-to-list 'load-path "<path where use-package is installed>")
   (require 'use-package))
 
+;;;;;;;;;;;;;;; Org Journal
+(require 'org-journal)
+(setq org-journal-dir "~/Dropbox/gtd/note-references/journal")
+
 ;;;;;;;;;;;;;;; DIRED
 ;; Set ls -alh as default for dired
 (setq dired-listing-switches "-alh")
@@ -79,8 +89,146 @@
 (require 'tramp)
 (setq tramp-default-method "ssh")
 
+(add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+
+;;;;;;;;;;;;;;; ORG ROAM
+(setq org-roam-directory "~/gtd/note-references")
+(add-hook 'after-init-hook 'org-roam-mode)
+(require 'org-tempo)
+
+(setq org-roam-link-file-path-type 'absolute)
+
+;;; Define key bindings for Org-roam
+;; Define it just for org-roam?
+(global-set-key (kbd "C-c n r") #'org-roam-buffer-toggle-display) ;; Use f1?
+(global-set-key (kbd "C-c n i") #'org-roam-insert)
+(global-set-key (kbd "C-c n f") #'org-roam-find-file)
+(global-set-key (kbd "C-c n b") #'org-roam-switch-to-buffer)
+(global-set-key (kbd "C-c n d") #'org-roam-find-directory)
+(global-set-key (kbd "C-c n n") #'org-roam-capture)
+(global-set-key (kbd "C-c n m") #'org-roam-dailies-capture-today)
+(global-set-key (kbd "C-c n s") #'helm-rg)
+
+(setq org-roam-completion-system 'helm)
+
+(setq org-roam-capture-templates
+      '(("s" "Subject" plain (function org-roam--capture-get-point)
+         "%?"
+         :file-name "%(format-time-string \"%Y-%m-%d--%H-%M-%SZ--${slug}\" (current-time) t)"
+         :head "#+title: ${title}\n#+roam_tags: subject \n\n -- tags :: \n -- keywords :: \n\n"
+         :unnarrowed t)
+        ("p" "Project Details" plain (function org-roam--capture-get-point)
+         "%?"
+         :file-name "%(format-time-string \"project-details/%Y-%m-%d--%H-%M-%SZ--${slug}\" (current-time) t)"
+         :head "#+title: ${title}\n#+roam_tags: project \n\n -- Project Name ::"
+         :unnarrowed t)
+
+        ("n" "Quick notes" plain (function org-roam--capture-get-point)
+         "%?"
+         :file-name "%(format-time-string \"./notes/%Y-%m-%d--%H-%M-%SZ--${slug}\" (current-time) t)"
+         :head "#+title: ${title}\n#+roam_tags: note \n\n -- tags :: \n -- keywords :: \n\n"
+         :unnarrowed t)
+        ("i" "Incident" plain (function org-roam--capture-get-point)
+         "%?"
+         :file-name "%(format-time-string \"./incidents/%Y-%m-%d--%H-%M-%SZ--incident-${slug}\" (current-time) t)"
+         :head "#+title: Incident: ${title}\n#+roam_tags: incident \n\n -- tags :: \n -- keywords :: \n\n"
+         :unnarrowed t)
+        )
+      )
+
+
+(setq org-roam-dailies-directory "meetings/")
+
+(setq org-roam-dailies-capture-templates
+      '(("a" "Ad-hoc meeting"  plain (function org-roam--capture-get-point)
+         "* %?"
+         :file-name "meetings/ad-hoc-%(format-time-string \"%Y\" (current-time) t)"
+         :head "#+title: ${title}\n#+roam_tags: meeting \n"
+         :unnarrowed t
+         )
+        ("e" "Escale Journal"  entry (function org-roam--capture-get-point)
+         "* %u"
+         :file-name "meetings/journal-%<%Y>"
+         :head "#+title: Journal\n#+roam_tags: journal \n"
+         :unnarrowed t
+         :olp ("Escale")
+         )
+        ("j" "Journal"  entry (function org-roam--capture-get-point)
+         "* %u"
+         :file-name "meetings/journal-%<%Y>"
+         :head "#+title: Journal\n#+roam_tags: journal \n"
+         :unnarrowed t
+         :olp ("Personal Journal")
+         )
+        ("p" "Planning" plain (function org-roam--capture-get-point)
+"* %u SPRINT #%^{PROMPT}
+
+  Pré planning checklist (Use C-c C-x C-b):
+    - [ ] Feriados Verificados
+    - [ ] Férias Verificadas
+    - [ ] Grandes eventos verificados
+
+  Planning Checklist:
+    - [ ] Objetivo da sprint Definido:
+    - [ ] Pontuação Sprint Anterior Verificada:
+    - [ ] Ballpark pontuação para esta sprint:
+    - [ ] Link para o [[https://www.scrumpoker-online.org/en/][Scrum Poker Online]] Compartilhado
+    - [ ] Escolher Tarefas Do backlog tais que encaixam no Objetivo
+      - [ ] Um plano claro de como fazer está definido
+      - [ ] Todos os recursos necessários existem
+
+** Notas
+%?"
+        :prepend t
+        :jump-to-captured t
+        :empty-lines 1
+        :file-name "meetings/ccc-planning"
+        :head "#+title: Planning\n#+roam_tags: ccc planning meeting\n"
+        :unnarrowed t
+        )
+
+        ("t" "Tim Weekly" plain (function org-roam--capture-get-point)
+         "* %u Tim Weekly\n%?"
+         :prepend t
+         :jump-to-captured t
+         :empty-lines 1
+         :file-name "meetings/ccc-tim-weekly"
+         :head "#+title: Tim Weekly\n#+roam_tags: escale ccc tim\n"
+         :unnarrowed t
+         )
+        ("1" "1o1 Ft Jullyana " plain (function org-roam--capture-get-point)
+         "* %u 1o1 Ft Jullyana\n%?"
+         :prepend t
+         :jump-to-captured t
+         :empty-lines 1
+         :file-name "meetings/1o1-jullyana"
+         :head "#+title: 1o1's Ft Jullyana\n#+roam_tags: ccc escale 1o1\n"
+         :unnarrowed t
+         )
+        ("r" "CCC Review" plain (function org-roam--capture-get-point)
+         "* %u CCC Review Sprint #%^{Sprint #}\n  - [[https://escale.atlassian.net/secure/RapidBoard.jspa?projectKey=CCC&rapidView=284][BOARD]]\n%?"
+         :prepend t
+         :jump-to-captured t
+         :empty-lines 1
+         :file-name "meetings/ccc-review"
+         :head "#+title: CCC Review \n#+roam_tags: ccc escale review\n"
+         :unnarrowed t
+         )
+        )
+      )
+
+;;;;;;;;;;;;;;;; Org Download
+(require 'org-download)
+
+(global-set-key (kbd "C-c d y") 'org-download-yank)
+(global-set-key (kbd "C-c d Y") 'org-download-screenshot)
+(setq-default org-download-image-dir "~/gtd/note-references/.imgsrc")
+
 
 ;;;;;;;;;;;;;;;; FUNDAMENTAL TEXT EDITION
+(setq-default word-wrap t)
+(setq-default truncate-lines nil)
+
 ;; Remove non-ascii characters
 (defun xah-asciify-text (&optional @begin @end)
   "Remove accents in some letters and some
@@ -131,16 +279,36 @@ Version 2018-11-12"
              (replace-match (elt $pair 1))))
          $charMap)))))
 
+;; Configure column max width for orgmode
+(setq org-ellipsis "▼")
+
+;; Remove Auto-generated buffers from cycling
+;; (But keep buffers of interest)
+(defun my-buffer-predicate (buffer)
+  (not
+   (and (string-match-p "^\\*.*" (buffer-name buffer))
+        (not
+         (or
+          (string-match-p "\\*Org Agenda\\*" (buffer-name buffer))
+          (string-match-p "\\*scratch\\*" (buffer-name buffer)))
+         )
+        )
+   )
+  )
+
+(set-frame-parameter nil 'buffer-predicate #'my-buffer-predicate)
+(push (cons 'buffer-predicate #'my-buffer-predicate) default-frame-alist)
+
 ;;;;;;;;;;;;;;;; LATEX
 
 (setq-default TeX-master nil) ; Query for master file.
-(add-hook 'LaTeX-mode-hook (lambda () (setq truncate-lines nil)))
-(add-hook 'LaTeX-mode-hook (lambda () (setq word-wrap t)))
-(add-hook 'LaTeX-mode-hook #'smartparens-mode)
-(add-hook 'LaTeX-mode-hook #'visual-line-mode)
-(add-hook 'LaTeX-mode-hook #'company-mode)
-(add-hook 'LaTeX-mode-hook #'reftex-mode)
-(add-hook 'LaTeX-mode-hook (lambda () (company-mode -1)))
+(add-hook 'latex-mode-hook (lambda () (setq truncate-lines nil)))
+(add-hook 'latex-mode-hook (lambda () (setq word-wrap t)))
+(add-hook 'latex-mode-hook #'smartparens-mode)
+(add-hook 'latex-mode-hook #'visual-line-mode)
+;;(add-hook 'latex-mode-hook #'company-mode)
+(add-hook 'latex-mode-hook #'reftex-mode)
+(add-hook 'latex-mode-hook (lambda () (company-mode -1)))
 
 (setq reftex-default-bibliography '("~/projects/project_hydra/src/references.bib"))
 (setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresource"))
@@ -188,6 +356,8 @@ Version 2018-11-12"
 
 (global-set-key (kbd "C-a") 'beginning-of-indentation-or-line)
 
+
+
 ;; Activate highlight indentation
 (add-hook 'prog-mode-hook #'highlight-indentation-mode)
 
@@ -218,23 +388,31 @@ Version 2018-11-12"
 ; I prefer return to activate a link
 (setq org-return-follows-link t)
 (setq org-confirm-babel-evaluate nil)
-;; (require 'ob-shell)
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  '(
-;;    (python . t)
-;;    (dot . t)
-;;    (octave . t)
-;;    (sqlite . t)
-;;    ))
-;; ;; Babel Load languages
-;; (org-babel-do-load-languages
-;;  'org-babel-load-languages
-;;  '((python . t)
-;;    (sh . t)
-;;    ))
+
+(setq org-special-ctrl-a/e t) ;; Set C-a/e to go behave in relation to the headline
+(setq org-special-ctrl-k t)
+(setq org-yank-adjusted-subtrees t)
+
+(require 'ob-js)
+(require 'ob-async)
+
+;; (add-to-list 'org-babel-load-languages '(emacs-lisp . t))
+;; (add-to-list 'org-babel-load-languages '(js . t))
+;; (add-to-list 'org-babel-load-languages '(restclient . t))
+
+;; Load languages to run on ORG
+(org-babel-do-load-languages
+ 'org-babel-load-languages
+ '((restclient . t)
+   (emacs-lisp . t)
+   (shell . t)
+   (js . t)
+   (http . t)
+   ))
 
 
+
+(setq company-dabbrev-downcase nil)
 
 (defun my-org-refile-goto ()
   (interactive)
@@ -251,6 +429,7 @@ Version 2018-11-12"
                              "~/gtd/projects.org"
                              "~/gtd/soon.org"
                              "~/gtd/escale.org"
+                             "~/gtd/tickler.org"
                              "~/gtd/tasks.org") :maxlevel . 1)))
 (setq org-refile-use-outline-path 'file)                  ; Show full paths for refiling
 (setq org-outline-path-complete-in-steps nil)
@@ -260,7 +439,6 @@ Version 2018-11-12"
 	  x-select-enable-primary t)
 
 (setq org-stuck-projects '("+LEVEL=1" ("NEXT") nil "org-gcal:"))
-
 
 (require 're-builder)
 (setq reb-re-syntax 'string)
@@ -291,6 +469,7 @@ Version 2018-11-12"
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 (fset 'yes-or-no-p 'y-or-n-p)
+(setq confirm-kill-emacs 'y-or-n-p)
 (set-face-attribute 'default nil :height 140)
 
 (setq eval-expression-print-length nil)
@@ -318,12 +497,14 @@ Version 2018-11-12"
 ;; ;;       '(("overleaf\\.com" . 'LaTeX-mode)
 ;; ;;         ("github\\.com" . 'python-mode)))
 
-
 ;;;;;;;;;;;;;;;; CODING / Code
 
 ;;;;;; Yaml
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.yaml\\'" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
+
+;;;;;; Format on save when on terraform mode
+(add-hook 'terraform-mode-hook #'terraform-format-on-save-mode)
 
 ;;;;;; Dockerfile
 (add-to-list 'auto-mode-alist '("\\Dockerfile\\'" . conf-mode))
@@ -335,7 +516,7 @@ Version 2018-11-12"
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 
 ;;;; Javascript
-(require 'json)
+;;(require 'json)
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
@@ -345,6 +526,59 @@ Version 2018-11-12"
 ;; use eslint_d insetad of eslint for faster linting
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)  ;; Are you sure?
+(setq-default flycheck-global-modes '(not org-mode)) ;; Disable flycheck on orgmode
+
+;; Setup TIDE
+(defun setup-tide-mode ()
+  (interactive)
+  (tide-setup)
+  (flycheck-mode +1)
+  (setq flycheck-check-syntax-automatically '(save mode-enabled))
+  (eldoc-mode +1)
+  (tide-hl-identifier-mode +1)
+  ;; company is an optional dependency. You have to
+  ;; install it separately via package-install
+  ;; `M-x package-install [ret] company`
+  (company-mode +1))
+
+;; aligns annotation to the right hand side
+(setq company-tooltip-align-annotations t)
+
+;; formats the buffer before saving
+;(add-hook 'before-save-hook 'tide-format-before-save)
+;(flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
+
+(add-hook 'js2-mode-hook #'setup-tide-mode)
+
+
+;; Use eslint defaut swich-case indentation
+(setq js-switch-indent-offset 2)
+
+;; Add jest external function
+;; (js2-mode
+;;   (js2-additional-externs
+;;    . (list "jest" "describe" "expect" "require" "beforeEach" "require" "it" "spyOn")))
+
+;; Require Repl
+(require 'nodejs-repl)
+
+;; (defun fp-nodejs-repl-send-dwim ()
+;;   (interactive)
+;;   (if (bound-and-true-p visual-line-mode)
+;;       (nodejs-repl-send-region ??)
+;;     (nodejs-repl-send-line)
+;;     )
+;;  )
+
+(add-hook 'js-mode-hook
+          (lambda ()
+            (define-key js-mode-map (kbd "C-x C-e") 'nodejs-repl-send-last-expression)
+            ;; (define-key js-mode-map (kbd "C-c C-j") 'nodejs-repl-send-line)
+            ;; (define-key js-mode-map (kbd "C-c C-r") 'nodejs-repl-send-region)
+            ;; (define-key js-mode-map (kbd "C-c C-l") 'nodejs-repl-load-file)
+            ;; (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl)
+            ))
+
 
 ;; disable jshint since we prefer eslint checking
 (setq-default flycheck-disabled-checkers
@@ -371,6 +605,9 @@ Version 2018-11-12"
 ;; unbind it.
 (define-key js-mode-map (kbd "M-.") nil)
 
+;; Disable code folding
+(define-key js2-mode-map (kbd "C-c C-o") nil)
+
 (add-hook 'js2-mode-hook (lambda ()
                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
@@ -387,13 +624,13 @@ Version 2018-11-12"
       js2-strict-trailing-comma-warning nil)
 
 (require 'company)
-(require 'company-tern)
+;; (require 'company-tern)
 
 ;; Better imenu
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
 
 
-(add-to-list 'company-backends 'company-tern)
+;;(add-to-list 'company-backends 'company-tern)
 ;; (add-hook 'js2-mode-hook (lambda ()
 ;;                            (tern-mode)
 ;;                            (company-mode)))
@@ -406,9 +643,9 @@ Version 2018-11-12"
   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
 ;; Disable completion keybindings, as we use xref-js2 instead
-(define-key tern-mode-keymap (kbd "M-.") nil)
-(define-key tern-mode-keymap (kbd "M-,") nil)
-(define-key tern-mode-keymap (kbd "C-c C-r") nil)
+;; (define-key tern-mode-keymap (kbd "M-.") nil)
+;; (define-key tern-mode-keymap (kbd "M-,") nil)
+;; (define-key tern-mode-keymap (kbd "C-c C-r") nil)
 (define-key js-mode-map (kbd "M-.") nil)
 
 (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
@@ -495,12 +732,12 @@ respectively."
             (double-quote . "\"")
             (back-quote . "`")))
 
-(define-key smartparens-mode-map (kbd "C-c (") 'wrap-with-parens)
-(define-key smartparens-mode-map (kbd "C-c [") 'wrap-with-brackets)
-(define-key smartparens-mode-map (kbd "C-c {") 'wrap-with-braces)
-;; (define-key smartparens-mode-map (kbd "C-c '") 'wrap-with-single-quotes)
-(define-key smartparens-mode-map (kbd "C-c \"") 'wrap-with-double-quotes)
-(define-key smartparens-mode-map (kbd "C-c `") 'wrap-with-back-quotes)
+(define-key smartparens-mode-map (kbd "C-c w (") 'wrap-with-parens)
+(define-key smartparens-mode-map (kbd "C-c w [") 'wrap-with-brackets)
+(define-key smartparens-mode-map (kbd "C-c w {") 'wrap-with-braces)
+(define-key smartparens-mode-map (kbd "C-c w '") 'wrap-with-single-quotes)
+(define-key smartparens-mode-map (kbd "C-c w \"") 'wrap-with-double-quotes)
+(define-key smartparens-mode-map (kbd "C-c w `") 'wrap-with-back-quotes)
 
 ;; Enable Autocomplete
 ;(ac-config-default)
@@ -529,11 +766,11 @@ respectively."
 ;; LSP
 ;;https://github.com/emacs-lsp/lsp-mode
 (require 'lsp-mode)
-;;(add-hook 'js2-mode-hook #'lsp)
+(add-hook 'js2-mode-hook #'lsp)
 
 (require 'company-lsp)
 (push 'company-lsp company-backends)
-
+(setq company-show-numbers t)
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook #'lsp-ui-mode)
 
@@ -543,9 +780,6 @@ respectively."
 
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)))
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
-;; expand Region
-(require 'expand-region)
-(global-set-key (kbd "C-=") 'er/expand-region)
 
 ;;;; (PYTHON)
 (elpy-enable)
@@ -601,47 +835,36 @@ respectively."
 (diminish 'projectile-mode "P")
 (diminish 'helm-mode)
 (diminish 'Abbrev)
-
 ;;;;;;;;;;;;;;; ORG && AGENDA
 (global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-M-RET-may-split-line nil)
 (setq org-catch-invisible-edits 'show-and-error)
 (setq org-agenda-span 'day)
-(add-hook 'org-mode-hook (lambda () (company-mode -1)))
+;;(add-hook 'org-mode-hook (lambda () (company-mode -1)))
+(add-to-list 'company-backends 'company-capf)
 
 (setq org-src-preserve-indentation nil
       org-edit-src-content-indentation 0)
 
 (setq org-agenda-files
       (quote
-       ("~/gtd/.cal.org"
-        "~/gtd/.esc_cal.org"
-        "~/gtd/projects.org"
+       ("~/gtd/projects.org"
         "~/gtd/escale.org"
         "~/gtd/tickler.org"
         "~/gtd/events.org"
         "~/gtd/birthdays.org"
         "~/gtd/tasks.org")))
 
-;; (setq org-refile-targets '(
-;;                            (nil :maxlevel . 1)
-;;                            (org-agenda-files :maxlevel . 1)
-;;                            ))
 
 (setq org-outline-path-complete-in-steps nil)         ; Refile in a single go
 (setq org-refile-use-outline-path t)
 
 (defun fp-org-open-4kft ()
-  "Open the 4kft org file"
+  "Open the 4kft org file."
   (interactive)
   (org-open-file "~/gtd/4kft.org")
   )
 
-;;(global-set-key (kbd "<f6>") 'org-latex-export-to-pdf)
-(global-set-key (kbd "<f11>") (lambda ()
-                                (interactive)
-                                (find-name-dired
-                                 "~/REFERENCE/INFO/.org_sources/" "*.org")))
 (global-set-key (kbd "<f12>") 'fp-org-open-4kft)
 
 (progn
@@ -660,31 +883,29 @@ respectively."
 
 (setq org-fast-tag-selection-single-key t)
 (setq org-agenda-custom-commands
-
       ;; M -> Meeting
-
-      '(("L" "@LRC"
+      '(("E" "@ESCALE"
+	 ((agenda ""
+                  (
+                   (org-agenda-time-grid nil)
+                   (org-agenda-skip-function '(org-agenda-skip-subtree-if 'regexp ":@HOME"))
+                   )
+                  )
+	  (tags "-Jullyana-Tamyres-toSTUDY+@ESCALE/NEXT")
+          (tags "+Jullyana/!-DONE-Cancelled")
+          (tags "+Tamyres/!-DONE-Cancelled")
+          ))
+	("H" "@HOME"
 	 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
-	  (tags "+@LRC/NEXT")
+	  (tags "+@HOME/NEXT")
 	  (tags "+Battlestation/NEXT")
 	  (tags "+MOBILE/NEXT")
 	  ))
-        ("E" "@ESCALE"
-	 ((agenda "" ((org-agenda-time-grid nil)
-                      ))
-          (tags "+PRIORITY=\"A\"-OUTSIDE-@HOME/NEXT")
-	  (tags "-PRIORITY=\"A\"+@ESCALE/NEXT")
-          (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
-	  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
+        ("S" "toSTUDY"
+	 ((tags "+toSTUDY/NEXT")
 	  ))
-	("H" "@HOME"
-	 ((agenda "" ())
-          (tags "+PRIORITY=\"A\"-OUTSIDE-@LRC/NEXT")
-	  (tags "-PRIORITY=\"A\"+@HOME/NEXT")
-	  (tags "-PRIORITY=\"A\"+NB/NEXT")
-	  (tags "-PRIORITY=\"A\"+Battlestation/NEXT")
-	  (tags "-PRIORITY=\"A\"+MOBILE/NEXT")
+        ("T" "Thesis"
+	 ((tags "+Thesis/NEXT")
 	  ))
 	("MN" "Nelson"
 	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
@@ -716,21 +937,6 @@ respectively."
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nErrands (General)\n------------------\n")))
-		  (tags "+OUTSIDE+PLACE={ATK}/NEXT"
-                ((org-agenda-prefix-format "[ ] %T: ")
-                 (org-agenda-sorting-strategy '(tag-up priority-down))
-                 (org-agenda-todo-keyword-format "")
-                 (org-agenda-overriding-header "\nAtacadao\n------------------\n")))
-		  (tags "+OUTSIDE+PLACE={MKT}/NEXT"
-                ((org-agenda-prefix-format "[ ] %T: ")
-                 (org-agenda-sorting-strategy '(tag-up priority-down))
-                 (org-agenda-todo-keyword-format "")
-                 (org-agenda-overriding-header "\nMarket\n------------------\n")))
-		  (tags "+OUTSIDE+PLACE={HORT}/NEXT"
-                ((org-agenda-prefix-format "[ ] %T: ")
-                 (org-agenda-sorting-strategy '(tag-up priority-down))
-                 (org-agenda-todo-keyword-format "")
-                 (org-agenda-overriding-header "\nHortifruti\n------------------\n")))
 		  (tags "+MOBILE/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
@@ -745,10 +951,10 @@ respectively."
       )
 
 ;; Effort and global properties
-(setq org-global-properties '(("Effort_ALL". "0 0:05 0:15 0:25 0:50 1:30 3:00 4:00 6:00")))
+(setq org-global-properties '(("Effort_ALL". "0:01 0:05 0:15 0:25 0:50 1:30 3:00 4:00 6:00")))
 
 ;; Set global Column View format
-(setq org-columns-default-format '"%38ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Effort){:} %6CLOCKSUM(Clock) %TAGS(Context)")
+(setq org-columns-default-format '"%50ITEM(Details) %1PRIORITY(P)  %7TODO(To Do) %5Effort(Effort){:} %6CLOCKSUM(Clock) %TAGS(Context)")
 
 (setq org-use-property-inheritance t)
 
@@ -765,28 +971,22 @@ respectively."
         ("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
          "* NEXT %?\n%U" :prepend nil)
 
+        ("S" "toSTUDY" entry (file+headline "~/gtd/tasks.org" "TASKS")
+         "* NEXT %? :toSTUDY: \n%u\n" :prepend 1 :empty-lines 1)
+
         ("e" "Escale")
         ("et" "Escale Task" entry (file+headline "~/gtd/escale.org" "TASKS")
-         "* NEXT %? %^{Effort}p %^g \n%u\n" :prepend 1 :empty-lines 1)
+         "* NEXT %? %^g \n%u\n" :prepend 1 :empty-lines 1)
         ("ep" "Escale Project" entry (file "~/gtd/escale.org")
          "* %?%\n" :prepend nil :empty-lines 1)
-        ("er" "Escale Reference Snippet" entry (file+headline "~/REFERENCE/INFO/.org_sources/escale.org" "Quick Snippet Reference")
-         "* %?")
-        ("ej" "Escale Scrum Journal" entry (file+olp+datetree "~/REFERENCE/INFO/.org_sources/scrum.org" "Scrum Team Journaling")
-         "* %u %?")
+        ("es" "Escale This Sprint" entry (file+headline "~/gtd/escale.org" "THIS SPRINT")
+         "* NEXT %? :@ESCALE: \n%u\n" :prepend 1 :empty-lines 1)
 
         ("g" "General")
         ("gt" "General Task" entry (file+headline "~/gtd/tasks.org" "TASKS")
-         "* NEXT %^{Effort}p %? %^g\n%u\n" :prepend 1 :empty-lines 1)
-        ("gp" "General Project" entry (file "~/gtd/projects.org")
-         "* %?%\n" :prepend nil :empty-lines 1)
-
-        ("r" "Reference")
-        ("re" "Reference Emacs" entry (file+headline "~/REFERENCE/INFO/.org_sources/emacs.org" "Quick Reference")
-         "* %?")
-        ("rf" "Reference Frontend" entry (file+headline "~/REFERENCE/INFO/.org_sources/react.org" "Quick Reference")
-         "* %?"
-         )
+         "* NEXT %? %^g\n%u\n" :prepend 1 :empty-lines 1)
+        ("gw" "General Waiting" entry (file+headline "~/gtd/tasks.org" "TASKS")
+         "* WAITING  %? %^g\n%u\n" :prepend 1 :empty-lines 1)
 
         ("i" "Items")
         ("im" "Item: Movies" entry (file+headline "~/gtd/someday.org" "Watch Movies")
@@ -798,7 +998,6 @@ respectively."
         ("is" "Item: Stuff to Buy" entry (file+headline "~/gtd/someday.org" "Stuff to Buy")
          "* %u %?" :prepend t)
         )
-
       )
 
 
@@ -818,29 +1017,31 @@ respectively."
 ;;                                 )
 ;;           )
 ;;   )
-
 ;; (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync nil t) ))
 ;; ;;(add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync)))
 
 
 ;; GTD implementation
-(setq org-tag-alist '(
-		      ("@LRC" . ?l)
-		      ("@HOME" . ?h)
+(setq org-tag-alist '((:startgroup . nil)
+                      ("@HOME" . ?h)
                       ("@ESCALE" . ?e)
+                      ("OUTSIDE" . ?o)
+                      (:endgroup . nil)
+                      (:startgroup . nil)
+                      ("LowEnergy" . ?L)
+                      ("HighEnergy" . ?H)
+                      (:endgroup . nil)
+                      ("toSTUDY" . ?s)
 		      ("MOBILE" . ?m)
-		      ("NB" . ?n)
-		      ("Nelson" . ?N)
-		      ("Carlos" . ?C)
 		      ("Battlestation" . ?b)
-		      ("OUTSIDE" . ?o)
+                      ("Thesis" . ?t)
 		      )
       )
 
 
 ;;https://orgmode.org/manual/Tracking-TODO-state-changes.html#Tracking-TODO-state-changes
 (setq org-todo-keywords
-      '((sequence "TICKLED(T)" "SCHED(s)" "TODO(t)" "NEXT(n)" "WAITING(w)" "POSTPONED(p)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c)")))
+      '((sequence "TICKLED(T)" "SCHED(s)" "NEXT(n)" "WAITING(w)" "POSTPONED(p)" "|" "DONE(d)" "DELEGATED(o)" "Cancelled(c)")))
 
 ;; (setq org-log-done 'time)
 (setq org-log-into-drawer t)
@@ -868,7 +1069,27 @@ respectively."
      nil "")))
  '(package-selected-packages
    (quote
-    (forge jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred org-gcal helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smex smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (org-journal kubernetes dumb-jump org-download ob-async helm-rg org-roam ob-http terraform-mode jq-mode jq-format list-packages-ext js-comint forge jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+ '(projectile-other-file-alist
+   (quote
+    (("cpp" "h" "hpp" "ipp")
+     ("ipp" "h" "hpp" "cpp")
+     ("hpp" "h" "ipp" "cpp" "cc")
+     ("cxx" "h" "hxx" "ixx")
+     ("ixx" "h" "hxx" "cxx")
+     ("hxx" "h" "ixx" "cxx")
+     ("c" "h")
+     ("m" "h")
+     ("mm" "h")
+     ("h" "c" "cc" "cpp" "ipp" "hpp" "cxx" "ixx" "hxx" "m" "mm")
+     ("cc" "h" "hh" "hpp")
+     ("hh" "cc")
+     ("vert" "frag")
+     ("frag" "vert")
+     (nil "lock" "gpg")
+     ("lock" "")
+     ("gpg" "")
+     ("js" "js" "test.js"))))
  '(safe-local-variable-values
    (quote
     ((TeX-master . "../hydra.tex")
