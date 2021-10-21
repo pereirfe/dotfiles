@@ -130,18 +130,34 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH="/home/fp/.local/bin/:/home/fp/.local/shortcuts/:$PATH"
+# moved to .profile
+#export PATH="/home/fp/.local/bin/:/home/fp/.local/shortcuts/:/home/fp/.npm-global/bin/:$PATH"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[ -f /home/fp/projects/nozhka/node_modules/tabtab/.completions/serverless.bash ] && . /home/fp/projects/nozhka/node_modules/tabtab/.completions/serverless.bash
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[ -f /home/fp/projects/nozhka/node_modules/tabtab/.completions/sls.bash ] && . /home/fp/projects/nozhka/node_modules/tabtab/.completions/sls.bash
-# tabtab source for slss package
-# uninstall by removing these lines or running `tabtab uninstall slss`
-[ -f /home/fp/projects/nozhka/node_modules/tabtab/.completions/slss.bash ] && . /home/fp/projects/nozhka/node_modules/tabtab/.completions/slss.bash
+complete -C '/usr/local/bin/aws_completer' aws
+
+alias scrotclip="scrot -s -e 'xclip -selection clipboard -t \"image/png\" < \$f'"
+
+alias fpnode="env NODE_NO_READLINE=1 rlwrap node --experimental-repl-await"
+
+alias mongo-nozhka-prod="mongo mongodb+srv://escaleos-qeyv9.mongodb.net/nozhka -u fernando-pereira"
+alias mongo-nozhka-dev="mongo mongodb+srv://eos-core-crm-msia4.mongodb.net/nozhka -u fernando-pereira"
+
+# Enable autocomplete and k shortcut for kubectl
+source <(kubectl completion bash)
+alias k=kubectl
+complete -F __start_kubectl k
+
+
+# KUBE
+alias kcprod='kubectl config use-context arn:aws:eks:us-east-1:398635583628:cluster/eks-apps-production'
+alias kcstagold='kubectl config use-context arn:aws:eks:us-east-1:398635583628:cluster/eks-apps-staging'
+alias kcstag='kubectl config use-context arn:aws:eks:us-east-1:389855184132:cluster/eks-apps-escale-staging'
+alias kclist='kubectl config get-contexts'
+
+# AWS ACCOUNTS
+alias u:stag='export AWS_PROFILE=sandbox AWS_REGION=us-east-1'
+alias u:prod='export AWS_PROFILE=escale AWS_REGION=us-east-1'

@@ -19,18 +19,23 @@
 ;; If some package is missing from melpa, try M-x package-refresh-contents
 (defvar myPackages
   '(material-theme
+    olivetti
+    helm-dash
     use-package
     nodejs-repl
     org-journal
+    org-bullets
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
     json-mode
     rjsx-mode
     xref-js2   ;; Js cross-references (AST-based)
+    jest
     ;;company-tern ;; Js Autocomplete. Require npm tern
     lsp-mode
-    company-lsp
+    company-lsp  ;; No more supported
     lsp-ui
+    dap-mode
     color-theme-sanityinc-tomorrow
     anaconda-mode
     irony
@@ -48,6 +53,7 @@
     ag
     helm-ag
     magit
+    flycheck-jest
     flycheck
     ido
     powerline
@@ -62,7 +68,7 @@
     ob-async
     org-download
     dumb-jump
-    tide
+    ;; tide
     elpy))
 
 (mapc #'(lambda (package)
@@ -73,18 +79,21 @@
 ;; Use Package
 ;; -----------
 (eval-when-compile
-  ;; Following line is not needed if use-package.el is in ~/.emacs.d
-  (add-to-list 'load-path "<path where use-package is installed>")
   (require 'use-package))
 
-;;;;;;;;;;;;;;; Org Journal
-(require 'org-journal)
-(setq org-journal-dir "~/Dropbox/gtd/note-references/journal")
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/recipes" (file-name-directory load-file-name)))
 
-;;;;;;;;;;;;;;; DIRED
-;; Set ls -alh as default for dired
-(setq dired-listing-switches "-alh")
-(global-set-key (kbd "C-x C-d") 'dired)
+(require 'org-journal-rcp)
+(require 'org-roam-rcp)
+(require 'dired-rcp)
+(require 'flycheck-rcp)
+(require 'olivetti-rcp)
+(require 'helm-dash-rcp)
+
+(setq org-id-link-to-org-use-id t)
+
+(setq plantuml-jar-path "~/.local/bin/plantuml.jar")
+(setq plantuml-default-exec-mode 'jar)
 
 (require 'tramp)
 (setq tramp-default-method "ssh")
@@ -92,132 +101,10 @@
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 
 ;;;;;;;;;;;;;;; ORG ROAM
-(setq org-roam-directory "~/gtd/note-references")
-(add-hook 'after-init-hook 'org-roam-mode)
+
 (require 'org-tempo)
 
-(setq org-roam-link-file-path-type 'absolute)
-
-;;; Define key bindings for Org-roam
-;; Define it just for org-roam?
-(global-set-key (kbd "C-c n r") #'org-roam-buffer-toggle-display) ;; Use f1?
-(global-set-key (kbd "C-c n i") #'org-roam-insert)
-(global-set-key (kbd "C-c n f") #'org-roam-find-file)
-(global-set-key (kbd "C-c n b") #'org-roam-switch-to-buffer)
-(global-set-key (kbd "C-c n d") #'org-roam-find-directory)
-(global-set-key (kbd "C-c n n") #'org-roam-capture)
-(global-set-key (kbd "C-c n m") #'org-roam-dailies-capture-today)
-(global-set-key (kbd "C-c n s") #'helm-rg)
-
-(setq org-roam-completion-system 'helm)
-
-(setq org-roam-capture-templates
-      '(("s" "Subject" plain (function org-roam--capture-get-point)
-         "%?"
-         :file-name "%(format-time-string \"%Y-%m-%d--%H-%M-%SZ--${slug}\" (current-time) t)"
-         :head "#+title: ${title}\n#+roam_tags: subject \n\n -- tags :: \n -- keywords :: \n\n"
-         :unnarrowed t)
-        ("p" "Project Details" plain (function org-roam--capture-get-point)
-         "%?"
-         :file-name "%(format-time-string \"project-details/%Y-%m-%d--%H-%M-%SZ--${slug}\" (current-time) t)"
-         :head "#+title: ${title}\n#+roam_tags: project \n\n -- Project Name ::"
-         :unnarrowed t)
-
-        ("n" "Quick notes" plain (function org-roam--capture-get-point)
-         "%?"
-         :file-name "%(format-time-string \"./notes/%Y-%m-%d--%H-%M-%SZ--${slug}\" (current-time) t)"
-         :head "#+title: ${title}\n#+roam_tags: note \n\n -- tags :: \n -- keywords :: \n\n"
-         :unnarrowed t)
-        ("i" "Incident" plain (function org-roam--capture-get-point)
-         "%?"
-         :file-name "%(format-time-string \"./incidents/%Y-%m-%d--%H-%M-%SZ--incident-${slug}\" (current-time) t)"
-         :head "#+title: Incident: ${title}\n#+roam_tags: incident \n\n -- tags :: \n -- keywords :: \n\n"
-         :unnarrowed t)
-        )
-      )
-
-
-(setq org-roam-dailies-directory "meetings/")
-
-(setq org-roam-dailies-capture-templates
-      '(("a" "Ad-hoc meeting"  plain (function org-roam--capture-get-point)
-         "* %?"
-         :file-name "meetings/ad-hoc-%(format-time-string \"%Y\" (current-time) t)"
-         :head "#+title: ${title}\n#+roam_tags: meeting \n"
-         :unnarrowed t
-         )
-        ("e" "Escale Journal"  entry (function org-roam--capture-get-point)
-         "* %u"
-         :file-name "meetings/journal-%<%Y>"
-         :head "#+title: Journal\n#+roam_tags: journal \n"
-         :unnarrowed t
-         :olp ("Escale")
-         )
-        ("j" "Journal"  entry (function org-roam--capture-get-point)
-         "* %u"
-         :file-name "meetings/journal-%<%Y>"
-         :head "#+title: Journal\n#+roam_tags: journal \n"
-         :unnarrowed t
-         :olp ("Personal Journal")
-         )
-        ("p" "Planning" plain (function org-roam--capture-get-point)
-"* %u SPRINT #%^{PROMPT}
-
-  Pré planning checklist (Use C-c C-x C-b):
-    - [ ] Feriados Verificados
-    - [ ] Férias Verificadas
-    - [ ] Grandes eventos verificados
-
-  Planning Checklist:
-    - [ ] Objetivo da sprint Definido:
-    - [ ] Pontuação Sprint Anterior Verificada:
-    - [ ] Ballpark pontuação para esta sprint:
-    - [ ] Link para o [[https://www.scrumpoker-online.org/en/][Scrum Poker Online]] Compartilhado
-    - [ ] Escolher Tarefas Do backlog tais que encaixam no Objetivo
-      - [ ] Um plano claro de como fazer está definido
-      - [ ] Todos os recursos necessários existem
-
-** Notas
-%?"
-        :prepend t
-        :jump-to-captured t
-        :empty-lines 1
-        :file-name "meetings/ccc-planning"
-        :head "#+title: Planning\n#+roam_tags: ccc planning meeting\n"
-        :unnarrowed t
-        )
-
-        ("t" "Tim Weekly" plain (function org-roam--capture-get-point)
-         "* %u Tim Weekly\n%?"
-         :prepend t
-         :jump-to-captured t
-         :empty-lines 1
-         :file-name "meetings/ccc-tim-weekly"
-         :head "#+title: Tim Weekly\n#+roam_tags: escale ccc tim\n"
-         :unnarrowed t
-         )
-        ("1" "1o1 Ft Jullyana " plain (function org-roam--capture-get-point)
-         "* %u 1o1 Ft Jullyana\n%?"
-         :prepend t
-         :jump-to-captured t
-         :empty-lines 1
-         :file-name "meetings/1o1-jullyana"
-         :head "#+title: 1o1's Ft Jullyana\n#+roam_tags: ccc escale 1o1\n"
-         :unnarrowed t
-         )
-        ("r" "CCC Review" plain (function org-roam--capture-get-point)
-         "* %u CCC Review Sprint #%^{Sprint #}\n  - [[https://escale.atlassian.net/secure/RapidBoard.jspa?projectKey=CCC&rapidView=284][BOARD]]\n%?"
-         :prepend t
-         :jump-to-captured t
-         :empty-lines 1
-         :file-name "meetings/ccc-review"
-         :head "#+title: CCC Review \n#+roam_tags: ccc escale review\n"
-         :unnarrowed t
-         )
-        )
-      )
-
-;;;;;;;;;;;;;;;; Org Download
+;;;;;;;;;;;;;;;; org Download
 (require 'org-download)
 
 (global-set-key (kbd "C-c d y") 'org-download-yank)
@@ -392,6 +279,7 @@ Version 2018-11-12"
 (setq org-special-ctrl-a/e t) ;; Set C-a/e to go behave in relation to the headline
 (setq org-special-ctrl-k t)
 (setq org-yank-adjusted-subtrees t)
+(setq org-log-done 'time)
 
 (require 'ob-js)
 (require 'ob-async)
@@ -422,6 +310,9 @@ Version 2018-11-12"
 (add-hook 'org-mode-hook
           (lambda ()
             (local-set-key (kbd "C-c C-g") 'my-org-refile-goto)))
+
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (setq org-refile-allow-creating-parent-nodes 'confirm)
 (setq org-refile-targets '((nil :maxlevel . 1)
@@ -524,51 +415,27 @@ Version 2018-11-12"
 (add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
 
 ;; use eslint_d insetad of eslint for faster linting
-(require 'flycheck)
-(add-hook 'after-init-hook #'global-flycheck-mode)  ;; Are you sure?
-(setq-default flycheck-global-modes '(not org-mode)) ;; Disable flycheck on orgmode
-
-;; Setup TIDE
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
+;(require 'flycheck)
+;(add-hook 'after-init-hook #'global-flycheck-mode)  ;; Are you sure?
+;(setq-default flycheck-global-modes '(not org-mode)) ;; Disable flycheck on orgmode
 
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
 
-;; formats the buffer before saving
-;(add-hook 'before-save-hook 'tide-format-before-save)
-;(flycheck-add-next-checker 'javascript-eslint 'javascript-tide 'append)
-
-(add-hook 'js2-mode-hook #'setup-tide-mode)
-
-
 ;; Use eslint defaut swich-case indentation
 (setq js-switch-indent-offset 2)
 
-;; Add jest external function
+;;Add jest external function
 ;; (js2-mode
 ;;   (js2-additional-externs
 ;;    . (list "jest" "describe" "expect" "require" "beforeEach" "require" "it" "spyOn")))
 
+;; (setq j2s-global-externs
+;; 	  '("describe" "it" "test" "xtest" "xit" "expect" "spyOn" "jest"))
+
+
 ;; Require Repl
 (require 'nodejs-repl)
-
-;; (defun fp-nodejs-repl-send-dwim ()
-;;   (interactive)
-;;   (if (bound-and-true-p visual-line-mode)
-;;       (nodejs-repl-send-region ??)
-;;     (nodejs-repl-send-line)
-;;     )
-;;  )
 
 (add-hook 'js-mode-hook
           (lambda ()
@@ -580,23 +447,23 @@ Version 2018-11-12"
             ))
 
 
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-              (append flycheck-disabled-checkers
-                      '(javascript-jshint)))
+
+;; (setq-default flycheck-disabled-checkers
+;;               (append flycheck-disabled-checkers
+;;                       '(javascript-jshint)))
 
 ;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
+;;(flycheck-add-mode 'javascript-eslint 'web-mode)
 
 ;; customize flycheck temp file prefix
-(setq-default flycheck-temp-prefix ".flycheck")
+;(setq-default flycheck-temp-prefix ".flycheck")
 
 ;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(json-jsonlist)))
+;; (setq-default flycheck-disabled-checkers
+;;   (append flycheck-disabled-checkers
+;;     '(json-jsonlist)))
 
-(setq flycheck-javascript-eslint-executable "eslint_d")
+;(setq flycheck-javascript-eslint-executable "eslint_d")
 
 (setq js2-strict-missing-semi-warning nil)
 
@@ -615,7 +482,7 @@ Version 2018-11-12"
 ;; Try to highlight most ECMA built-ins
 (setq js2-highlight-level 3)
 ;; have a shorter idle time delay
-(setq js2-idle-timer-delay 0.1)
+(setq js2-idle-timer-delay 2)
 
 ;; turn off all warnings in js2-mode
 (setq js2-mode-show-parse-errors t
@@ -639,8 +506,9 @@ Version 2018-11-12"
 (js2r-add-keybindings-with-prefix "C-c C-r")
 (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
-(add-hook 'js2-mode-hook (lambda ()
-  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+;;; [repeated]
+;; (add-hook 'js2-mode-hook (lambda ()
+;;   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 
 ;; Disable completion keybindings, as we use xref-js2 instead
 ;; (define-key tern-mode-keymap (kbd "M-.") nil)
@@ -703,6 +571,9 @@ Version 2018-11-12"
 (define-key smartparens-mode-map (kbd "C-M-n") 'sp-next-sexp)
 (define-key smartparens-mode-map (kbd "C-M-b") 'sp-previous-sexp)
 (define-key smartparens-mode-map (kbd "C-c u") 'sp-unwrap-sexp)
+
+;; Set js2 as the formatter for js soruce codes in orgmode
+(push '("js" . js2) org-src-lang-modes)
 
 (defmacro def-pairs (pairs)
   "Define functions for pairing. PAIRS is an alist of (NAME . STRING)
@@ -768,6 +639,8 @@ respectively."
 (require 'lsp-mode)
 (add-hook 'js2-mode-hook #'lsp)
 
+(setq lsp-prefer-flymake :none)
+
 (require 'company-lsp)
 (push 'company-lsp company-backends)
 (setq company-show-numbers t)
@@ -778,8 +651,21 @@ respectively."
       company-lsp-async t
       company-lsp-cache-candidates nil)
 
+(setq lsp-keymap-prefix "C-c C-l")
+
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)))
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
+(add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap imenu] #'lsp-ui-imenu)))
+
+(add-hook 'go-mode-hook #'lsp-deferred)
+
+;; Set up before-save hooks to format buffer and add/delete imports.
+;; Make sure you don't have other gofmt/goimports hooks enabled.
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
+
 
 ;;;; (PYTHON)
 (elpy-enable)
@@ -816,7 +702,6 @@ respectively."
 
 (global-set-key (kbd "C-x f") 'helm-find)
 
-
 (require 'helm-projectile)
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
@@ -835,6 +720,12 @@ respectively."
 (diminish 'projectile-mode "P")
 (diminish 'helm-mode)
 (diminish 'Abbrev)
+(add-to-list 'projectile-globally-ignored-directories "node_modules")
+
+;;;;;;;;;;;;;;;; DAP Mode
+(setq dap-auto-configure-features '(sessions locals controls tooltip))
+(require 'dap-node)
+
 ;;;;;;;;;;;;;;; ORG && AGENDA
 (global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-M-RET-may-split-line nil)
@@ -891,9 +782,10 @@ respectively."
                    (org-agenda-skip-function '(org-agenda-skip-subtree-if 'regexp ":@HOME"))
                    )
                   )
-	  (tags "-Jullyana-Tamyres-toSTUDY+@ESCALE/NEXT")
+	  (tags "-Jullyana-Danilo-toSTUDY+@ESCALE/NEXT")
           (tags "+Jullyana/!-DONE-Cancelled")
-          (tags "+Tamyres/!-DONE-Cancelled")
+          (tags "+Danilo/!-DONE-Cancelled")
+          (tags "+@ESCALE/WAITING")
           ))
 	("H" "@HOME"
 	 ((agenda "" ())
@@ -965,9 +857,21 @@ respectively."
 ;; Store analogic agendas when closing emacs
 ;; (add-hook 'kill-emacs-hook 'org-store-agenda-views)
 
+(defun fp-org-journal-find-location ()
+  ;; Open today's journal, but specify a non-nil prefix argument in order to
+  ;; inhibit inserting the heading; org-capture will insert the heading.
+  (org-journal-new-entry t)
+  ;; Position point on the journal's top-level heading so that org-capture
+  ;; will add the new entry as a child entry.
+  (goto-char (point-min)))
+
 (global-set-key (kbd "C-c c") 'org-capture)
 (setq org-capture-templates
-      '(
+      `(
+        ;; ("j" "Journal entry" entry (file+olp+datetree
+        ;;                             ,(concat "~/Dropbox/gtd/note-references/journal/" (format-time-string "%Y-%W.org")))
+        ;;  "* %?\n%U" :empty-lines 1 :prepend 1)
+
         ("c" "IN" entry (file+headline "~/gtd/in.org" "IN")
          "* NEXT %?\n%U" :prepend nil)
 
@@ -1061,15 +965,15 @@ respectively."
  '(menu-bar-mode nil)
  '(org-agenda-files
    (quote
-    ("~/gtd/projects.org" "~/gtd/escale.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/tasks.org")))
+    ("~/gtd/escale.org" "~/gtd/projects.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/tasks.org")))
  '(org-stuck-projects
    (quote
     ("+LEVEL=1/-DONE"
      ("TODO" "NEXT" "NEXTACTION")
-     nil "")))
+     nil "")) t)
  '(package-selected-packages
    (quote
-    (org-journal kubernetes dumb-jump org-download ob-async helm-rg org-roam ob-http terraform-mode jq-mode jq-format list-packages-ext js-comint forge jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
+    (plantuml-mode go-mode edit-indirect devdocs helm-lsp org-journal kubernetes dumb-jump org-download ob-async helm-rg org-roam ob-http terraform-mode jq-mode jq-format list-packages-ext js-comint forge jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
  '(projectile-other-file-alist
    (quote
     (("cpp" "h" "hpp" "ipp")

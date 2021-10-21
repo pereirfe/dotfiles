@@ -15,6 +15,16 @@ interval=60
 # #MIXER=[determined automatically]
 # #SCONTROL=[determined automatically]
 
+[pomodoro]
+command=$SCRIPT_DIR/gnome-pomo
+interval=1
+
+[pymodoro-control]
+command=/usr/bin/pymodoro-i3blocks
+instance=/run/user/1000/pymodoro_session
+interval=once
+format=json
+
 [load]
 label=
 command=$SCRIPT_DIR/load_average/load_average
