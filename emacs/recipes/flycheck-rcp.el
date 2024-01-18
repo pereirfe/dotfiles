@@ -12,7 +12,9 @@
   (flycheck-add-mode 'javascript-eslint 'web-mode)     ;; use eslint with web-mode for jsx files
   (flycheck-add-mode 'javascript-eslint 'js2-mode)
   (setq-default flycheck-temp-prefix ".flycheck")      ;; customize flycheck temp file prefix
+  (setq flycheck-idle-change-delay '5)
   )
+
 
 (use-package flycheck-jest
   :after flycheck

@@ -1,3 +1,4 @@
+
 ;;; org-roam-rcp.el --- This configures the org-journal system
 
 ;;; Code:
@@ -6,7 +7,8 @@
   :defer t
   :init
   (setq org-roam-v2-ack t)
-  :hook (org-mode . fp-org-hide-properties)
+  :hook
+  (org-mode . fp-org-hide-properties)
   :bind (("C-c n r" . org-roam-buffer-toggle) ;; Use f1?
          ("C-c n i" . org-roam-node-insert)
          ("C-c n f" . org-roam-node-find)
@@ -24,19 +26,19 @@
   (setq org-roam-dailies-directory "meetings/")
   (setq org-roam-capture-templates
         '(("s" "Subject" plain "%?"
-           :target (file+head "%<%Y-%m-%d--%H-%M-%SZ>--${slug}.org" "#+title: ${title}\n#+filetags: :subject: \n\n -- tags :: \n -- keywords :: \n\n")
+           :target (file+head "%<%Y-%m-%d--%H-%M-%SZ>--${slug}.org" "#+title: ${title}\n#+filetags: \n\n -- tags :: \n -- keywords :: \n\n")
            :empty-lines 1
            :unnarrowed t)
           ("p" "Project Details" plain "%?"
            :target (file+head "project-details/%<%Y-%m-%d--%H-%M-%SZ>--${slug}.org" "#+title: ${title}\n#+filetags: :project: \n\n -- Project Name:: ")
            :unnarrowed t)
           ("n" "Quick notes" entry "* %?"
-           :target (file+head "notes/%<%Y-%m-%d--%H-%M-%SZ>--${slug}.org" "#+title: ${title}\n#+filetags: :note: \n\n -- tags :: \n -- keywords :: \n\n")
+           :target (file+head "notes/%<%Y-%m-%d--%H-%M-%SZ>--${slug}.org" "#+title: ${title}\n#+filetags: \n\n -- tags :: \n -- keywords :: \n\n")
            :unnarrowed t)
-          ("i" "Incident" plain "%?"
-           "%?"
-           :target (file+head "incidents/%<%Y-%m-%d--%H-%M-%SZ>--${slug}.org" "#+title: ${title}\n#+filetags: :note: \n\n -- tags :: \n -- keywords :: \n\n")
+          ("t" "Task solving" plain (file "~/gtd/note-references/Templates/task-solving.org")
+           :if-new (file+head "tasks/%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
            :unnarrowed t)
+
           )
         )
 
@@ -47,12 +49,12 @@
            :head "#+title: ${title}\n#+roam_tags: meeting \n"
            :unnarrowed t
            )
-          ("e" "Escale Journal"  entry (function org-roam--capture-get-point)
+          ("e" "Wildlife Journal"  entry (function org-roam--capture-get-point)
            "* %u"
            :file-name "meetings/journal-%<%Y>"
            :head "#+title: Journal\n#+roam_tags: journal \n"
            :unnarrowed t
-           :olp ("Escale")
+           :olp ("Wildlife")
            )
           ("j" "Journal"  entry (function org-roam--capture-get-point)
            "* %u"
@@ -61,58 +63,11 @@
            :unnarrowed t
            :olp ("Personal Journal")
            )
-          ("p" "Planning" plain (function org-roam--capture-get-point)
-           "* %u SPRINT #%^{PROMPT}
-
-  Pré planning checklist (Use C-c C-x C-b):
-    - [ ] Feriados Verificados
-    - [ ] Férias Verificadas
-    - [ ] Grandes eventos verificados
-
-  Planning Checklist:
-    - [ ] Objetivo da sprint Definido:
-    - [ ] Pontuação Sprint Anterior Verificada:
-    - [ ] Ballpark pontuação para esta sprint:
-    - [ ] Link para o [[https://www.scrumpoker-online.org/en/][Scrum Poker Online]] Compartilhado
-    - [ ] Escolher Tarefas Do backlog tais que encaixam no Objetivo
-      - [ ] Um plano claro de como fazer está definido
-      - [ ] Todos os recursos necessários existem
-
-** Notas
-%?"
+          ("1" "1o1 Ft Regis " plain "* %u 1o1 Ft Regis\n%?"
+           :target (file+head "1o1-regis.org" "#+title: 1o1's Ft Regis\n#+filetags: ccc wildlife 1o1\n")
            :prepend t
            :jump-to-captured t
            :empty-lines 1
-           :file-name "meetings/ccc-planning"
-           :head "#+title: Planning\n#+roam_tags: ccc planning meeting\n"
-           :unnarrowed t
-           )
-
-          ("t" "Tim Weekly" plain (function org-roam--capture-get-point)
-           "* %u Tim Weekly\n%?"
-           :prepend t
-           :jump-to-captured t
-           :empty-lines 1
-           :file-name "meetings/ccc-tim-weekly"
-           :head "#+title: Tim Weekly\n#+roam_tags: escale ccc tim\n"
-           :unnarrowed t
-           )
-          ("1" "1o1 Ft Jullyana " plain (function org-roam--capture-get-point)
-           "* %u 1o1 Ft Jullyana\n%?"
-           :prepend t
-           :jump-to-captured t
-           :empty-lines 1
-           :file-name "meetings/1o1-jullyana"
-           :head "#+title: 1o1's Ft Jullyana\n#+roam_tags: ccc escale 1o1\n"
-           :unnarrowed t
-           )
-          ("r" "CCC Review" plain (function org-roam--capture-get-point)
-           "* %u CCC Review Sprint #%^{Sprint #}\n  - [[https://escale.atlassian.net/secure/RapidBoard.jspa?projectKey=CCC&rapidView=284][BOARD]]\n%?"
-           :prepend t
-           :jump-to-captured t
-           :empty-lines 1
-           :file-name "meetings/ccc-review"
-           :head "#+title: CCC Review \n#+roam_tags: ccc escale review\n"
            :unnarrowed t
            )
           )
@@ -157,8 +112,13 @@
                          (org-roam-node-id node)))))
       (format "[%d]" count)))
 
-  (setq org-roam-node-display-template "${directories:10} ${tags:10} ${title:50} ${backlinkscount:6}")
+  (setq org-roam-node-display-template "${directories:25} ${tags:15} ${title:50} ${backlinkscount:6}")
 
+  ;; Run this function when having issues with id references not being found
+  (defun fp-org-id-update-org-roam-files ()
+    "Update Org-ID locations for all Org-roam files."
+    (interactive)
+    (org-id-update-id-locations (directory-files-recursively "~/gtd/note-references" "org$") ))
 
   )
 

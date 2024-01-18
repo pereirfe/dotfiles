@@ -3,7 +3,7 @@
 ;;; Code:
 (use-package org-journal
  :init
- (setq org-journal-prefix-key "C-c C-j ")
+ (setq org-journal-prefix-key "C-c j")
  :config
   (setq org-journal-dir "~/Dropbox/gtd/note-references/journal")
   (setq org-journal-file-format "%Y-%V")
@@ -17,7 +17,7 @@
     (save-buffer)
     (kill-buffer-and-window))
 
-  (define-key org-journal-mode-map (kbd "C-c C-c") 'org-journal-save-entry-and-exit)
+  (define-key org-journal-mode-map (kbd "C-c C-s") 'org-journal-save-entry-and-exit)
 
   (setq org-journal-time-prefix "\n** ")
   (defun org-journal-file-header-func (time)
@@ -25,7 +25,7 @@
     (concat
      (pcase org-journal-file-type
        (`daily "#+TITLE: Daily Journal\n#+STARTUP: showeverything")
-       (`weekly "#+TITLE: Weekly Journal\n#+TAGS: escale(e) personal(p)\n#+STARTUP: folded\n\n")
+       (`weekly "#+TITLE: Weekly Journal\n#+TAGS: PREP(P) MEET(M) REVIEWED(R)\n#+STARTUP: folded\n\n")
        (`monthly "#+TITLE: Monthly Journal\n#+STARTUP: folded")
        (`yearly "#+TITLE: Yearly Journal\n#+STARTUP: folded"))))
 

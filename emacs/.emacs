@@ -5,11 +5,14 @@
 ;; Install Packages
 ;; --------------------
 (require 'package)
+(require 'quelpa-use-package)
 
 (setq package-archives
-      '(("melpa" . "https://melpa.org/packages/")
-        ("gnu" . "https://elpa.gnu.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
+      '(("gnu" . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")
+	;;        ("org" . "http://orgmode.org/elpa/")
+	)
+      )
 
 (package-initialize)
 (when (not package-archive-contents)
@@ -19,21 +22,26 @@
 ;; If some package is missing from melpa, try M-x package-refresh-contents
 (defvar myPackages
   '(material-theme
+    magit-todos
     olivetti
     helm-dash
     use-package
     nodejs-repl
+    sx
+    quelpa
     org-journal
     org-bullets
+    terraform-mode
     js2-mode  ;; Javascript with better syntax higlight
     js2-refactor ;; Js refactoring tools
+    pyvenv
     json-mode
     rjsx-mode
     xref-js2   ;; Js cross-references (AST-based)
     jest
     ;;company-tern ;; Js Autocomplete. Require npm tern
     lsp-mode
-    company-lsp  ;; No more supported
+    ob-http
     lsp-ui
     dap-mode
     color-theme-sanityinc-tomorrow
@@ -69,7 +77,7 @@
     org-download
     dumb-jump
     ;; tide
-    elpy))
+    ))
 
 (mapc #'(lambda (package)
 	  (unless (package-installed-p package)
@@ -89,8 +97,22 @@
 (require 'flycheck-rcp)
 (require 'olivetti-rcp)
 (require 'helm-dash-rcp)
+(require 'dap-mode-rcp)
+(require 'python-rcp)
+(require 'sx-rcp)
+(require 'go-rcp)
+(require 'magit-todos-rcp)
+(require 'copilot-rcp)
 
-(setq org-id-link-to-org-use-id t)
+;; (when (eq system-type 'darwin)
+;;   (setq mac-command-modifier 'meta)
+;;   (setq mac-option-modifier nil))
+
+;; Tries to improve performance
+(setq gc-cons-threshold 100000000)
+(setq read-process-output-max (* 1024 1024)) ;; 1mb
+
+(setq org-id-link-to-org-use-id "create-if-interactive")
 
 (setq plantuml-jar-path "~/.local/bin/plantuml.jar")
 (setq plantuml-default-exec-mode 'jar)
@@ -109,13 +131,13 @@
 
 (global-set-key (kbd "C-c d y") 'org-download-yank)
 (global-set-key (kbd "C-c d Y") 'org-download-screenshot)
+(when (eq system-type 'darwin)
+  (setq org-download-screenshot-method "screencapture -i %s")
+  )
+
 (setq-default org-download-image-dir "~/gtd/note-references/.imgsrc")
 
-
 ;;;;;;;;;;;;;;;; FUNDAMENTAL TEXT EDITION
-(setq-default word-wrap t)
-(setq-default truncate-lines nil)
-
 ;; Remove non-ascii characters
 (defun xah-asciify-text (&optional @begin @end)
   "Remove accents in some letters and some
@@ -177,6 +199,7 @@ Version 2018-11-12"
         (not
          (or
           (string-match-p "\\*Org Agenda\\*" (buffer-name buffer))
+          (string-match-p "\\*Find\\*" (buffer-name buffer))
           (string-match-p "\\*scratch\\*" (buffer-name buffer)))
          )
         )
@@ -284,10 +307,6 @@ Version 2018-11-12"
 (require 'ob-js)
 (require 'ob-async)
 
-;; (add-to-list 'org-babel-load-languages '(emacs-lisp . t))
-;; (add-to-list 'org-babel-load-languages '(js . t))
-;; (add-to-list 'org-babel-load-languages '(restclient . t))
-
 ;; Load languages to run on ORG
 (org-babel-do-load-languages
  'org-babel-load-languages
@@ -320,6 +339,7 @@ Version 2018-11-12"
                              "~/gtd/projects.org"
                              "~/gtd/soon.org"
                              "~/gtd/escale.org"
+                             "~/gtd/wildlife.org"
                              "~/gtd/tickler.org"
                              "~/gtd/tasks.org") :maxlevel . 1)))
 (setq org-refile-use-outline-path 'file)                  ; Show full paths for refiling
@@ -329,13 +349,11 @@ Version 2018-11-12"
 (setq x-select-enable-clipboard t
 	  x-select-enable-primary t)
 
-(setq org-stuck-projects '("+LEVEL=1" ("NEXT") nil "org-gcal:"))
-
 (require 're-builder)
 (setq reb-re-syntax 'string)
 
-(setq browse-url-browser-function 'browse-url-generic
-      browse-url-generic-program "google-chrome")
+;; (setq browse-url-browser-function 'browse-url-generic
+;;       browse-url-generic-program "google-chrome")
 
 ;; Tmux Copypast
 (setq x-select-enable-clipboard t
@@ -343,7 +361,61 @@ Version 2018-11-12"
 
 
 ;; Move backup files from working directory
-(setq backup-directory-alist `(("." . "~/.saves")))
+;; Put autosave files (ie #foo#) and backup files (ie foo~) in ~/.emacs.d/.
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default bold shadow italic underline bold bold-italic bold])
+ '(auto-save-file-name-transforms '((".*" "~/.emacs.d/autosaves/\\1" t)))
+ '(backup-directory-alist '((".*" . "~/.emacs.d/backups/")))
+ '(column-number-mode nil)
+ '(inhibit-startup-screen t)
+ '(large-file-warning-threshold nil)
+ '(magit-todos-keywords (list "FPTODO" "FP-TODO" "FPFIX" "FPDEL"))
+ '(menu-bar-mode nil)
+ '(org-agenda-files
+   '("/Users/fernando.pereira/gtd/projects.org" "/Users/fernando.pereira/gtd/tickler.org" "/Users/fernando.pereira/gtd/events.org" "/Users/fernando.pereira/gtd/wildlife.org" "/Users/fernando.pereira/gtd/birthdays.org" "/Users/fernando.pereira/gtd/tasks.org"))
+ '(org-stuck-projects '("+LEVEL=1/-DONE" ("TODO" "NEXT" "NEXTACTION") nil ""))
+ '(package-selected-packages
+   '(quelpa-use-package quelpa editorconfig magit-todos ripgrep plantuml-mode go-mode edit-indirect devdocs helm-lsp org-journal kubernetes dumb-jump org-download ob-async helm-rg org-roam ob-http terraform-mode jq-mode jq-format list-packages-ext js-comint jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smartparens powerline noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag))
+ '(projectile-other-file-alist
+   '(("cpp" "h" "hpp" "ipp")
+     ("ipp" "h" "hpp" "cpp")
+     ("hpp" "h" "ipp" "cpp" "cc")
+     ("cxx" "h" "hxx" "ixx")
+     ("ixx" "h" "hxx" "cxx")
+     ("hxx" "h" "ixx" "cxx")
+     ("c" "h")
+     ("m" "h")
+     ("mm" "h")
+     ("h" "c" "cc" "cpp" "ipp" "hpp" "cxx" "ixx" "hxx" "m" "mm")
+     ("cc" "h" "hh" "hpp")
+     ("hh" "cc")
+     ("vert" "frag")
+     ("frag" "vert")
+     (nil "lock" "gpg")
+     ("lock" "")
+     ("gpg" "")
+     ("js" "js" "test.js")))
+ '(safe-local-variable-values
+   '((TeX-master . "../hydra.tex")
+     (TeX-master . t)
+     (eval add-hook 'after-save-hook 'org-html-export-to-html t t)))
+ '(scroll-bar-mode nil)
+ '(send-mail-function 'smtpmail-send-it)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil)
+ '(tooltip-mode nil)
+ '(vc-annotate-background nil)
+ '(vc-annotate-very-old-color nil)
+ '(warning-suppress-log-types '((comp)))
+ '(warning-suppress-types '((comp))))
+
+;; create the autosave dir if necessary, since emacs won't.
+(make-directory "~/.emacs.d/autosaves/" t)
 
 ;; Auto-revert Mode Global
 (global-auto-revert-mode 1)
@@ -378,16 +450,6 @@ Version 2018-11-12"
 (setq powerline-default-separator 'wave)
 
 
-;;;;;;;;;;;;;;;; Integration
-;; Allow Integration with googlechrome
-;; (require 'atomic-chrome)
-;; (atomic-chrome-start-server)
-;; (setq atomic-chrome-buffer-open-style 'frame)
-;; (setq atomic-chrome-default-major-mode 'LaTeX-mode)
-;; ;; (setq atomic-chrome-url-major-mode-alist
-;; ;;       '(("overleaf\\.com" . 'LaTeX-mode)
-;; ;;         ("github\\.com" . 'python-mode)))
-
 ;;;;;;;;;;;;;;;; CODING / Code
 
 ;;;;;; Yaml
@@ -407,12 +469,13 @@ Version 2018-11-12"
 (add-hook 'eshell-mode-hook #'visual-line-mode)
 
 ;;;; Javascript
-;;(require 'json)
+(require 'json)
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . rjsx-mode))
 (add-hook 'javascript-mode-hook (lambda () (setq font-lock-mode nil)))
+(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
+
 
 ;; use eslint_d insetad of eslint for faster linting
 ;(require 'flycheck)
@@ -437,14 +500,14 @@ Version 2018-11-12"
 ;; Require Repl
 (require 'nodejs-repl)
 
-(add-hook 'js-mode-hook
-          (lambda ()
-            (define-key js-mode-map (kbd "C-x C-e") 'nodejs-repl-send-last-expression)
-            ;; (define-key js-mode-map (kbd "C-c C-j") 'nodejs-repl-send-line)
-            ;; (define-key js-mode-map (kbd "C-c C-r") 'nodejs-repl-send-region)
-            ;; (define-key js-mode-map (kbd "C-c C-l") 'nodejs-repl-load-file)
-            ;; (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl)
-            ))
+;; (add-hook 'js-mode-hook
+;;           (lambda ()
+;;             (define-key js-mode-map (kbd "C-x C-e") 'nodejs-repl-send-last-expression)
+;;             ;; (define-key js-mode-map (kbd "C-c C-j") 'nodejs-repl-send-line)
+;;             ;; (define-key js-mode-map (kbd "C-c C-r") 'nodejs-repl-send-region)
+;;             ;; (define-key js-mode-map (kbd "C-c C-l") 'nodejs-repl-load-file)
+;;             ;; (define-key js-mode-map (kbd "C-c C-z") 'nodejs-repl-switch-to-repl)
+;;             ))
 
 
 
@@ -465,36 +528,36 @@ Version 2018-11-12"
 
 ;(setq flycheck-javascript-eslint-executable "eslint_d")
 
-(setq js2-strict-missing-semi-warning nil)
+;(setq js2-strict-missing-semi-warning nil)
 
 
 ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
 ;; unbind it.
-(define-key js-mode-map (kbd "M-.") nil)
+;;(define-key js-mode-map (kbd "M-.") nil)
 
 ;; Disable code folding
-(define-key js2-mode-map (kbd "C-c C-o") nil)
+;;(define-key js2-mode-map (kbd "C-c C-o") nil)
 
-(add-hook 'js2-mode-hook (lambda ()
-                           (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
-(add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
+;; (add-hook 'js2-mode-hook (lambda ()
+;;                            (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+;; (add-hook 'js2-mode-hook (lambda () (setq js2-basic-offset 2)))
 
 ;; Try to highlight most ECMA built-ins
-(setq js2-highlight-level 3)
+;;(setq js2-highlight-level 3)
 ;; have a shorter idle time delay
-(setq js2-idle-timer-delay 2)
+;;(setq js2-idle-timer-delay 2)
 
 ;; turn off all warnings in js2-mode
-(setq js2-mode-show-parse-errors t
-      js2-mode-show-strict-warnings nil
-      js2-strict-missing-semi-warning nil
-      js2-strict-trailing-comma-warning nil)
+;; (setq js2-mode-show-parse-errors t
+;;       js2-mode-show-strict-warnings nil
+;;       js2-strict-missing-semi-warning nil
+;;       js2-strict-trailing-comma-warning nil)
 
 (require 'company)
 ;; (require 'company-tern)
 
 ;; Better imenu
-(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+;(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
 
 
 ;;(add-to-list 'company-backends 'company-tern)
@@ -502,9 +565,9 @@ Version 2018-11-12"
 ;;                            (tern-mode)
 ;;                            (company-mode)))
 
-(add-hook 'js2-mode-hook #'js2-refactor-mode)
-(js2r-add-keybindings-with-prefix "C-c C-r")
-(define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+;; (add-hook 'js2-mode-hook #'js2-refactor-mode)
+;; (js2r-add-keybindings-with-prefix "C-c C-r")
+;; (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
 
 ;;; [repeated]
 ;; (add-hook 'js2-mode-hook (lambda ()
@@ -514,7 +577,10 @@ Version 2018-11-12"
 ;; (define-key tern-mode-keymap (kbd "M-.") nil)
 ;; (define-key tern-mode-keymap (kbd "M-,") nil)
 ;; (define-key tern-mode-keymap (kbd "C-c C-r") nil)
-(define-key js-mode-map (kbd "M-.") nil)
+;(define-key js-mode-map (kbd "M-.") nil)
+
+;; FRAME
+(define-key global-map (kbd "C-M-o") 'other-frame)
 
 (add-to-list 'auto-mode-alist '("\\.rest\\'" . restclient-mode))
 (define-key global-map (kbd "RET") 'newline-and-indent)
@@ -615,7 +681,7 @@ respectively."
 
 (require 'expand-region)
 (global-set-key (kbd "C-=") 'er/expand-region)
-(global-set-key (kbd "C-c s") 'imenu)
+(global-set-key (kbd "C-c i") 'imenu)
 
 ;; Delete trailing spaces before saving
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
@@ -638,51 +704,28 @@ respectively."
 ;;https://github.com/emacs-lsp/lsp-mode
 (require 'lsp-mode)
 (add-hook 'js2-mode-hook #'lsp)
+(add-hook 'python-mode-hook #'lsp)
+
 
 (setq lsp-prefer-flymake :none)
 
-(require 'company-lsp)
-(push 'company-lsp company-backends)
+;; (require 'company-lsp)
+;; (push 'company-lsp company-backends)
 (setq company-show-numbers t)
 (require 'lsp-ui)
+(setq lsp-ui-doc-enable nil)
 (add-hook 'lsp-mode-hook #'lsp-ui-mode)
 
-(setq company-transformers nil
-      company-lsp-async t
-      company-lsp-cache-candidates nil)
+;; (setq company-transformers nil
+;;       company-lsp-async t
+;;       company-lsp-cache-candidates nil)
 
-(setq lsp-keymap-prefix "C-c C-l")
+;;(setq lsp-keymap-prefix "C-c C-l")
+(define-key lsp-mode-map (kbd "C-c C-l") lsp-command-map)
 
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)))
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)))
 (add-hook 'lsp-mode-hook (lambda() (define-key lsp-ui-mode-map [remap imenu] #'lsp-ui-imenu)))
-
-(add-hook 'go-mode-hook #'lsp-deferred)
-
-;; Set up before-save hooks to format buffer and add/delete imports.
-;; Make sure you don't have other gofmt/goimports hooks enabled.
-(defun lsp-go-install-save-hooks ()
-  (add-hook 'before-save-hook #'lsp-format-buffer t t)
-  (add-hook 'before-save-hook #'lsp-organize-imports t t))
-(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
-
-
-;;;; (PYTHON)
-(elpy-enable)
-(pyvenv-workon "python3emacs")
-
-(require 'sgml-mode)
-
-(defun reformat-xml ()
-  (interactive)
-  (save-excursion
-    (sgml-pretty-print (point-min) (point-max))
-        (indent-region (point-min) (point-max))))
-
-(setq default-tab-width 4)
-(defvaralias 'c-basic-offset 'tab-width)
-(defvaralias 'cperl-indent-level 'tab-width)
-
 
 ;;;;;;;;;;;;;;; HELM && PROJECTILE
 
@@ -725,13 +768,13 @@ respectively."
 ;;;;;;;;;;;;;;;; DAP Mode
 (setq dap-auto-configure-features '(sessions locals controls tooltip))
 (require 'dap-node)
+(require 'dap-python)
 
 ;;;;;;;;;;;;;;; ORG && AGENDA
 (global-set-key (kbd "C-c a") 'org-agenda)
 (setq org-M-RET-may-split-line nil)
 (setq org-catch-invisible-edits 'show-and-error)
 (setq org-agenda-span 'day)
-;;(add-hook 'org-mode-hook (lambda () (company-mode -1)))
 (add-to-list 'company-backends 'company-capf)
 
 (setq org-src-preserve-indentation nil
@@ -743,6 +786,7 @@ respectively."
         "~/gtd/escale.org"
         "~/gtd/tickler.org"
         "~/gtd/events.org"
+        "~/gtd/wildlife.org"
         "~/gtd/birthdays.org"
         "~/gtd/tasks.org")))
 
@@ -756,7 +800,7 @@ respectively."
   (org-open-file "~/gtd/4kft.org")
   )
 
-(global-set-key (kbd "<f12>") 'fp-org-open-4kft)
+(global-set-key (kbd "<f11>") 'fp-org-open-4kft)
 
 (progn
   (require 'org)
@@ -775,71 +819,72 @@ respectively."
 (setq org-fast-tag-selection-single-key t)
 (setq org-agenda-custom-commands
       ;; M -> Meeting
-      '(("E" "@ESCALE"
+      ;; G -> GTD specific view
+      '(
+        ("W" "@Wildlife Time"
 	 ((agenda ""
                   (
                    (org-agenda-time-grid nil)
                    (org-agenda-skip-function '(org-agenda-skip-subtree-if 'regexp ":@HOME"))
                    )
                   )
-	  (tags "-Jullyana-Danilo-toSTUDY+@ESCALE/NEXT")
-          (tags "+Jullyana/!-DONE-Cancelled")
-          (tags "+Danilo/!-DONE-Cancelled")
-          (tags "+@ESCALE/WAITING")
+	  (tags "+@WLShours-toSTUDY/NEXT") ;; First, just WLS
+          (tags "+@WLShours/WAITING")
+          (tags "+toSTUDY/NEXT")
+          (tags "+Battlestation/NEXT")
+          (tags "+Personal/NEXT")
+          (tags "+MOBILE/NEXT")
           ))
 	("H" "@HOME"
 	 ((agenda "" ())
 	  (tags "+@HOME/NEXT")
+          (tags "+Personal/NEXT")
 	  (tags "+Battlestation/NEXT")
 	  (tags "+MOBILE/NEXT")
+	  ))
+        ("P" "Personal"
+	 ((agenda "" (
+                      (org-agenda-time-grid nil)
+                      (org-agenda-skip-function '(org-agenda-skip-subtree-if 'regexp ":@HOME"))
+                      ))
+	  (tags "+Personal/NEXT")
+          (tags "+Battlestation/NEXT")
 	  ))
         ("S" "toSTUDY"
 	 ((tags "+toSTUDY/NEXT")
 	  ))
-        ("T" "Thesis"
-	 ((tags "+Thesis/NEXT")
+        ("F" "Fim de semana"
+	 ((tags "+FDS/NEXT")
 	  ))
-	("MN" "Nelson"
-	 ((tags "+Nelson+TODO=\"NEXT\"|+Nelson+TODO=\"WAITING\""
-		((org-agenda-prefix-format "[ ] %-20b:")
-		 (org-agenda-sorting-strategy '(tag-up priority-down))
-		 (org-agenda-overriding-header "\nReunião Nelson\n------------------\n"))))
-         ((org-agenda-compact-blocks t)
-          (org-agenda-remove-tags t)
-          (ps-number-of-columns 2)
-		  (ps-landscape-mode t)))
-		("MC" "Carlos"
-		 ((tags "+Carlos+TODO=\"NEXT\"|+Carlos+TODO=\"WAITING\"")
-		  ))
-		("O" "MOBILE+OUTSIDE"
-		 ((tags "+MOBILE/NEXT")
-		  (tags "+OUTSIDE/NEXT")
-		  ))
-		("W" "Waiting"
-		 ((todo "WAITING")
-		  ))
+	("O" "MOBILE+OUTSIDE"
+	 ((tags "+MOBILE/NEXT")
+	  (tags "+OUTSIDE/NEXT")
+	  ))
+	("GW" "Waiting"
+	 ((todo "WAITING")
+	  ))
 
-		("w" "Week-long"
-		 ((agenda "" ((org-agenda-span 15)))
-		  ))
+	("Gw" "Week-long"
+	 ((agenda "" ((org-agenda-span 15)))
+	  ))
 
-		("P" "Printed agenda"
-		 ((tags "+OUTSIDE+PLACE=\"\"/NEXT"
+	("GP" "Printed agenda"
+	 ((tags "+OUTSIDE+PLACE=\"\"/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nErrands (General)\n------------------\n")))
-		  (tags "+MOBILE/NEXT"
+	  (tags "+MOBILE/NEXT"
                 ((org-agenda-prefix-format "[ ] %T: ")
                  (org-agenda-sorting-strategy '(tag-up priority-down))
                  (org-agenda-todo-keyword-format "")
                  (org-agenda-overriding-header "\nMobile\n------------------\n"))))
-		 ((org-agenda-compact-blocks t)
+	 ((org-agenda-compact-blocks t)
           (org-agenda-remove-tags t)
           (ps-number-of-columns 2)
-		  (ps-landscape-mode t))
+	  (ps-landscape-mode t))
          ("~/gtd/Offline/OUTSIDE.txt"))
-		)
+	)
       )
 
 ;; Effort and global properties
@@ -878,19 +923,15 @@ respectively."
         ("S" "toSTUDY" entry (file+headline "~/gtd/tasks.org" "TASKS")
          "* NEXT %? :toSTUDY: \n%u\n" :prepend 1 :empty-lines 1)
 
-        ("e" "Escale")
-        ("et" "Escale Task" entry (file+headline "~/gtd/escale.org" "TASKS")
+        ("w" "Wildlife")
+        ("wt" "Wildlife Task" entry (file+headline "~/gtd/wildlife.org" "TASKS")
          "* NEXT %? %^g \n%u\n" :prepend 1 :empty-lines 1)
-        ("ep" "Escale Project" entry (file "~/gtd/escale.org")
-         "* %?%\n" :prepend nil :empty-lines 1)
-        ("es" "Escale This Sprint" entry (file+headline "~/gtd/escale.org" "THIS SPRINT")
-         "* NEXT %? :@ESCALE: \n%u\n" :prepend 1 :empty-lines 1)
 
         ("g" "General")
         ("gt" "General Task" entry (file+headline "~/gtd/tasks.org" "TASKS")
          "* NEXT %? %^g\n%u\n" :prepend 1 :empty-lines 1)
         ("gw" "General Waiting" entry (file+headline "~/gtd/tasks.org" "TASKS")
-         "* WAITING  %? %^g\n%u\n" :prepend 1 :empty-lines 1)
+         "* WAITING %? :@HOME: \n%u\n" :prepend 1 :empty-lines 1)
 
         ("i" "Items")
         ("im" "Item: Movies" entry (file+headline "~/gtd/someday.org" "Watch Movies")
@@ -928,17 +969,16 @@ respectively."
 ;; GTD implementation
 (setq org-tag-alist '((:startgroup . nil)
                       ("@HOME" . ?h)
-                      ("@ESCALE" . ?e)
                       ("OUTSIDE" . ?o)
                       (:endgroup . nil)
                       (:startgroup . nil)
-                      ("LowEnergy" . ?L)
-                      ("HighEnergy" . ?H)
+                      ("@WLShours" . ?w)
+                      ("Personal" . ?p)
                       (:endgroup . nil)
+                      ("FDS" . ?f)
                       ("toSTUDY" . ?s)
 		      ("MOBILE" . ?m)
 		      ("Battlestation" . ?b)
-                      ("Thesis" . ?t)
 		      )
       )
 
@@ -952,63 +992,7 @@ respectively."
 (setq org-use-tag-inheritance t)
 
 
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ansi-color-faces-vector
-   [default bold shadow italic underline bold bold-italic bold])
- '(column-number-mode nil)
- '(inhibit-startup-screen t)
- '(large-file-warning-threshold nil)
- '(menu-bar-mode nil)
- '(org-agenda-files
-   (quote
-    ("~/gtd/escale.org" "~/gtd/projects.org" "~/gtd/tickler.org" "~/gtd/events.org" "~/gtd/birthdays.org" "~/gtd/tasks.org")))
- '(org-stuck-projects
-   (quote
-    ("+LEVEL=1/-DONE"
-     ("TODO" "NEXT" "NEXTACTION")
-     nil "")) t)
- '(package-selected-packages
-   (quote
-    (plantuml-mode go-mode edit-indirect devdocs helm-lsp org-journal kubernetes dumb-jump org-download ob-async helm-rg org-roam ob-http terraform-mode jq-mode jq-format list-packages-ext js-comint forge jedi babel yaml-mode ace-window csv-mode atomic-chrome org-ref yasnippet-snippets company-auctex auctex yasnippet-classic-snippets sx exec-path-from-shell company-jedi highlight-indent-guides company-anaconda rtags diminish company-irony irony markdown-mode+ markdown-mode academic-phrases borg deferred helm-ag helm anaconda-mode zenburn-theme w3m visible-mark smartparens python-environment py-autopep8 powerline org noctilux-theme material-theme magit impatient-mode ggtags flycheck find-file-in-repository expand-region elpy ctags-update ctable avy auto-complete ag)))
- '(projectile-other-file-alist
-   (quote
-    (("cpp" "h" "hpp" "ipp")
-     ("ipp" "h" "hpp" "cpp")
-     ("hpp" "h" "ipp" "cpp" "cc")
-     ("cxx" "h" "hxx" "ixx")
-     ("ixx" "h" "hxx" "cxx")
-     ("hxx" "h" "ixx" "cxx")
-     ("c" "h")
-     ("m" "h")
-     ("mm" "h")
-     ("h" "c" "cc" "cpp" "ipp" "hpp" "cxx" "ixx" "hxx" "m" "mm")
-     ("cc" "h" "hh" "hpp")
-     ("hh" "cc")
-     ("vert" "frag")
-     ("frag" "vert")
-     (nil "lock" "gpg")
-     ("lock" "")
-     ("gpg" "")
-     ("js" "js" "test.js"))))
- '(safe-local-variable-values
-   (quote
-    ((TeX-master . "../hydra.tex")
-     (TeX-master . t)
-     (eval add-hook
-           (quote after-save-hook)
-           (quote org-html-export-to-html)
-           t t))))
- '(scroll-bar-mode nil)
- '(send-mail-function (quote smtpmail-send-it))
- '(show-paren-mode t)
- '(tool-bar-mode nil)
- '(tooltip-mode nil)
- '(vc-annotate-background nil)
- '(vc-annotate-very-old-color nil))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
