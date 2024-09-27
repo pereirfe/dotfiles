@@ -8,7 +8,7 @@
 (require 'quelpa-use-package)
 
 (setq package-archives
-      '(("gnu" . "https://elpa.gnu.org/packages/")
+      '(;("gnu" . "https://elpa.gnu.org/packages/")
         ("melpa" . "https://melpa.org/packages/")
 	;;        ("org" . "http://orgmode.org/elpa/")
 	)
@@ -28,6 +28,7 @@
     use-package
     nodejs-repl
     sx
+    yaml-mode
     quelpa
     org-journal
     org-bullets
@@ -84,6 +85,10 @@
 	    (package-install package)))
       myPackages)
 
+(set-language-environment "UTF-8")
+(set-default-coding-systems 'utf-8)
+(prefer-coding-system 'utf-8)
+
 ;; Use Package
 ;; -----------
 (eval-when-compile
@@ -103,10 +108,12 @@
 (require 'go-rcp)
 (require 'magit-todos-rcp)
 (require 'copilot-rcp)
+;(require 'gpt-rcp)
 
 ;; (when (eq system-type 'darwin)
 ;;   (setq mac-command-modifier 'meta)
 ;;   (setq mac-option-modifier nil))
+
 
 ;; Tries to improve performance
 (setq gc-cons-threshold 100000000)
@@ -116,6 +123,9 @@
 
 (setq plantuml-jar-path "~/.local/bin/plantuml.jar")
 (setq plantuml-default-exec-mode 'jar)
+
+;;set startup directory
+(setq default-directory "~/")
 
 (require 'tramp)
 (setq tramp-default-method "ssh")
@@ -136,6 +146,37 @@
   )
 
 (setq-default org-download-image-dir "~/gtd/note-references/.imgsrc")
+
+;;;;;;;;;;;;;;;;;;;;;;;; TREESIT (FPTODO: Move to recipe)
+(setq treesit-language-source-alist
+   '((bash "https://github.com/tree-sitter/tree-sitter-bash")
+     (cmake "https://github.com/uyha/tree-sitter-cmake")
+     (css "https://github.com/tree-sitter/tree-sitter-css")
+     (elisp "https://github.com/Wilfred/tree-sitter-elisp")
+     (go "https://github.com/tree-sitter/tree-sitter-go")
+     (html "https://github.com/tree-sitter/tree-sitter-html")
+     (javascript "https://github.com/tree-sitter/tree-sitter-javascript" "master" "src")
+     (json "https://github.com/tree-sitter/tree-sitter-json")
+     (make "https://github.com/alemuller/tree-sitter-make")
+     (markdown "https://github.com/ikatyang/tree-sitter-markdown")
+     (python "https://github.com/tree-sitter/tree-sitter-python")
+     (toml "https://github.com/tree-sitter/tree-sitter-toml")
+     (tsx "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src")
+     (typescript "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src")
+     (yaml "https://github.com/ikatyang/tree-sitter-yaml")))
+
+
+(setq major-mode-remap-alist
+ '((yaml-mode . yaml-ts-mode)
+   (bash-mode . bash-ts-mode)
+   (js2-mode . js-ts-mode)
+   (typescript-mode . typescript-ts-mode)
+   (json-mode . json-ts-mode)
+   (css-mode . css-ts-mode)
+   (go-mode . go-ts-mode)
+   (python-mode . python-ts-mode)))
+
+
 
 ;;;;;;;;;;;;;;;; FUNDAMENTAL TEXT EDITION
 ;; Remove non-ascii characters
@@ -729,7 +770,7 @@ respectively."
 
 ;;;;;;;;;;;;;;; HELM && PROJECTILE
 
-(require 'helm-config)
+;(require 'helm-config)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (helm-mode 1)
 ;; Resize to fit list
